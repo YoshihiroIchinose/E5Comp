@@ -1,1 +1,1 @@
-# E5Comp
+Microsoft 365 E5 Complianceに関する技術検証結果などを共有するサイトです。
