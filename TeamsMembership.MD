@@ -1,16 +1,14 @@
-#概要
+# 概要
 本スクリプトは、特定のグループに属する監視対象のユーザーが、許可されていない Teams への参加があれば、それらを出力するスクリプトになります。
 
-#監視対象のユーザーが許可されていない Teams のチームに参加していないかチェックするスクリプト サンプル
-
-#事前準備
+## 事前準備
 管理者権限の PowerShell で一度以下を実行
 ```
 Install-Module -Name AzureAD
 Install-Module -Name MicrosoftTeams
 ```
 
-#監視対象のユーザーが許可されていない Teams のチームに参加していないかチェックするスクリプト サンプル
+## 監視対象のユーザーが許可されていない Teams のチームに参加していないかチェックするスクリプト サンプル
 ```
 #監査対象のグループ
 $GroupforAudit ="All Employees"
@@ -56,7 +54,7 @@ Foreach($u in $UsersforAudit){
 }
 ```
 
-#出力サンプル
+## 出力サンプル
 ```
 Alex Wilber(AlexW@xxxx.OnMicrosoft.com) is in Sales and Marketing(8cd8e24a-71da-4891-b5ce-b38b7905944d)
 Alex Wilber(AlexW@xxxx.OnMicrosoft.com) is in Mark 8 Project Team(ac6d81e5-0f73-4127-9bde-228c4b9bc20f)
