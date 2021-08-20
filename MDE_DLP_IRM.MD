@@ -96,7 +96,9 @@
 
 
 ## Insider Risk Manament の Activity Explorer で Sensitive File Read および Sensitive File Created が確認できたファイル拡張子
++ .asd
 + .docx
++ .dotx
 + .xlsx
 + .csv
 + .pdf
