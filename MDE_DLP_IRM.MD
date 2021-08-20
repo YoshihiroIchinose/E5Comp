@@ -94,6 +94,22 @@
 + .tar ファイル
 + .lzh ファイル
 
+## Endpoint DLP の Activity Explorer の FileUploadedToCloud が確認できたファイル拡張子 (おそらく全ファイル種別)
++ .png
++ .rar
++ .cab
++ .exe
++ .jpg
++ .js
++ .lzh
++ .mp4
++ .pdf
++ .pfile
++ .pjpg
++ .ptxt
++ .svg
++ .tar
+
 
 ## Insider Risk Manament の Activity Explorer で Sensitive File Read および Sensitive File Created が確認できたファイル拡張子
 + .asd
@@ -103,3 +119,20 @@
 + .csv
 + .pdf
 + .pptx
+
+## Insider Risk Manament の Activity Explorer で File Upload To Cloud が確認できたファイル拡張子 (おそらく全ファイル種別)
++ .docx
++ .lzh
++ .pfile
++ .pjpg
++ .ptxt
++ .tar
++ .txt
++ .zip
++ .jpg
++ .pdf
++ .xlsx
++ .png
++ .mp4
++ .rar
+
