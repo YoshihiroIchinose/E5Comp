@@ -1,5 +1,5 @@
 # 概要
-本スクリプトは、ネストは考慮せず特定のグループに属する監視対象のユーザーが、許可されていない Teams への参加があれば、それらを出力するスクリプトになります。Connection に利用する ID はグループのメンバーシップ情報を読み取れる権限がある必要あがります。[参考:グループ管理者ロール](https://docs.microsoft.com/ja-jp/azure/active-directory/roles/permissions-reference#groups-administrator)
+本スクリプトは、ネストは考慮せず特定のグループに属する監視対象のユーザーが、許可されていない Teams への参加があれば、それらを出力するスクリプトになります。Connect に利用する ID は、チームのメンバー情報を参照できる必要があります。[参考:グループ管理者ロール](https://docs.microsoft.com/ja-jp/azure/active-directory/roles/permissions-reference#groups-administrator)
 
 ## 事前準備
 管理者権限の PowerShell で一度以下を実行
