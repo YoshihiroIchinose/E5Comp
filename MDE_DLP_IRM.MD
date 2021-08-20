@@ -112,6 +112,7 @@
 + .rar
 + .svg
 + .tar
++ .txt
 + .zip
 
 
