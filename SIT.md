@@ -104,14 +104,3 @@ Office 365 内のテキストのマッチングにおいては、全角英数字
 # 参考情報
 1. Web で正規表現のチェックができる[正規表現チェッカー](http://okumocchi.jp/php/re.php)  
 1. 文字のコードを確認できる [Unidode文字ツール](https://www.marbacka.net/msearch/tool.php#chr2enc)  
-
-## Copyright (C) 2020 by Yoshihiro Ichinose  
-Permission to use, copy, modify, and/or distribute this software for any purpose
-with or without fee is hereby granted.  
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
-OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
-THIS SOFTWARE.
