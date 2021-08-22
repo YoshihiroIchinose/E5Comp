@@ -14,18 +14,15 @@ Install-Module -Name MicrosoftTeams
 $GroupforAudit ="All Employees"
 #監査対象のグループのメンバーが参加許可されているTeams チーム
 $AllowedTeams=("Contoso Team", "Ask HR", "Operations")
-#接続に利用するID
-$connectionID="xxxx@xxxx.onmicrosoft.com"
+#接続に利用するID / パスワード
+$Id="xxx@xxx.onmicrosoft.com"
+$Password = "xxxxx"
 
-#Teams のチームを全件取得
-Connect-MicrosoftTeams -AccountId $connectionID
-$Teams=Get-Team -NumberOfThreads 20
-$TeamsGuid=@()
-Foreach($tg in $Teams){
-	$TeamsGuid+=$tg.groupId.ToString()
-}
+#Credentialの生成
+$SecPass=ConvertTo-SecureString -String $Password -AsPlainText -Force
+$Credential= New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Id, $SecPass
 
-Connect-AzureAD -AccountId $connectionID
+Connect-AzureAD -credential $Credential
 
 #監視対象のグループを取得
 $g=Get-AzureADGroup -SearchString $GroupforAudit
@@ -37,20 +34,28 @@ Foreach($t in $AllowedTeams){
 	$AllowedTeamsGuid+=$r.ObjectId
 }
 
+#許可されたものを除く Teams のチームを全件取得
+Connect-MicrosoftTeams -credential $Credential
+$Teams=Get-Team -NumberOfThreads 20
+$TeamsGuid=@()
+Foreach($tg in $Teams){
+	If(!$AllowedTeamsGuid.IndexOf($tg.GroupId) -ne -1)
+	{$TeamsGuid+=$tg.groupId.ToString()}
+}
+
+
 #対象のユーザーの取得
-$UsersforAudit=Get-AzureADGroupMember -ObjectId $g.ObjectId -All $true|Where-Object {$_.UserType -eq "Member"} 
+$UsersforAudit=Get-AzureADGroupMember -ObjectId $g.ObjectId -All $true|?{$_.UserType -eq "Member"} 
 
 #対象のユーザーのメンバーシップを取得
 Foreach($u in $UsersforAudit){
 	#監査対象のユーザーのTeamsのメンバーシップを取得
-	$membership=Get-AzureADUserMembership -ObjectId $u.ObjectID -All $true |Where-Object {$TeamsGuid.IndexOf($_.ObjectId) -ne -1}
+	$membership=Get-AzureADUserMembership -ObjectId $u.ObjectID -All $true|?{$_.ObjectType -eq "Group"}|?{$TeamsGuid.IndexOf($_.ObjectId) -ne -1}
 
-         #許可されていないグループへの参加があれば、出力
+        #許可されていないグループへの参加があれば出力
 	Foreach($m in $membership){
-		$index=$AllowedTeamsGuid.IndexOf($m.ObjectId)
-		If($index -eq -1){$u.DisplayName+"("+$u.UserPrincipalName+") is in "+$m.DisplayName +"("+$m.ObjectID+")"
+		$u.DisplayName+"("+$u.UserPrincipalName+") is in "+$m.DisplayName +"("+$m.ObjectID+")"
 		}
-	}
 }
 ```
 
