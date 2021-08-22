@@ -15,15 +15,21 @@ Install-Module -Name ExchangeOnlineManagement
 ```
 ## Endpooint DLP のログをまとめて取得
 ```
+#接続に利用するID / パスワード
+$Id="xxx@xxx.onmicrosoft.com"
+$Password = "xxxxx"
 #変数
-$User="admin@xxx.onmicrosoft.com"
 $Startdate="2021/06/01"
 $Enddate="2021/12/31"
 $RecordType="DLPEndpoint"
 $OutputFolder=[System.Environment]::GetFolderPath("Desktop")+"\"
 
+#Credentialの生成
+$SecPass=ConvertTo-SecureString -String $Password -AsPlainText -Force
+$Credential= New-Object -TypeName System
+
 Import-Module ExchangeOnlineManagement
-Connect-ExchangeOnline -UserPrincipalName $User
+Connect-ExchangeOnline -credential $Credential
 
 #日付と時刻で固有のセッション ID 文字列を生成
 $sessionId=$RecordType+(Get-Date -Format "yyyyMMdd-HHmm")
