@@ -46,16 +46,16 @@ $ga=Get-AzureADGroup -SearchString $GroupforAuditA
 $gb=Get-AzureADGroup -SearchString $GroupforAuditB
 
 #Group A のユーザーの取得
-$UsersforAuditA=Get-AzureADGroupMember -ObjectId $ga.ObjectId -All $true|Where-Object {$_.UserType -eq "Member"} 
+$UsersforAuditA=Get-AzureADGroupMember -ObjectId $ga.ObjectId -All $true|?{$_.UserType -eq "Member"} 
 
 #Group B のユーザーの取得
-$UsersforAuditB=Get-AzureADGroupMember -ObjectId $gb.ObjectId -All $true|Where-Object {$_.UserType -eq "Member"} 
+$UsersforAuditB=Get-AzureADGroupMember -ObjectId $gb.ObjectId -All $true|?{$_.UserType -eq "Member"} 
 
 #事前にGorup Bのメンバーの全メンバーシップを取得
 $UserBTable=@()
 $MembershipBTable=@()
 Foreach($ub in $UsersforAuditB){
-$membershipB=Get-AzureADUserMembership -ObjectId $ub.ObjectID -All $true |Where-Object {$_.ObjectType -eq "Group"} | Where-Object {$TeamsGuid.IndexOf($_.ObjectId) -ne -1}
+$membershipB=Get-AzureADUserMembership -ObjectId $ub.ObjectID -All $true |?{$_.ObjectType -eq "Group"} |?{$TeamsGuid.IndexOf($_.ObjectId) -ne -1}
 $UserBTable+=$ub
 #2次元配列とするため , を入れる
 $MembershipBTable+=,$membershipB
@@ -64,7 +64,7 @@ $MembershipBTable+=,$membershipB
 #Group A のメンバーと Group B のメンバーが共通に属する Teams チームを見つける
 Foreach($ua in $UsersforAuditA){
 	#Group A のメンバーのメンバーシップを取得
-	$membershipA=Get-AzureADUserMembership -ObjectId $ua.ObjectID -All $true |Where-Object {$_.ObjectType -eq "Group"} | Where-Object {$TeamsGuid.IndexOf($_.ObjectId) -ne -1}
+	$membershipA=Get-AzureADUserMembership -ObjectId $ua.ObjectID -All $true |?{$_.ObjectType -eq "Group"}|?{$TeamsGuid.IndexOf($_.ObjectId) -ne -1}
 	Foreach($ma in $membershipA){
 		Foreach($mb in $MembershipBTable){
 			$i=$mb.IndexOf($ma)
