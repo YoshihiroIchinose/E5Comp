@@ -15,10 +15,13 @@ $GroupforAuditA ="sg-Legal"
 $GroupforAuditB ="sg-Finance"
 #Group AとGroup Bのメンバーの同居が許可されているTeams チーム
 $AllowedTeams=("Contoso Team", "Ask HR", "Operations")
-#接続に利用するID
-$connectionID="xxx@xxx.onmicrosoft.com"
+#接続に利用するID / パスワード
+$Id="xxx@xxx.onmicrosoft.com"
+$Password = ConvertTo-SecureString -String "xxxxx" -AsPlainText -Force
+$Credential= New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Id, $Password
 
-Connect-AzureAD -AccountId $connectionID
+
+Connect-AzureAD -credential $Credential
 #許可されているO365 Groupの詳細を取得
 $AllowedTeamsGuid=@();
 Foreach($t in $AllowedTeams){
@@ -27,7 +30,7 @@ Foreach($t in $AllowedTeams){
 }
 
 #許可されたものを除く Teams のチームを全件取得
-Connect-MicrosoftTeams -AccountId $connectionID
+Connect-MicrosoftTeams -credential $Credential
 $Teams=Get-Team -NumberOfThreads 20
 $TeamsGuid=@()
 Foreach($tg in $Teams){
