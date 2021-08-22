@@ -26,7 +26,7 @@ $OutputFolder=[System.Environment]::GetFolderPath("Desktop")+"\"
 
 #Credentialの生成
 $SecPass=ConvertTo-SecureString -String $Password -AsPlainText -Force
-$Credential= New-Object -TypeName System
+$Credential= New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Id, $SecPass
 
 Import-Module ExchangeOnlineManagement
 Connect-ExchangeOnline -credential $Credential
