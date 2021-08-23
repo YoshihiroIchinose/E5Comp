@@ -11,7 +11,7 @@ Install-Module -Name MicrosoftTeams
 ## 監視対象のユーザーが許可されていない Teams のチームに参加していないかチェックするスクリプト サンプル
 ```
 #監査対象のグループ(ネストは考慮しない)
-$GroupforAudit ="All Employees"
+$GroupforAudit ="sg-Legal"
 #監査対象のグループのメンバーが参加許可されているTeams チーム
 $AllowedTeams=("Contoso Team", "Ask HR", "Operations")
 #接続に利用するID / パスワード
