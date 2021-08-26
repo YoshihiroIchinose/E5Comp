@@ -1,5 +1,5 @@
 # 概要
-本スクリプトは、利益相反するグループ間のコミュニケーションを監視する方法の一つとして、ネストは考慮せず特定のGroupAに属するメンバーとGroup Bに属するメンバーが、許可されていない Teams チームで、メンバーとして共存しているのであれば、それらを列挙するスクリプトです。Connect に利用する ID は、チームのメンバー情報を参照できる必要があります。[参考:グループ管理者ロール](https://docs.microsoft.com/ja-jp/azure/active-directory/roles/permissions-reference#groups-administrator)
+本スクリプトは、利益相反するグループ間のコミュニケーションを監視する方法の一つとして、ネストは考慮せず特定のGroupAに属するメンバーとGroup Bに属するメンバーが、許可されていない Teams チームで、メンバーとして共存しているのであれば、それらを CSV 形式で列挙するスクリプトです。Connect に利用する ID は、チームのメンバー情報を参照できる必要があります。[参考:グループ管理者ロール](https://docs.microsoft.com/ja-jp/azure/active-directory/roles/permissions-reference#groups-administrator)
 
 ## 事前準備
 管理者権限の PowerShell で一度以下を実行
@@ -48,8 +48,8 @@ $gb=Get-AzureADGroup -SearchString $GroupforAuditB
 #Group A のユーザーの取得
 $UsersforAuditA=Get-AzureADGroupMember -ObjectId $ga.ObjectId -All $true|?{$_.UserType -eq "Member"} 
 
-#Group B のユーザーの取得
-$UsersforAuditB=Get-AzureADGroupMember -ObjectId $gb.ObjectId -All $true|?{$_.UserType -eq "Member"} 
+#Group A に含まれない Group B のユーザーの取得
+$UsersforAuditB=Get-AzureADGroupMember -ObjectId $gb.ObjectId -All $true|?{$_.UserType -eq "Member"}|?{$UsersforAuditA.IndexOf($_) -eq -1}
 
 #事前にGorup Bのメンバーの全メンバーシップを取得
 $UserBTable=@()
@@ -71,7 +71,6 @@ Foreach($ua in $UsersforAuditA){
 			$i=$mb.IndexOf($ma)
 			If($i -ne -1){
 			$ub=$UserBTable[$MembershipBTable.IndexOf($mb)]
-			if($ua.UserPrincipalName -eq $ub.UserPrincipalName) {continue}
 			$line = New-Object PSObject | Select-Object UserAName, UserAUPN, UserBName, UserBUPN, TeamName, TeamGuid
 			$line.UserAName=$ua.DisplayName
 			$line.UserAUPN=$ua.UserPrincipalName
