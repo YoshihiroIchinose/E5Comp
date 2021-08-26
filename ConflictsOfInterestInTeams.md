@@ -18,11 +18,11 @@ $AllowedTeams=("Contoso Team", "Ask HR", "Operations")
 #接続に利用するID / パスワード
 $Id="xxx@xxx.onmicrosoft.com"
 $Password = "xxxxx"
+$OutputFolder=[System.Environment]::GetFolderPath("Desktop")+"\"
 
 #Credentialの生成
 $SecPass=ConvertTo-SecureString -String $Password -AsPlainText -Force
 $Credential= New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Id, $SecPass
-
 
 Connect-AzureAD -credential $Credential
 #許可されているO365 Groupの詳細を取得
@@ -55,12 +55,13 @@ $UsersforAuditB=Get-AzureADGroupMember -ObjectId $gb.ObjectId -All $true|?{$_.Us
 $UserBTable=@()
 $MembershipBTable=@()
 Foreach($ub in $UsersforAuditB){
-$membershipB=Get-AzureADUserMembership -ObjectId $ub.ObjectID -All $true |?{$_.ObjectType -eq "Group"} |?{$TeamsGuid.IndexOf($_.ObjectId) -ne -1}
-$UserBTable+=$ub
-#2次元配列とするため , を入れる
-$MembershipBTable+=,$membershipB
+	$membershipB=Get-AzureADUserMembership -ObjectId $ub.ObjectID -All $true |?{$_.ObjectType -eq "Group"} |?{$TeamsGuid.IndexOf($_.ObjectId) -ne -1}
+	$UserBTable+=$ub
+	#2次元配列とするため , を入れる
+	$MembershipBTable+=,$membershipB
 }
 
+$csv=@()
 #Group A のメンバーと Group B のメンバーが共通に属する Teams チームを見つける
 Foreach($ua in $UsersforAuditA){
 	#Group A のメンバーのメンバーシップを取得
@@ -70,16 +71,31 @@ Foreach($ua in $UsersforAuditA){
 			$i=$mb.IndexOf($ma)
 			If($i -ne -1){
 			$ub=$UserBTable[$MembershipBTable.IndexOf($mb)]
-			$ua.DisplayName+"("+$ua.UserPrincipalName+") and " + $ub.DisplayName+"("+$ub.UserPrincipalName+")  are in "+$mb[$i].DisplayName +"("+$mb[$i].ObjectID+")"
+			if($ua.UserPrincipalName -eq $ub.UserPrincipalName) {continue}
+			$line = New-Object PSObject | Select-Object UserAName, UserAUPN, UserBName, UserBUPN, TeamName, TeamGuid
+			$line.UserAName=$ua.DisplayName
+			$line.UserAUPN=$ua.UserPrincipalName
+			$line.UserBName=$ub.DisplayName
+			$line.UserBUPN=$ub.UserPrincipalName
+			$line.TeamName=$mb[$i].DisplayName
+			$line.TeamGuid=$mb[$i].ObjectID
+			$csv+=$line
 			}
 		}
 	}
 }
+
+#CSV出力
+$csv|Export-csv -Path ($OutputFolder+"ConflictMembership"+(Get-Date -Format "yyyyMMdd-HHmm")+".csv") -Encoding UTF8 -NoTypeInformation
 ```
 
 ## サンプルの出力結果
 ```
-Joni Sherman(JoniS@xxx.OnMicrosoft.com) and Debra Berger(DebraB@xxx.OnMicrosoft.com)  are in Sales and Marketing(8cd8e24a-71da-4891-b5ce-b38b7905944d)
-Joni Sherman(JoniS@xxx.OnMicrosoft.com) and Pradeep Gupta(PradeepG@xxx.OnMicrosoft.com)  are in Sales and Marketing(8cd8e24a-71da-4891-b5ce-b38b7905944d)
-Irvin Sayers(IrvinS@xxx.OnMicrosoft.com) and Debra Berger(DebraB@xxx.OnMicrosoft.com)  are in Mark 8 Project Team(ac6d81e5-0f73-4127-9bde-228c4b9bc20f)
+"UserAName","UserAUPN","UserBName","UserBUPN","TeamName","TeamGuid"
+"Joni Sherman","JoniS@xxxx.OnMicrosoft.com","Debra Berger","DebraB@xxxx.OnMicrosoft.com","Sales and Marketing","8cd8e24a-71da-4891-b5ce-b38b7905944d"
+"Joni Sherman","JoniS@xxxx.OnMicrosoft.com","Pradeep Gupta","PradeepG@xxxx.OnMicrosoft.com","Sales and Marketing","8cd8e24a-71da-4891-b5ce-b38b7905944d"
+"Grady Archie","GradyA@xxxx.OnMicrosoft.com","Pradeep Gupta","PradeepG@xxxx.OnMicrosoft.com","Mark 8 Project Team","ac6d81e5-0f73-4127-9bde-228c4b9bc20f"
+"Grady Archie","GradyA@xxxx.OnMicrosoft.com","Megan Bowen","MeganB@xxxx.OnMicrosoft.com","Mark 8 Project Team","ac6d81e5-0f73-4127-9bde-228c4b9bc20f"
+"Grady Archie","GradyA@xxxx.OnMicrosoft.com","Megan Bowen","MeganB@xxxx.OnMicrosoft.com","Contoso","09645b11-46ce-49bf-ad5d-53a9ac8feba5"
+"Grady Archie","GradyA@xxxx.OnMicrosoft.com","Diego Siciliani","DiegoS@xxxx.OnMicrosoft.com","Contoso","09645b11-46ce-49bf-ad5d-53a9ac8feba5"
 ```
