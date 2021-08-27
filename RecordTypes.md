@@ -30,8 +30,8 @@
 |23|SkypeForBusinessCmdlets|Yes||Yes|
 |24|Discovery|Yes||Yes|
 |25|MicrosoftTeams|Yes||Yes|Yes
-|26|エラーとなる欠番||||
-|27|エラーとなる欠番||||
+|26|欠番||||
+|27|欠番||||
 |28|ThreatIntelligence|Yes|||
 |29|MailSubmission|Yes|||
 |30|MicrosoftFlow|Yes||Yes|
@@ -78,13 +78,13 @@
 |71|MipAutoLabelSharePointItem|Yes|||
 |72|MipAutoLabelSharePointPolicyLocation|Yes|||
 |73|MicrosoftTeamsShifts|Yes|||
-|74|エラーとなる欠番||||
+|74|欠番||||
 |75|MipAutoLabelExchangeItem|Yes|||
 |76|CortanaBriefing|Yes|||
 |77|Search|Yes|||
 |78|WDATPAlerts|Yes|||
-|79|エラーとなる欠番||||
-|80|エラーとなる欠番||||
+|79|欠番||||
+|80|欠番||||
 |81|MDATPAudit|Yes||Yes|
 |82|SensitivityLabelPolicyMatch|Yes|||
 |83|SensitivityLabelAction|Yes|||
@@ -108,11 +108,11 @@
 |101|ExchangeSearch|Yes||Yes|
 |102|SharePointSearch|Yes||Yes|
 |103|PrivacyDataMinimization|Yes|||
-|104|エラーとなる欠番||||
+|104|欠番||||
 |105|MyAnalyticsSettings|Yes||Yes|
 |106|SecurityComplianceUserChange|Yes|||
 |107|ComplianceDLPExchangeClassification|Yes|||
-|108|エラーとなる欠番||||
+|108|欠番||||
 |109|MipExactDataMatch|Yes||Yes|
 |110|MSDEResponseActions|||Yes|
 |111|MSDEGeneralSettings|||Yes|
@@ -138,9 +138,20 @@
 |131|OfficeScripts||||
 |132|CDPPostMailDeliveryAction||||
 |133|CDPUnifiedFeedback||||
-|134|TABLEntryRemoved||||
+|134|TenantAllowBlockList||||
 |135|ConsumptionResource||||
 |136|HealthcareSignal||||
+|137|欠番||||
+|138|DlpImportResult|||Yes|
+|139|CDPCompliancePolicyExecution
+|140|MultiStageDisposition|||Yes|
+|141|PrivacyDataMatch||||
+|142|CDPEdgeBlockedMessage||||
+|143|CDPEmailFeatures||||
+|144|PowerBIDlp||||
+|145|CDPHygieneUrlInfo||||
+|146|CDPHygieneAttachmentInfo||||
+|147|CoreReportingSettings|||Yes|
 
 # 監査ログの保持ポリシーについて
 Advanced Audit が含まれているライセンスがあれば、最長 1 年間のログの保持ができ、さらに追加のアドオン ライセンスがあれば、最長 10 年間のログ保存が設定できます。ただし、[Docs](
@@ -153,8 +164,8 @@ Connect-IPPSSession -UserPrincipalName xxxx@xxxx.onmicrosoft.com
 
 $range=@();
 $i=1;
-$skip=@(26,27,74,79,80,104,108);
-while ($i -le 136){if(!$skip.Contains($i)){$range+=$i;}$i++;}
+$skip=@(26,27,74,79,80,104,108,137);
+while ($i -le 147){if(!$skip.Contains($i)){$range+=$i;}$i++;}
 
 New-UnifiedAuditLogRetentionPolicy -name "1Year Policy for All" -RetentionDuration TwelveMonths -priority 200 -recordtypes $range
 ```
