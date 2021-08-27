@@ -124,6 +124,8 @@
 + .csv
 + .pdf
 + .pptx
++ .txt
++ .xlsx
 
 ## Insider Risk Manament の Activity Explorer で File Upload To Cloud が確認できたファイル拡張子 (おそらく全ファイル種別)
 + .cab
