@@ -126,8 +126,13 @@
 + .pptx
 
 ## Insider Risk Manament の Activity Explorer で File Upload To Cloud が確認できたファイル拡張子 (おそらく全ファイル種別)
++ .cab
++ .csv
 + .docx
++ .dll
++ .exe
 + .jpg
++ .js
 + .lzh
 + .mp4
 + .pdf
@@ -136,6 +141,7 @@
 + .png
 + .ptxt
 + .rar
++ .svg
 + .tar
 + .txt
 + .xlsx
