@@ -152,6 +152,15 @@
 |145|CDPHygieneUrlInfo||||
 |146|CDPHygieneAttachmentInfo||||
 |147|CoreReportingSettings|||Yes|
+|148|ComplianceConnector||||
+|149|PowerPlatformLockboxResourceAccessRequest||||
+|150|PowerPlatformLockboxResourceCommand||||
+|151|CDPPredictiveCodingLabel||||
+|152|CDPCompliancePolicyUserFeedback||||
+|153|WebpageActivityEndpoint||||
+|154|OMEPortal||||
+|155|CMImprovementActionChange||||
+
 
 # 監査ログの保持ポリシーについて
 Advanced Audit が含まれているライセンスがあれば、最長 1 年間のログの保持ができ、さらに追加のアドオン ライセンスがあれば、最長 10 年間のログ保存が設定できます。ただし、[Docs](
