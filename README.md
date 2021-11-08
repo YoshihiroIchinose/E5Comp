@@ -4,6 +4,7 @@ Microsoft 365 E5 Compliance に関する技術検証結果などを共有する�
 | ページ | 内容 |
 | --- | ---- |
 | [日本向け個人情報の定義](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT.md) | 住所、電話番号など、M365 での利用を想定した日本向けの正規表現のパターンの例についてです。 |
+| [カスタムの機密情報の正規表現のエラーの対処](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT_RegEx.md) | カスタムの機密情報定義の正規表現で、エラーになった場合の対処方法についてです。 |
 | [Communication Compalince 用語サンプル](https://github.com/YoshihiroIchinose/E5Comp/blob/main/CC.md) | コミュニケーション コンプライアンスのテスト用に定義したサンプルの要注意ワードです。 |
 | [Office 365 監査ログに関する技術情報](https://github.com/YoshihiroIchinose/E5Comp/blob/main/Office365Audit.md) | Office 365 Audit ログを最大 5 万件の範囲で CSV 形式で取得するサンプル スクリプトです。また AuditData のパースや、CSV ファイルの Excel ファイルへの変換などにも触れています。 |
 | [Office 365 の監査ログの RecordTypes と保持](https://github.com/YoshihiroIchinose/E5Comp/blob/main/RecordTypes.md) | Office 365 Aduit ログに記録されるログの種類と、それらの種類を指定したログの保持ポリシーの設定方法について紹介しています。 |
