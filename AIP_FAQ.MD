@@ -22,5 +22,17 @@ ProxyAddresses に設定がなければ、UserPrincipalName の値で、指定�
 同様に外部ユーザーも、メール アドレスで指定します。なおメール アドレスが有効なグループ(セキュリティ、配布グループ、Microsoft 365 グループ)も利用することが可能で、
 実は社外の Office 365 テナントのグループも、メール アドレスが分かっていれば指定可能です。  
   
-上記のように直接のユーザー指定以外にも、
+上記のように直接のユーザー指定以外にも、ドメイン単位で権限を設定することも可能ですが、設定できる方法が限られている点には注意が必要です。  
+  
+ドメインの設定ができない
+- Office クライアント  
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_PIC01.png" border="1">
 
+ドメインの設定ができる  
+- Azure Informatino Clienet をインストールした上で、ファイルを右クリックして権限設定する場合
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_PIC02.png" border="1">
+- テナント管理者が秘密度ラベルの保護設定を定義する際
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_PIC03.png" border="1">
+
+なおファイルの暗号化はするものの、認証されたユーザーは誰でも開いてよいという場合、テナント管理者が秘密度ラベルの保護設定を定義する際に、「任意の認証済みユーザー」を指定することもできる。
+この場合、誰がファイルを開けるかは一切コントロールしないため、有効期限の設定をしてファイルの参照期間を限定することや、追跡・失効の機能を併用した使い方が考えられる。
