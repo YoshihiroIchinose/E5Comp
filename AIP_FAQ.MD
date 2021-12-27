@@ -1,8 +1,8 @@
 # Azure Informatino Protection の外部共有について (書きかけ)
 Azure Informatino Protection では、自社テナントだけではなく、以下のような社外アカウントを利用するユーザーとも暗号化されたファイルの共有が可能となっています。  
-A. 外部の Office 365 テナントのアカウント
-B. Microsoft Account を利用するコンシューマー アカウント
-C. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイプ パスコードを利用する外部ユーザー アカウント
+A. 外部の Office 365 テナントのアカウント  
+B. Microsoft Account を利用するコンシューマー アカウント  
+C. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイプ パスコードを利用する外部ユーザー アカウント  
 
 ただし、ファイルを共有しようとするユーザーからは完全にコントロールすることが難しい、
 各種前提条件もあり、あまり活用が進んでいないかと思われます。本ページでは、
@@ -16,7 +16,11 @@ C. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイプ
 # 1. 外部ユーザーの指定方法
 基本的に、Azure Information Protection では、メール アドレスでユーザーやグループを指定します。
 またファイルを開く際には、Azure Active Dreictory で認識されている、ProxyAddresses に設定された単一もしくは複数のメール アドレスか、
-ProxyAddresses に設定がなければ、UserPrincipalName の値で、指定されたメール アドレスに合致するかどうかを判定します。
-[参考: Preparing users and groups for Azure Information Protection](https://docs.microsoft.com/en-us/azure/information-protection/prepare)
-同様に外部ユーザーも、メール アドレスで指定します。
-メール アドレスが有効なグループ(セキュリティ、配布グループ、Microsoft 365 グループ)
+ProxyAddresses に設定がなければ、UserPrincipalName の値で、指定されたメール アドレスに合致するかどうかを判定します。  
+[参考: Preparing users and groups for Azure Information Protection](https://docs.microsoft.com/en-us/azure/information-protection/prepare)  
+
+同様に外部ユーザーも、メール アドレスで指定します。なおメール アドレスが有効なグループ(セキュリティ、配布グループ、Microsoft 365 グループ)も利用することが可能で、
+実は社外の Office 365 テナントのグループも、メール アドレスが分かっていれば指定可能です。  
+  
+上記のように直接のユーザー指定以外にも、
+
