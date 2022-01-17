@@ -7,6 +7,9 @@ Seach-UnifiedAuditLog で最大何件までログを取れるかという話に�
 ## AuditData の扱いについて
 Seach-UnifiedAuditLog のコマンドレットでは、Microsoft 365 に関する様々な種類のログが取得可能です。こちらの [Docs](https://docs.microsoft.com/ja-jp/office/office-365-management-api/office-365-management-activity-api-schema#auditlogrecordtype) に取りうるログの種類がまとめられています。ただログの種類によって当然記録されているデータは異なるため、固有の意味のあるデータは、AuditData という列にまとめて JSON 形式で格納されています。そのためログの詳細を CSV 形式などで出力しようとすると、ログの種類(RecordType ごとの Operation) に応じて、JSON の中から取り出す値を個別に指定しなければいけないという煩雑さがあります。今回ここで提示する PowerShell のサンプルでは、一端取り出したログの中から、Operation の種類ごとに 1 つログを取り出してその中に含まれている JSON の属性名を事前に分析しておくことで、個別に属性名を指定することなく、網羅的に CSV 形式にデータを出力しているものとなっています。また今後ニーズが高まるであろう、端末側の操作を抜き出す Endpoint DLP のログを例にとっています(要 M365 E5, M365 E5 Compliance, or Infomatino Protection & Governance ライセンスおよび端末のオンボード)。
 
+## AuditData 内の JSON の書き出しについて 2022/01/17 更新
+ConvertFrom-Json を用いて JSON 形式のテキスト データをパースすることが可能ですが、パースした値の内に、配列形式を含む値がある場合については、ToString() メソッドを利用しても、System.Object[] という表記となってしまい、テキストとして書き出すことができません。そのため、パースした一部の Json の値を再度、テキストとして書き出す際には、ConvertTo-Json -Compress -Depth 10 $attribute で、多段の階層で、再度改行を持たない JSON 形式に変換し、テキスト出力しています。これにより、DLPEndpoint の機密情報の一致など細部の情報も書き出せるようになっています。
+
 # PowerShell スクリプト
 ## PowerShell を管理権限で立ち上げて事前に一度以下を実行
 ```
@@ -58,9 +61,10 @@ foreach($Operation in $OperationTypes){
 #Select-Object で利用するために、Json をパースする ScriptBlock を生成
 $Fields="ResultIndex", "CreationDate","UserIds","Operations","RecordType"
 foreach($f in $FieldName){
-    $sb=[scriptblock]::Create('$JsonRaw.'+$f)
-    if($f -ne "RecordType") {$Fields+=@{Name=$f;Expression=$sb}}
-    else {$Fields+=@{Name="RecordType2";Expression=$sb}}
+    $sb1=[scriptblock]::Create('$JsonRaw.'+$f)
+    $sb2=[scriptblock]::Create('$att=$JsonRaw.'+$f+';if($att.GetType().Name -eq "Object[]" -or $att.GetType().Name -eq "PSCustomObject"){ConvertTo-Json -Compress -Depth 10 $att} else {$att}')
+    if($f -ne "RecordType") {$Fields+=@{Name=$f;Expression=$sb2}}
+    else {$Fields+=@{Name="RecordType2";Expression=$sb1}}
 }
 
 #Jsonをパースしながら、CSV 形式に加工
