@@ -1,7 +1,7 @@
 # Azure Informatino Protection で保護されたファイルを外部ユーザーと共有する (書きかけ)
 Azure Informatino Protection では、自社テナントだけではなく、以下のような社外アカウントを利用するユーザーとも暗号化されたファイルの共有が可能となっています。  
 A. 外部の Office 365 テナントのアカウント  
-B. [Azure Information Protection](https://aka.ms/rms-signup) にて会社のメール アドレスを用いて個別にサインアップしたアカウント  
+B. [Azure Information Protection](https://aka.ms/rms-signup) のサイトにて会社のメール アドレスを用いて個別にサインアップしたアカウント(結果的に Azure AD Free のアカウントとなる)  
 C. コンシューマーの Microsoft Account  
 D. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイプ パスコードを利用する外部ユーザー アカウント  
 
@@ -40,10 +40,10 @@ ProxyAddresses に設定がなければ、UserPrincipalName の値で、指定�
 
 
 ## 外部ユーザーの指定方法まとめ
-| 環境 | 個別のユーザー指定 | ドメイン指定(Azure AD ではそのドメインを持つテナント前提) | 認証されたユーザーは誰でも |
+| 環境 | 個別のユーザー指定<br>(メール アドレスが有効な AAD のグループ指定含む) | ドメイン指定<br>(Azure AD ではそのドメインを持つテナント全体) | 認証されたユーザーは誰でも |
 |:---:|:---:|:---:|:---:|
-|Office 365 Apps for Business | 〇 | 〇 | × |
-|AIP Client 右クリック | 〇 | △  (特殊な AllStaff-7184AB3F-CCD1-46F3-8233-3E09E9CF0E66@ドメイン名という指定方法であれば可) | × |
+|Office 365 Apps for Business | 〇 | △ <br> (特殊な AllStaff-7184AB3F-CCD1-46F3-8233-3E09E9CF0E66@ドメイン名という指定方法であれば可) | × |
+|AIP Client 右クリック | 〇 | 〇 | × |
 |管理者による秘密度ラベルの定義| 〇 | 〇 | 〇 |
 
 # 2. 外部ユーザー環境
