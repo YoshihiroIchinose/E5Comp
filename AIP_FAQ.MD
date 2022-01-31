@@ -3,8 +3,10 @@ Azure Informatino Protection では、自社テナントだけではなく、以
 A. 外部の Office 365 テナントのアカウント  
 B. [Azure Information Protection](https://aka.ms/rms-signup) のサイトにて会社のメール アドレスを用いて個別にサインアップしたアカウント<br>
 (結果的に Azure AD Free のアカウントとなる)  
-C. コンシューマーの Microsoft Account （Office クライアント・アプリのみ)  
-D. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイプ パスコードを利用する外部ユーザー アカウント  
+C. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイプ パスコードを利用する外部ユーザー アカウント  
+D. コンシューマーの Microsoft Account<br>
+(Office クライアント・アプリで AIP 保護されたファイルを開く際に Microsoft Account を利用可能だが、<br>
+AIP Viewer、Edge、Acrobat などでは、AIP 保護された PDF ファイル等を開く際に、Microsoft Account の利用はできない)  
 
 ただし、ファイルを共有しようとするユーザーからは完全にコントロールすることが難しい、
 各種前提条件もあり、あまり活用が進んでいないかと思われます。本ページでは、
@@ -56,25 +58,25 @@ AIP 保護された Office ファイルの参照
 |Office 2019 | 〇 | 〇 | 〇 |
 |Office 2013, 2016 | 〇 | × | 〇 |
 |Office 2010 | 〇 開けるが AIP Client のインストール必須 | × | × 先進認証に対応しないため Azure AD B2B での利用は不可 |  
+|iOS 版 Office (バージョン 2.42 以降) | 〇 | 〇 | 〇 |  
+|Android 版 Office (バージョン 16.0.13029 以降) | 〇 | 〇 | 〇 |  
+|MacOS 版 Office (バージョン 16.42 以降) | 〇 | 〇 | 〇 |  
 |Windows/iOS/Android 版 AIP Viewer | 〇 | × | 〇 |  
-|iOS 版 Office (バージョン 2.42 以降 | 〇 | 〇 | 〇 |  
-|Android 版 Office (バージョン 16.0.13029 以降 | 〇 | 〇 | 〇 |  
-|MacOS 版 Office (バージョン 16.42 以降 | 〇 | 〇 | 〇 |  
-|Windows 8, 8.1, 10, 11 版 Edge（バージョン 83.0.478.37 以降 | 〇（PDFのみが)対象 | × | 〇（PDFのみが)対象|  
-|Windows 8, 8.1, 10, 11 版Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | × | 〇（PDFのみが)対象 |  
-|macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | × | 〇 |  
+|Windows 8, 8.1, 10, 11 版 Edge（バージョン 83.0.478.37 以降) | 〇（PDFのみが対象) | × | 〇（PDFのみが対象)|  
+|Windows 8, 8.1, 10, 11 版Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが対象) | × | 〇（PDFのみが対象) |  
+|macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが対象) | × | 〇（PDFのみが対象) |  
 
 AIP 保護された PDF ファイルの参照  
 [参考: 保護された PDF では、どの PDF リーダーがサポートされていますか?](https://docs.microsoft.com/ja-jp/azure/information-protection/rms-client/protected-pdf-readers)  
-[外部ユーザーと AIP ビューアー](https://docs.microsoft.com/ja-jp/azure/information-protection/known-issues#known-issues-for-the-aip-viewer)
-なお　Windows 版の Acrobat Reader + MIP Plug-in の場合、既存認証情報は、 %userprofile%\AppData\Roaming\Adobe\Acrobat\DC\Security に格納されているため、ユーザーを切り替えたり、認証をやり直したい場合には、自己責任でこちらのフォルダのファイルを適宜削除のこと。
+[外部ユーザーと AIP ビューアー](https://docs.microsoft.com/ja-jp/azure/information-protection/known-issues#known-issues-for-the-aip-viewer)   
+なお Windows 版の Acrobat Reader + MIP Plug-in の場合、既存認証情報は、 %userprofile%\AppData\Roaming\Adobe\Acrobat\DC\Security に格納されているため、ユーザーを切り替えたり、認証をやり直したい場合には、自己責任でこちらのフォルダのファイルを適宜削除のこと。
 
 # 3. B2B ワンタイム パスコードを利用した外部ユーザーの認証法
 AIP 保護されたファイルの共有先が、Exchange Online ではないメール サーバーを用いていたり、コンシューマー向けの各種インターネット サービス プロバイダーで提供されているメール アカウントを利用している場合には、Teams のチームへの招待や、SharePoint Online の外部共有機能を用いて、ワンタイム パスコード ベースの Azure AD B2B 招待をする必要があります。そのためには、テナントで以下のような前提条件を満たしている必要があります。
 
 1. Azure AD の B2B で[ワンタイム パスコード](https://docs.microsoft.com/ja-jp/azure/active-directory/external-identities/one-time-passcode)が有効化されていること  
 (オプト アウトしていない場合、2021 年 11 月 1 日以降より順次有効化)  
-2. SharePoint Online / OneDriver for Business で外部招待をする場合には、[B2B統合機能](https://docs.microsoft.com/ja-jp/sharepoint/sharepoint-azureb2b-integration)が有効されていること
+2. SharePoint Online / OneDriver for Business で外部招待をする場合には、[B2B 統合機能](https://docs.microsoft.com/ja-jp/sharepoint/sharepoint-azureb2b-integration)が有効されていること
 3. 権限があるユーザーで B2B の外部招待を一度実施していること
 (Guest Inviter のロール等で、招待権限がある人の操作により、対象の外部ユーザーが B2B 招待されていること
 4. AIP 保護されたファイルを開いてもらう際に利用する、共有元テナントのドメイン情報を伝えること
