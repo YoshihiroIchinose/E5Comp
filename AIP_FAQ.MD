@@ -1,4 +1,4 @@
-# Azure Informatino Protection で保護されたファイルを外部ユーザーと共有する (書きかけ)
+# Azure Informatino Protection で保護されたファイルを外部ユーザーと共有する
 Azure Informatino Protection では、自社テナントだけではなく、以下のような社外アカウントを利用するユーザーとも暗号化されたファイルの共有が可能となっています。  
 A. 外部の Office 365 テナントのアカウント  
 B. [Azure Information Protection](https://aka.ms/rms-signup) のサイトにて会社のメール アドレスを用いて個別にサインアップしたアカウント(結果的に Azure AD Free のアカウントとなる)  
@@ -11,7 +11,7 @@ D. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイプ
 主な考慮事項
 1. 外部ユーザーの指定方法
 2. 外部ユーザー環境
-3. 外部ユーザーの認証法
+3. B2B ワンタイム パスコードを利用した外部ユーザーの認証法
 4. 条件付きアクセスの考慮事項
 
 # 1. 外部ユーザーの指定方法
@@ -56,9 +56,9 @@ AIP 保護された Office ファイルの参照
 |Office 2013, 2016 | 〇 | × | 〇 |
 |Office 2010 | 〇 開けるが AIP Client のインストール必須 | × | × 先進認証に対応しないため Azure AD B2B での利用は不可 |  
 |Windows/iOS/Android 版 AIP Viewer | 〇 | × | 〇 |  
-|iOS 版 Office (バージョン 2.42 以降 | 〇 | 〇 | ？ |  
-|Android 版 Office (バージョン 16.0.13029 以降 | 〇 | 〇 | ？ |  
-|MacOS 版 Office (バージョン 16.42 以降 | 〇 | 〇 | ？ |  
+|iOS 版 Office (バージョン 2.42 以降 | 〇 | 〇 | 〇 |  
+|Android 版 Office (バージョン 16.0.13029 以降 | 〇 | 〇 | 〇 |  
+|MacOS 版 Office (バージョン 16.42 以降 | 〇 | 〇 | 〇 |  
 |Windows 8, 8.1, 10, 11 版 Edge（バージョン 83.0.478.37 以降 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象|  
 |Windows 8, 8.1, 10, 11 版Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | ？ | 〇（PDFのみが)対象 |  
 |macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | ？ | ？ |  
@@ -67,7 +67,7 @@ AIP 保護された PDF ファイルの参照
 [参考: 保護された PDF では、どの PDF リーダーがサポートされていますか?](https://docs.microsoft.com/ja-jp/azure/information-protection/rms-client/protected-pdf-readers)  
 [外部ユーザーと AIP ビューアー](https://docs.microsoft.com/ja-jp/azure/information-protection/known-issues#known-issues-for-the-aip-viewer)
 
-# 3. 外部ユーザーの認証法
+# 3. B2B ワンタイム パスコードを利用した外部ユーザーの認証法
 AIP 保護されたファイルの共有先が、Exchange Online ではないメール サーバーを用いていたり、コンシューマー向けの各種インターネット サービス プロバイダーで提供されているメール アカウントを利用している場合には、Teams のチームへの招待や、SharePoint Online の外部共有機能を用いて、ワンタイム パスコード ベースの Azure AD B2B 招待をする必要があります。そのためには、テナントで以下のような前提条件を満たしている必要があります。
 
 1. Azure AD の B2B で[ワンタイム パスコード](https://docs.microsoft.com/ja-jp/azure/active-directory/external-identities/one-time-passcode)が有効化されていること  
