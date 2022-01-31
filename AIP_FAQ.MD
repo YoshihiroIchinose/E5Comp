@@ -2,7 +2,7 @@
 Azure Informatino Protection では、自社テナントだけではなく、以下のような社外アカウントを利用するユーザーとも暗号化されたファイルの共有が可能となっています。  
 A. 外部の Office 365 テナントのアカウント  
 B. [Azure Information Protection](https://aka.ms/rms-signup) のサイトにて会社のメール アドレスを用いて個別にサインアップしたアカウント(結果的に Azure AD Free のアカウントとなる)  
-C. コンシューマーの Microsoft Account  
+C. コンシューマーの Microsoft Account （Office クライアント・アプリのみ)  
 D. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイプ パスコードを利用する外部ユーザー アカウント  
 
 ただし、ファイルを共有しようとするユーザーからは完全にコントロールすることが難しい、
@@ -59,13 +59,14 @@ AIP 保護された Office ファイルの参照
 |iOS 版 Office (バージョン 2.42 以降 | 〇 | 〇 | 〇 |  
 |Android 版 Office (バージョン 16.0.13029 以降 | 〇 | 〇 | 〇 |  
 |MacOS 版 Office (バージョン 16.42 以降 | 〇 | 〇 | 〇 |  
-|Windows 8, 8.1, 10, 11 版 Edge（バージョン 83.0.478.37 以降 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象|  
-|Windows 8, 8.1, 10, 11 版Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | ？ | 〇（PDFのみが)対象 |  
-|macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | ？ | ？ |  
+|Windows 8, 8.1, 10, 11 版 Edge（バージョン 83.0.478.37 以降 | 〇（PDFのみが)対象 | × | 〇（PDFのみが)対象|  
+|Windows 8, 8.1, 10, 11 版Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | × | 〇（PDFのみが)対象 |  
+|macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | × | 〇 |  
 
 AIP 保護された PDF ファイルの参照  
 [参考: 保護された PDF では、どの PDF リーダーがサポートされていますか?](https://docs.microsoft.com/ja-jp/azure/information-protection/rms-client/protected-pdf-readers)  
 [外部ユーザーと AIP ビューアー](https://docs.microsoft.com/ja-jp/azure/information-protection/known-issues#known-issues-for-the-aip-viewer)
+なお　Windows 版の Acrobat Reader + MIP Plug-in の場合、既存認証情報は、 %userprofile%\AppData\Roaming\Adobe\Acrobat\DC\Security に格納されているため、ユーザーを切り替えたり、認証をやり直したい場合には、自己責任でこちらのフォルダのファイルを適宜削除のこと。
 
 # 3. B2B ワンタイム パスコードを利用した外部ユーザーの認証法
 AIP 保護されたファイルの共有先が、Exchange Online ではないメール サーバーを用いていたり、コンシューマー向けの各種インターネット サービス プロバイダーで提供されているメール アカウントを利用している場合には、Teams のチームへの招待や、SharePoint Online の外部共有機能を用いて、ワンタイム パスコード ベースの Azure AD B2B 招待をする必要があります。そのためには、テナントで以下のような前提条件を満たしている必要があります。
