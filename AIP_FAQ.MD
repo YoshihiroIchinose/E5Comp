@@ -55,22 +55,17 @@ AIP 保護された Office ファイルの参照
 |Office 2019 | 〇 | 〇 | 〇 |
 |Office 2013, 2016 | 〇 | × | 〇 |
 |Office 2010 | 〇 開けるが AIP Client のインストール必須 | × | × 先進認証に対応しないため Azure AD B2B での利用は不可 |  
-|Windows/iOS/Android 版 AIP Viewer | 〇 | 〇 | 〇 |  
+|Windows/iOS/Android 版 AIP Viewer | 〇 | × | 〇 |  
 |iOS 版 Office (バージョン 2.42 以降 | 〇 | 〇 | ？ |  
 |Android 版 Office (バージョン 16.0.13029 以降 | 〇 | 〇 | ？ |  
 |MacOS 版 Office (バージョン 16.42 以降 | 〇 | 〇 | ？ |  
 |Windows 8, 8.1, 10, 11 版 Edge（バージョン 83.0.478.37 以降 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象|  
-|Windows 8, 8.1, 10, 11 版Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 |  
-|macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 | ？ |  
+|Windows 8, 8.1, 10, 11 版Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | ？ | 〇（PDFのみが)対象 |  
+|macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | ？ | ？ |  
 
 AIP 保護された PDF ファイルの参照  
-[参考: 保護された PDF では、どの PDF リーダーがサポートされていますか?](https://docs.microsoft.com/ja-jp/azure/information-protection/rms-client/protected-pdf-readers)
-- Windows 8, 8.1, 10, 11 上の Edge バージョン 83.0.478.37 以降
-- Windows 8, 8.1, 10, 11 上の [AIP Client](https://aka.ms/aipclient) もしくは [AIP Viewer](https://go.microsoft.com/fwlink/?linkid=838993)
-- Windows 8, 8.1, 10, 11 上の Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049)
-- macOS 10.12 以上での Edge バージョン 83.0.478.37 以降
-- macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049)
-- iOS/Android 用 Azure Information Protection アプリ  
+[参考: 保護された PDF では、どの PDF リーダーがサポートされていますか?](https://docs.microsoft.com/ja-jp/azure/information-protection/rms-client/protected-pdf-readers)  
+[外部ユーザーと AIP ビューアー](https://docs.microsoft.com/ja-jp/azure/information-protection/known-issues#known-issues-for-the-aip-viewer)
 
 # 3. 外部ユーザーの認証法
 AIP 保護されたファイルの共有先が、Exchange Online ではないメール サーバーを用いていたり、コンシューマー向けの各種インターネット サービス プロバイダーで提供されているメール アカウントを利用している場合には、Teams のチームへの招待や、SharePoint Online の外部共有機能を用いて、ワンタイム パスコード ベースの Azure AD B2B 招待をする必要があります。そのためには、テナントで以下のような前提条件を満たしている必要があります。
@@ -84,15 +79,20 @@ AIP 保護されたファイルの共有先が、Exchange Online ではないメ
 
 共有先での B2B/ワンタイム パスコードを利用した認証方法
 1. 保護されたファイルを開く際、職場または学校アカウントを選択し、自身のメール アドレスを一度入力する
-2. サインイン画面で、必ず「サインイン オプション」を選択し、「組織へのサインインを選択する」<br>
+2. サインイン画面で、必ず「サインイン オプション」を選択し、「**組織へのサインインを選択する**」<br>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP1.png"> <br>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP2.png"> <br>
-3. 組織の検索で、ファイル共有元から提示してもらったドメイン名を入力<br>(通常は共有元のメール アドレスのドメインで OK) <br>
+3. 組織の検索で、**ファイル共有元から提示してもらったドメイン名を入力する**<br>(通常は共有元のメール アドレスのドメインで OK) <br>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP3.png"> <br>
-5. 続くダイアログで、共有元のテナント環境での認証画面が表示される <br>
+5. 続くダイアログで、共有元のテナント環境のブランドが適用された認証画面が表示されることを確認する
+6. 自身のメール アドレスが入力されていることを確認し、次へをクリック<br>(一度認証済みであれば、自身のメール アドレスにコードを送信する画面となるので「コード」の送信をクリック <br>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP4.png"> <br>
-6. 自身のメール アドレスが入力されていることを確認し、次へをクリック<br>(一度認証済みであれば、自身のメール アドレスにコードを送信する画面となるので「コード」の送信をクリック
-7. 自身のメール アドレスに 8 桁のワンタイム パスコードが届くので、30 分以内にそのコードを、認証画面に入力して、完了 <br>
+8. 自身のメール アドレスに 8 桁のワンタイム パスコードが届くので、30 分以内にそのコードを、認証画面に入力して、完了 <br>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP5.png"> <br>
 
 # 4. 条件付きアクセスの考慮事項
+AIP のファイルを開く際に、共有元テナントでの条件付きアクセスによる制御を実施することが可能ですが、すべてのユーザーに対して、AIP の条件付きアクセス制御を設定する場合は注意が必要です。通常、共有先が Office 365 のユーザーであり、各自のテナントで Azure Active Directory のアカウントを持っている場合、Azure Activit Directory のテナント間の暗黙的な信頼により、特に明示的な B2B の招待がなくても、AIP ファイルを開いてもらうことが可能です。ただし、**すべてのユーザーに対してAIP の条件付きアクセス制御を設定した場合**、外部のユーザーも例外ではなく、この条件付きアクセス制御の対象となりますが、認識すべき制約として、**自社テナント側で該当する社外ユーザーの B2B アカウントが存在していない場合**、社外ユーザーによる AIP へのアクセスがすべてブロックされ、認証を通すことができなくなり、結果 **B2B アカウントが存在していない社外ユーザーは、 AIP で保護されたファイルを開けなくなります**。そのため、外部ユーザー含めて AIP の条件付きアクセス制御を展開したい場合には、相手が Office 365 のユーザーや、Microsoft アカウントの利用者であっても、必ず B2B 招待するようにしておく必要があります。一方で B2B 招待の必要性を無くしたい場合には、すべてのユーザーに対する条件付きアクセス制御のポリシーから、AIP を除外することや、個別に AIP の条件付きアクセスを設定したい場合には、特定の B2B 招待されたユーザーやそれらユーザーを含むグループのみを対象とした条件付きアクセス ポリシーを設定するようにします。
+
+
+
+[AIP ベースの条件付きアクセス ポリシー](https://docs.microsoft.com/ja-jp/azure/information-protection/known-issues#aip-based-conditional-access-policies)
