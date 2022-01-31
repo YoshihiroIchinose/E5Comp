@@ -55,6 +55,13 @@ AIP 保護された Office ファイルの参照
 |Office 2019 | 〇 | 〇 | 〇 |
 |Office 2013, 2016 | 〇 | × | 〇 |
 |Office 2010 | 〇 開けるが AIP Client のインストール必須 | × | × 先進認証に対応しないため Azure AD B2B での利用は不可 |  
+|Windows/iOS/Android 版 AIP Viewer | 〇 | 〇 | 〇 |  
+|iOS 版 Office (バージョン 2.42 以降 | 〇 | 〇 | ？ |  
+|Android 版 Office (バージョン 16.0.13029 以降 | 〇 | 〇 | ？ |  
+|MacOS 版 Office (バージョン 16.42 以降 | 〇 | 〇 | ？ |  
+|Windows 8, 8.1, 10, 11 版 Edge（バージョン 83.0.478.37 以降 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象|  
+|Windows 8, 8.1, 10, 11 版Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 |  
+|macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが)対象 | 〇（PDFのみが)対象 | ？ |  
 
 AIP 保護された PDF ファイルの参照  
 [参考: 保護された PDF では、どの PDF リーダーがサポートされていますか?](https://docs.microsoft.com/ja-jp/azure/information-protection/rms-client/protected-pdf-readers)
@@ -66,4 +73,26 @@ AIP 保護された PDF ファイルの参照
 - iOS/Android 用 Azure Information Protection アプリ  
 
 # 3. 外部ユーザーの認証法
+AIP 保護されたファイルの共有先が、Exchange Online ではないメール サーバーを用いていたり、コンシューマー向けの各種インターネット サービス プロバイダーで提供されているメール アカウントを利用している場合には、Teams のチームへの招待や、SharePoint Online の外部共有機能を用いて、ワンタイム パスコード ベースの Azure AD B2B 招待をする必要があります。そのためには、テナントで以下のような前提条件を満たしている必要があります。
+
+1. Azure AD の B2B で[ワンタイム パスコード](https://docs.microsoft.com/ja-jp/azure/active-directory/external-identities/one-time-passcode)が有効化されていること  
+(オプト アウトしていない場合、2021 年 11 月 1 日以降より順次有効化)  
+2. SharePoint Online / OneDriver for Business で外部招待をする場合には、[B2B統合機能](https://docs.microsoft.com/ja-jp/sharepoint/sharepoint-azureb2b-integration)が有効されていること
+3. 権限があるユーザーで B2B の外部招待を一度実施していること
+(Guest Inviter のロール等で、招待権限がある人の操作により、対象の外部ユーザーが B2B 招待されていること
+4. AIP 保護されたファイルを開いてもらう際に利用する、共有元テナントのドメイン情報を伝えること
+
+共有先での B2B/ワンタイム パスコードを利用した認証方法
+1. 保護されたファイルを開く際、職場または学校アカウントを選択し、自身のメール アドレスを一度入力する
+2. サインイン画面で、必ず「サインイン オプション」を選択し、「組織へのサインインを選択する」<br>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP1.png"> <br>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP2.png"> <br>
+3. 組織の検索で、ファイル共有元から提示してもらったドメイン名を入力<br>(通常は共有元のメール アドレスのドメインで OK) <br>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP3.png"> <br>
+5. 続くダイアログで、共有元のテナント環境での認証画面が表示される <br>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP4.png"> <br>
+6. 自身のメール アドレスが入力されていることを確認し、次へをクリック<br>(一度認証済みであれば、自身のメール アドレスにコードを送信する画面となるので「コード」の送信をクリック
+7. 自身のメール アドレスに 8 桁のワンタイム パスコードが届くので、30 分以内にそのコードを、認証画面に入力して、完了 <br>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP5.png"> <br>
+
 # 4. 条件付きアクセスの考慮事項
