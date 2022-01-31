@@ -1,7 +1,8 @@
 # Azure Informatino Protection で保護されたファイルを外部ユーザーと共有する
 Azure Informatino Protection では、自社テナントだけではなく、以下のような社外アカウントを利用するユーザーとも暗号化されたファイルの共有が可能となっています。  
 A. 外部の Office 365 テナントのアカウント  
-B. [Azure Information Protection](https://aka.ms/rms-signup) のサイトにて会社のメール アドレスを用いて個別にサインアップしたアカウント(結果的に Azure AD Free のアカウントとなる)  
+B. [Azure Information Protection](https://aka.ms/rms-signup) のサイトにて会社のメール アドレスを用いて個別にサインアップしたアカウント
+(結果的に Azure AD Free のアカウントとなる)  
 C. コンシューマーの Microsoft Account （Office クライアント・アプリのみ)  
 D. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイプ パスコードを利用する外部ユーザー アカウント  
 
