@@ -16,6 +16,7 @@ AIP Viewer、Edge、Acrobat などでは、AIP 保護された PDF ファイル�
 2. 外部ユーザー環境
 3. B2B ワンタイム パスコードを利用した外部ユーザーの認証法
 4. 条件付きアクセスの考慮事項
+5. AIP 保護されたファイルを開く際のネットワーク要件
 
 # 1. 外部ユーザーの指定方法
 基本的に、Azure Information Protection では、メール アドレスでユーザーやグループを指定します。
@@ -96,7 +97,27 @@ AIP 保護されたファイルの共有先が、Exchange Online ではないメ
 
 # 4. 条件付きアクセスの考慮事項
 AIP のファイルを開く際に、共有元テナントでの条件付きアクセスによる制御を実施することが可能ですが、すべてのユーザーに対して、AIP の条件付きアクセス制御を設定する場合は注意が必要です。通常、共有先が Office 365 のユーザーであり、各自のテナントで Azure Active Directory のアカウントを持っている場合、Azure Activit Directory のテナント間の暗黙的な信頼により、特に明示的な B2B の招待がなくても、AIP ファイルを開いてもらうことが可能です。ただし、**すべてのユーザーに対してAIP の条件付きアクセス制御を設定した場合**、外部のユーザーも例外ではなく、この条件付きアクセス制御の対象となりますが、認識すべき制約として、**自社テナント側で該当する社外ユーザーの B2B アカウントが存在していない場合**、社外ユーザーによる AIP へのアクセスがすべてブロックされ、認証を通すことができなくなり、結果 **B2B アカウントが存在していない社外ユーザーは、 AIP で保護されたファイルを開けなくなります**。そのため、外部ユーザー含めて AIP の条件付きアクセス制御を展開したい場合には、相手が Office 365 のユーザーや、Microsoft アカウントの利用者であっても、必ず B2B 招待するようにしておく必要があります。一方で B2B 招待の必要性を無くしたい場合には、すべてのユーザーに対する条件付きアクセス制御のポリシーから、AIP を除外することや、個別に AIP の条件付きアクセスを設定したい場合には、特定の B2B 招待されたユーザーやそれらユーザーを含むグループのみを対象とした条件付きアクセス ポリシーを設定するようにします。
-
-
-
 [AIP ベースの条件付きアクセス ポリシー](https://docs.microsoft.com/ja-jp/azure/information-protection/known-issues#aip-based-conditional-access-policies)
+
+# 5. AIP 保護されたファイルを開く際のネットワーク要件
+AIP 保護されたファイルを開く際、クラウドへの接続および認証が発生します。そのため、以下のような URL への接続が許可されている必要があります。
+- login.microsoftonline.com
+- \*.aadrm.com 
+- \*.azurerms.com
+- \*.informationprotection.azure.com
+- \*.cloudapp.net
+- ecn.dev.virtualearth.net
+- informationprotection.hosting.portal.azure.net
+- \*.protection.outlook.com   
+- config.edge.skype.com
+- \*.events.data.microsoft.com
+- \*.aria.microsoft.com (Android デバイスのみ)   
+
+また以下のプロキシの要件にも注意する必要があります。
+- 認証付きプロキシを利用していないこともしくは認証が必要なプロキシを使っている場合であっても、統合 Windows 認証が利用でき、デフォルトの認証情報を利用するよう AIP のレジストリ設定をしていること
+- aadrm.com との通信で、HTTPS インスペクションをしていないこと (既定の Micorsoft CA の証明書を置き換えた HTTPS 通信になっていないこと)
+
+詳細については、以下を確認ください。    
+[Azure Information Protection の要件](https://docs.microsoft.com/ja-jp/azure/information-protection/requirements#firewalls-and-network-infrastructure)
+
+
