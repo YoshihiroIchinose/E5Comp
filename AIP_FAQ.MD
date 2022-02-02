@@ -8,7 +8,7 @@ B. [Azure Information Protection](https://aka.ms/rms-signup) のサイトにて�
 (コンシューマー向けのメール ドメインを持つメール アドレスの利用は不可で結果的に Azure AD Free のアカウントとなる)  
 C. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイム パスコードを利用する外部ユーザー アカウント  
 D. コンシューマーの Microsoft Account<br>
-(ただし Office クライアント・アプリで AIP 保護されたファイルを開く際に Microsoft Account は利用可能だが、<br>
+(Office クライアント・アプリで AIP 保護されたファイルを開く際に Microsoft Account は利用可能だが、<br>
 AIP Viewer、Edge、Acrobat などでは、AIP 保護された PDF ファイル等を開く際に、Microsoft Account の利用はできない)  
 
 ただし、ファイルを共有しようとするユーザーからは完全にコントロールすることが難しい、
