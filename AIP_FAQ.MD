@@ -107,6 +107,8 @@ AIP 保護されたファイルの共有先が、Exchange Online ではないメ
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_OTP5.png"> <br>
 9. 共有された AIP 保護ファイルで権限設定されたメール アドレスやドメインに合致していれば、その権限設定の範囲で、ファイルの参照や利用が可能
 
+なお SharePoint Online を通じて [B2B 統合機能](https://docs.microsoft.com/ja-jp/sharepoint/sharepoint-azureb2b-integration)が有効された状態で外部招待するのであれば、SharePoint Online のライブラリで、[IRM](https://docs.microsoft.com/ja-jp/microsoft-365/compliance/apply-irm-to-a-list-or-library?view=o365-worldwide) 機能を有効化し、ライブラリから対応したファイルをダウンロードする際には、自動的に AIP で保護するという構成も取ることができます。
+
 # 4. 条件付きアクセスの考慮事項
 AIP のファイルを開く際に、共有元テナントでの条件付きアクセスによる制御を実施することが可能ですが、すべてのユーザーに対して、AIP の条件付きアクセス制御を設定する場合は注意が必要です。通常、共有先が Office 365 のユーザーであり、各自のテナントで Azure Active Directory のアカウントを持っている場合、Azure Activit Directory のテナント間の暗黙的な信頼により、特に明示的な B2B の招待がなくても、AIP ファイルを開いてもらうことが可能です。ただし、**すべてのユーザーに対してAIP の条件付きアクセス制御を設定した場合**、外部のユーザーも例外ではなく、この条件付きアクセス制御の対象となりますが、認識すべき制約として、**自社テナント側で該当する社外ユーザーの B2B アカウントが存在していない場合**、社外ユーザーによる AIP へのアクセスがすべてブロックされ、認証を通すことができなくなり、結果 **B2B アカウントが存在していない社外ユーザーは、 AIP で保護されたファイルを開けなくなります**。そのため、外部ユーザー含めて AIP の条件付きアクセス制御を展開したい場合には、相手が Office 365 のユーザーや、Microsoft アカウントの利用者であっても、必ず B2B 招待するようにしておく必要があります。一方で B2B 招待の必要性を無くしたい場合には、すべてのユーザーに対する条件付きアクセス制御のポリシーから、AIP を除外することや、個別に AIP の条件付きアクセスを設定したい場合には、特定の B2B 招待されたユーザーやそれらユーザーを含むグループのみを対象とした条件付きアクセス ポリシーを設定するようにします。   
 [参考: AIP ベースの条件付きアクセス ポリシー](https://docs.microsoft.com/ja-jp/azure/information-protection/known-issues#aip-based-conditional-access-policies)
