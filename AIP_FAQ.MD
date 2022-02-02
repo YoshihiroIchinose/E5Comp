@@ -71,7 +71,7 @@ AIP 保護されたファイルを開く際には、AIP に対応した Office �
 ## 保護された PDF ファイルを開く場合
 | 環境 | Office 365 アカウントでの AIP 保護されたファイルの参照 | Microsoft Account での AIP 保護されたファイルの参照 | Azure AD B2B (ワンタイム パスコード含む)を利用した AIP 保護されたファイルの参照 |
 |:---:|:---:|:---:|:---:|
-|Windows/iOS/Android 版 AIP Viewer ( (その他の ptxt, pjpg などのファイル形式にも対応) | 〇 | × | 〇 |  
+|Windows/iOS/Android 版 AIP Viewer (その他の ptxt, pjpg などのファイル形式にも対応) | 〇 | × | 〇 |  
 |Windows 8, 8.1, 10, 11 版 Edge（バージョン 83.0.478.37 以降) | 〇（PDFのみが対象) | × | 〇（PDFのみが対象)|  
 |Windows 8, 8.1, 10, 11 版Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが対象) | × | 〇（PDFのみが対象) |  
 |macOS 10.12 以上での Acrobat / Acrobat Reader + [MIP plug-in for Acrobat and Acrobat Reader](https://go.microsoft.com/fwlink/?linkid=2050049) | 〇（PDFのみが対象) | × | 〇（PDFのみが対象) |  
