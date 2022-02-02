@@ -5,7 +5,7 @@ Azure Informatino Protection では、自社テナントだけではなく、以
 ## AIP で認証に利用できるアカウント
 A. 外部の Office 365 テナントのアカウント  
 B. [Azure Information Protection](https://aka.ms/rms-signup) のサイトにて会社のメール アドレスを用いて個別にサインアップしたアカウント<br>
-(結果的に Azure AD Free のアカウントとなる)  
+(コンシューマー向けのメール ドメインを持つメール アドレスの利用は不可で結果的に Azure AD Free のアカウントとなる)  
 C. Azure AD B2B の仕組みを使ったメール アドレス＋ワンタイム パスコードを利用する外部ユーザー アカウント  
 D. コンシューマーの Microsoft Account<br>
 (ただし Office クライアント・アプリで AIP 保護されたファイルを開く際に Microsoft Account は利用可能だが、<br>
@@ -82,7 +82,7 @@ AIP 保護された PDF ファイルの参照
 なお Windows 版の Acrobat Reader + MIP Plug-in の場合、既存認証情報は、 %userprofile%\AppData\Roaming\Adobe\Acrobat\DC\Security に格納されているため、ユーザーを切り替えたり、認証をやり直したい場合には、自己責任でこちらのフォルダのファイルを適宜削除のこと。
 
 # 3. B2B ワンタイム パスコードを利用した外部ユーザーの認証法
-AIP 保護されたファイルの共有先が、Exchange Online ではないメール サーバーを利用していたり、コンシューマー向けの各種インターネット サービス プロバイダーで提供されているメール アカウントを利用している場合には、AIP で保護されたファイルを開く際のアカウントを持っていません。この場合、Teams のチームへの招待や、SharePoint Online の外部共有機能を用いて、ワンタイム パスコード ベースの Azure AD B2B 招待をして対応することができます。(他にも、[Azure Information Protection](https://aka.ms/rms-signup) サイトにて、Azure Active Directory の Free のアカウントを作成してもらうことも可能です。) ワンタイム パスコード ベースの Azure AD B2B 招待を利用する場合、テナントで以下のような前提条件を満たしている必要があります。
+AIP 保護されたファイルの共有先が、Exchange Online ではないメール サーバーを利用していたり、コンシューマー向けの各種インターネット サービス プロバイダーで提供されているメール アカウントを利用している場合には、AIP で保護されたファイルを開く際のアカウントを持っていません。この場合、Teams のチームへの招待や、SharePoint Online の外部共有機能を用いて、汎用的なワンタイム パスコード ベースの Azure AD B2B 招待をして対応することができます。(他にも、[Azure Information Protection](https://aka.ms/rms-signup) サイトにて、Azure Active Directory の Free のアカウントを作成してもらうことも可能ですが、コンシューマー向けのメール ドメインを持つメール アドレスの利用は不可となります。) ワンタイム パスコード ベースの Azure AD B2B 招待を利用する場合、テナントで以下のような前提条件を満たしている必要があります。
 
 ## ワンタイム パスコード ベースの Azure AD B2B 招待の前提条件
 1. Azure AD の B2B で[ワンタイム パスコード](https://docs.microsoft.com/ja-jp/azure/active-directory/external-identities/one-time-passcode)が有効化されていること  
