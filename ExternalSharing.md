@@ -13,20 +13,21 @@
  SharePoint Online /OneDrive for Business で匿名リンクの利用が許可されている必要がある
  <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/FS_1.png">
  # ②個別に AIP 保護したファイルをメールに添付して送付
- AIP でのファイル保護のために Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要
+ AIP でのファイル保護のために Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要   
  
  # ③SharePoint Online で IRM ライブラリを利用した B2B 共有をする
   ・SharePoint Online /OneDrive for Business で外部招待が許可されている必要がある    
- ・IRM ライブラリの利用に Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要
+ ・IRM ライブラリの利用に Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要   
  
  # ④Message Encryption
-  ・標準の Message Encrption の利用は Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要
+  ・標準の Message Encrption の利用は Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要   
   ・Advanced Message Encryption は、Microsoft 365 E5 / Office 365 E5 / E5 Complinace / IP&G のいずれかのライセンス必要   
+ <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/FS_2.png">
  
  # ⑤Defender for Cloud Apps
  Defender for Cloud Apps の利用に、Defender for Cloud Apps を含むライセンスが必要  
  条件付きアクセス制御のために、Azure Active Directory P1 を含むライセンスが必要   
- AIP でのファイル保護のために Azure Informatino Protection P1 を含むライセンスが必要
+ AIP でのファイル保護のために Azure Informatino Protection P1 を含むライセンスが必要   
  
 セッション制御対応済みアプリ
 - AWS
