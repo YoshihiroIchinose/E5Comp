@@ -11,7 +11,7 @@
 
  # ①SharePoint Online / OneDrive for Business によるパスワード付き匿名リンク
  SharePoint Online /OneDrive for Business で匿名リンクの利用が許可されている必要がある
- 
+ <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/FS_1.png">
  # ②個別に AIP 保護したファイルをメールに添付して送付
  AIP でのファイル保護のために Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要
  
