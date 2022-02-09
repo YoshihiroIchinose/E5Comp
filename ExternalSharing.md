@@ -1,5 +1,5 @@
 # 社外とのセキュアなファイル共有方法   
-
+PPAP に代わり Office 365 で利用可能なセキュアなファイル共有方法をまとめたものです。②～⑤ については、AIP を利用したファイル暗号化が伴います。社外ユーザーが AIP で保護されたファイルを開く場合の条件については、[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AIP_FAQ.MD)を参照の事。
 
 |  方法 | 概要 | 社外アカウントの必要有無 | ファイルの二次利用制限 | 対応ファイル |
 |:---|:---|:---|:---|:---|
@@ -18,7 +18,8 @@
  # ③SharePoint Online で IRM ライブラリを利用した B2B 共有をする
   ・SharePoint Online /OneDrive for Business で外部招待が許可されている必要がある    
  ・IRM ライブラリの利用に Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要   
- 
+  <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/IRM1.png">
+  
  # ④Message Encryption
   ・標準の Message Encrption の利用は Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要   
   ・Advanced Message Encryption は、Microsoft 365 E5 / Office 365 E5 / E5 Complinace / IP&G のいずれかのライセンス必要   
