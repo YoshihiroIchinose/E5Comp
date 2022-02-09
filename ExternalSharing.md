@@ -10,15 +10,22 @@ PPAP に代わり Office 365 で利用可能なセキュアなファイル共有
 | ⑤Defender for Cloud Apps によるセッション制御 | Azure AD と SSO 連携しているなど認証を構成可能な管理された SaaS アプリへの Web アクセスを、Defender for Cloud Apps のリバース プロキシ経由にして、ファイル ダウンロード時に AIP の秘密度ラベルを適用する。既存の SharePoint Online サイトでも構わないが、社外ユーザーがアクセスできるファイル共有サイトが必要。 | 必要 | 可能 | ・Word( docm、docx、dotm、dotx)<br>・Excel(xlam、xlsm、xlsx、xltx)<br>・PowerPoint(potm、potx、ppsx、ppsm、pptm、pptx)<br>・PDF<br>[参考: ダウンロード時にファイルを保護する](https://docs.microsoft.com/ja-jp/defender-cloud-apps/session-policy-aad#protect-download)<br> AIP 保護できるのは最大で 50MB のファイルまで。[ファイルにラベルを直接適用する](https://docs.microsoft.com/ja-jp/defender-cloud-apps/azip-integration#how-to-integrate-azure-information-protection-with-defender-for-cloud-apps) |
 
  # ①SharePoint Online / OneDrive for Business によるパスワード付き匿名リンク
+ ## テナントの要件
  SharePoint Online /OneDrive for Business で匿名リンクの利用が許可されている必要がある
+ ## 設定概要
+ SharePoint Online /OneDrive for Business にファイルをアップロードした後、ファイルのメニューから、共有->"リンクを知っているすべてのユーザー"を選んだ上で、パスワードの設定行ったり、"編集を許可する"からチェックを外した上で、"ダウンロードを禁止する"を有効化する。
  <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/FS_1.png">
  # ②個別に AIP 保護したファイルをメールに添付して送付
+ ## テナントの要件
  AIP でのファイル保護のために Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要   
  
  # ③SharePoint Online で IRM ライブラリを利用した B2B 共有をする
-  ・SharePoint Online /OneDrive for Business で外部招待が許可されている必要がある    
+ ## テナントの要件
+  ・SharePoint Online で外部招待が許可されている必要がある    
  ・IRM ライブラリの利用に Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要   
-  <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/IRM1.png">
+ ## 設定概要
+ 対象となる SharePoint Online のサイトのライブラリの設定で、IRM (Information Rights Managment)の設定を有効化した上で、対応したファイルをアップロードする。この設定により、ファイル ダウンロード時本人しか開けない権限設定で保護されたファイルが都度生成される。オプション設定により、対応しないファイルのアップロードをブロックすることや、ファイル ダウンロード後の有効期間、追加で付与するグループの権限なども設定可能。
+ <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/IRM1.png">
   
  # ④Message Encryption
   ・標準の Message Encrption の利用は Office 365 E3 もしくは Azure Informatino Protection P1 を含むいずれかのライセンスが必要   
