@@ -21,7 +21,7 @@ $spid=""
 #ServicePlan名から該当のSKU ID(複数ありうる)と、ServicePlanのIDを取得
 foreach($sku in $skus){
   foreach($sp in $sku.ServicePlans){
-	if($sp.ServicePlanName -eq "INTUNE_A"){
+	if($sp.ServicePlanName -eq $PlanName){
 	 $target+=$sku.SkuId
 	$spid=$sp.ServicePlanId
 	}
