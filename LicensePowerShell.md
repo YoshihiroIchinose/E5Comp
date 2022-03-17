@@ -11,7 +11,7 @@ $Password = "xxxx"
 $SecPass=ConvertTo-SecureString -String $Password -AsPlainText -Force
 $Credential= New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Id, $SecPass
 
-Connect-AzureAD
+Connect-AzureAD -Credential $Credential
 $PlanName="INTUNE_A"
 
 $skus=Get-AzureADSubscribedSku
