@@ -1,6 +1,6 @@
 # サービス プランの割り当て状況に応じたセキュリティ グループのメンテナンス
 ライセンスを細分化したアプリ単位となるサービス プランの割り当て状況に応じたセキュリティ グループのメンテナンスを実施する PowerShel スクリプトのサンプルです。
-このスクリプトでは、現在のグループ メンバシップとの差分を確認しながら、"INTUNE_A"のサービス プランが割り当てられている社内ユーザーを、"With_INTUNE_A"というセキュリティ グループに登録し、割り当てられていないユーザーを"Without_INTUNE_A"というセキュリティ グループに登録します。セキュリティ グループが作成されていない場合、セキュリティ グループも作成します。＄PlanNameの変数を他のサービス プランに書き換えて利用することも可能です。なおライセンスの SKU や、各 SKU に含まれるサービス プランについては、[こちら](https://docs.microsoft.com/ja-jp/azure/active-directory/enterprise-users/licensing-service-plan-reference) に記載があります。
+このスクリプトでは、現在のグループ メンバーシップとの差分を確認しながら、"INTUNE_A"のサービス プランが割り当てられている社内ユーザーを、"With_INTUNE_A"というセキュリティ グループに登録し、割り当てられていないユーザーを"Without_INTUNE_A"というセキュリティ グループに登録します。セキュリティ グループが事前に作成されていない場合、セキュリティ グループを新規作成します。＄PlanNameの変数を他のサービス プランに書き換えて利用することも可能です。なおライセンスの SKU や、各 SKU に含まれるサービス プランについては、[こちら](https://docs.microsoft.com/ja-jp/azure/active-directory/enterprise-users/licensing-service-plan-reference) に記載があります。
 
 # 接続と ライセンス (SKU) とサービス プランの確認
 ```
@@ -33,7 +33,7 @@ foreach($sku in $skus){
 #対象となるセキュリティ グループ名
 $LicencedGroup="With_$PlanName"
 
-#ライセンスがあるユーザーの取得
+#ライセンスがあるユーザーの取得(対象となる SKU が割り当たっていて、該当のサービス プランが無効化されていないユーザー)
 $licensedUsers=@()
 $users=Get-AzureADUser -All $true -Filter "userType eq 'Member'"
 foreach($u in $users){
