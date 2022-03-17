@@ -1,10 +1,10 @@
 # サービス プランの割り当て状況に応じたセキュリティ グループのメンテナンス
 ライセンスを細分化したアプリ単位となるサービス プランの割り当て状況に応じたセキュリティ グループのメンテナンスを実施する PowerShel スクリプトのサンプルです。
-ここでは、"INTUNE_A"のサービス プランが割当たった社内ユーザーを、現在のグループ メンバシップとの差分を確認しながら、"WithIntune"というセキュリティ グループに登録し、割当たっていないユーザーを"WithoutIntune"というセキュリティ グループに登録します。セキュリティ グループは事前に作成しておく必要があります。なおライセンスの SKU や、各 SKU に含まれるサービス プランについては、[こちら](https://docs.microsoft.com/ja-jp/azure/active-directory/enterprise-users/licensing-service-plan-reference) に記載があります。
+ここでは、"INTUNE_A"のサービス プランが割当たった社内ユーザーを、現在のグループ メンバシップとの差分を確認しながら、"With_INTUNE_A"というセキュリティ グループに登録し、割当たっていないユーザーを"Without_INTUNE_A"というセキュリティ グループに登録します。セキュリティ グループが作成されていない場合、セキュリティ グループも作成します。。なおライセンスの SKU や、各 SKU に含まれるサービス プランについては、[こちら](https://docs.microsoft.com/ja-jp/azure/active-directory/enterprise-users/licensing-service-plan-reference) に記載があります。
 
 # 接続と ライセンス (SKU) とサービス プランの確認
 ```
-$Id="xxxx"
+$Id="xxxx@xxxx.onmicrosoft.com"
 $Password = "xxxx"
 
 #Credentialの生成
@@ -28,10 +28,10 @@ foreach($sku in $skus){
   }
 }
 ```
-## ライセンス保有状況に応じたグループのメンテナンス
+## ライセンス保有状況に応じた社内メンバーのグループのメンテナンス
 ```
 #対象となるセキュリティ グループ名
-$LicencedGroup="WithIntune"
+$LicencedGroup="With_$PlanName"
 
 #ライセンスがあるユーザーの取得
 $licensedUsers=@()
@@ -47,6 +47,10 @@ foreach($u in $users){
 
 #ライセンスがあるユーザーのグループをメンテナンス
 $lg=Get-AzureADGroup -Filter "DisplayName eq '$LicencedGroup'"
+if($lg -eq $null){
+	$lg=New-AzureADGroup -SecurityEnabled $true -MailEnabled $false -MailNickName $LicencedGroup -DisplayName $LicencedGroup
+}
+
 $mem=Get-AzureADGroupMember -All $true -ObjectId $lg.ObjectId
 #グループからライセンスがなくなったユーザーを削除
 foreach($m in $mem){
@@ -65,7 +69,7 @@ foreach($lu in $licensedUsers){
 ## ライセンスを保有していない社内メンバーのグループのメンテナンス
 ```
 #対象となるセキュリティ グループ名
-$UnLicencedGroup="WithoutIntune"
+$UnLicencedGroup="Without_$PlanName"
 
 #ライセンスがないユーザーの取得
 $UsersWoL=@()
@@ -82,6 +86,10 @@ foreach($u in $users){
 }
 #ライセンスがないユーザーのグループをメンテナンス
 $ug=Get-AzureADGroup -Filter "DisplayName eq '$UnLicencedGroup'"
+if($ug -eq $null){
+	$ug=New-AzureADGroup -SecurityEnabled $true -MailEnabled $false -MailNickName $UnLicencedGroup -DisplayName $UnLicencedGroup
+}
+
 $mem=Get-AzureADGroupMember -All $true -ObjectId $ug.ObjectId
 #グループからライセンスが付与されたユーザーを削除
 foreach($m in $mem){
