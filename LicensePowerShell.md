@@ -1,6 +1,6 @@
 # サービス プランの割り当て状況に応じたセキュリティ グループのメンテナンス
 ライセンスを細分化したアプリ単位となるサービス プランの割り当て状況に応じたセキュリティ グループのメンテナンスを実施する PowerShel スクリプトのサンプルです。
-ここでは、"INTUNE_A"のサービス プランが割当たった社内ユーザーを、現在のグループ メンバシップとの差分を確認しながら、"With_INTUNE_A"というセキュリティ グループに登録し、割当たっていないユーザーを"Without_INTUNE_A"というセキュリティ グループに登録します。セキュリティ グループが作成されていない場合、セキュリティ グループも作成します。。なおライセンスの SKU や、各 SKU に含まれるサービス プランについては、[こちら](https://docs.microsoft.com/ja-jp/azure/active-directory/enterprise-users/licensing-service-plan-reference) に記載があります。
+このスクリプトでは、現在のグループ メンバシップとの差分を確認しながら、"INTUNE_A"のサービス プランが割り当てられている社内ユーザーを、"With_INTUNE_A"というセキュリティ グループに登録し、割り当てられていないユーザーを"Without_INTUNE_A"というセキュリティ グループに登録します。セキュリティ グループが作成されていない場合、セキュリティ グループも作成します。＄PlanNameの変数を他のサービス プランに書き換えて利用することも可能です。なおライセンスの SKU や、各 SKU に含まれるサービス プランについては、[こちら](https://docs.microsoft.com/ja-jp/azure/active-directory/enterprise-users/licensing-service-plan-reference) に記載があります。
 
 # 接続と ライセンス (SKU) とサービス プランの確認
 ```
