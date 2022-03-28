@@ -14,3 +14,4 @@ Microsoft 365 E5 Compliance に関する技術検証結果などを共有する�
 |[Azure Informatino Protection で保護されたファイルを外部ユーザーと共有する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AIP_FAQ.MD)| AIP 保護されたファイルを社外の外部ユーザーと共有する際の要件や注意事項についてまとめています。|
 | [社外とのセキュアなファイル共有方法](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ExternalSharing.md) | PPAP に代わり社外のユーザーとセキュアにファイル共有する方法についてまとめました。 |
 | [サービス プランの割り当て状況に応じたセキュリティ グループのメンテナンス](https://github.com/YoshihiroIchinose/E5Comp/blob/main/LicensePowerShell.md) | ライセンスを細分化したアプリ単位となるサービス プランの割り当て状況に応じたセキュリティ グループのメンテナンスを実施する PowerShel スクリプトのサンプルです。 |
+| [Office 365 管理用の PowerShell スクリプトでの資格情報の管理手法について](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SecretsInScripts.md) | 各種 Office 365 管理用のスクリプトの中で、無人で定期実行したい場合には、対話的に資格情報を入力できないため資格情報を何等かの形で事前に持たせておく必要があります。 そういったスクリプトの用途に利用可能な資格の保管・呼び出し方法についてまとめています。 |
