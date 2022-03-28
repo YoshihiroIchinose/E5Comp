@@ -70,7 +70,7 @@ New-StoredCredential -Target "Office 365" -Username $Id -Password $Password -Per
 ## スクリプトでの資格情報の取得と利用
 ````
 $Credential=Get-StoredCredential -Target  "Office 365"
-Connect-ExchangeOnline -credential $SecPass
+Connect-ExchangeOnline -credential $Credential
 ````
 ## UI へのアクセス
 Windows の資格情報マネージャーは、コントロール パネルから起動するか、Windows キー + R の「ファイル名を指定して実行」から以下のコマンドを入力して起動可能。
