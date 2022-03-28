@@ -5,16 +5,18 @@
 
 |  手法  |  概要  | 利点 | 注意点 |
 | ---- | ---- | ---- | ---- |
-|  ① AppId と証明書の利用  |  Azure AD に管理接続用のアプリケーションを登録し、適切な権限を付与し、別途作成した証明書を紐づけ。各種スクリプトからは、そのアプリケーションの AppId と秘密鍵付きの証明書を利用して接続。 | スクリプトの中に資格情報を記載せず、スクリプトと資格情報を分けて管理ができる。また管理者アカウントも用いないため、権限を制限しやすい。 |  対応しているサービスが限られている。証明書の管理が必要。秘密鍵付きの証明書のパスワードの管理も考慮が必要。|
+|  ① AppId と証明書の利用  |  Azure AD に管理接続用のアプリケーションを登録し、適切な権限を付与し、別途作成した証明書を紐づけ。各種スクリプトからは、そのアプリケーションの AppId と秘密鍵付きの証明書を利用して接続する。 | スクリプトの中に資格情報を記載せず、スクリプトと資格情報を分けて管理ができる。また管理者アカウントも用いないため、権限を制限しやすい。 |  対応しているサービスが限られている。証明書の管理が必要。秘密鍵付きの証明書のパスワードの管理も考慮が必要。|
 |  ② SecureString をスクリプトに埋め込む  | 端末上のユーザー プロファイル固有の暗号化鍵を使って、事前に暗号化したパスワードを用意しておき、それをスクリプトに直接記載する。| 暗号化されたパスワードは、同一端末、同一ユーザー プロファイルの中でしか有効ではないため、スクリプト漏えい時の再利用性を制限可能。| 一か所でまとめて資格情報を管理できない。|
 |  ③ OS の資格情報マネージャーを利用  | Windows OS の資格情報マネージャーに資格情報を登録しておき、スクリプトから取得。| スクリプトの中に資格情報を記載せず、スクリプトと資格情報を分けて管理ができる。OS の UI からも更新・バックアップが可能。| OS 環境が乗っ取られた場合には、攻撃者に抜き出されやすい。 |
+|  ④ Azure Automation の資格情報管理機能を利用  | Azure Automation を使った PowerShell スクリプトの定期実行の場合、Automation アカウントに登録しておいた資格情報を呼び出して利用可能。 | スクリプトの中に資格情報を記載せず、スクリプトと資格情報を分けて管理ができる。Azure の UI からも更新・バックアップが可能。| Azure 環境が乗っ取られた場合には、攻撃者に抜き出されやすい。 |
 
 # ① AppId と証明書の利用
+Azure AD に管理接続用のアプリケーションを登録し、適切な権限を付与し、別途作成した証明書を紐づけ。各種スクリプトからは、そのアプリケーションの AppId と秘密鍵付きの証明書を利用して接続する。
 ## サービスの対応状況
 |  サービス |  PowerShell コマンドレット | 証明書認証 | (参考 Azure AD アクセス トークンでの認証) |
 | ---- | ---- | ---- | ---- |
 | Exchange | Connect-ExchangeOnline | 2.0.3 2020/09/21 で対応| 未対応 |
-| Compliance | Connect-IPPSSession | 2.0.6-Preview5 2022/03/17 で対応| 未対応 |
+| Compliance | Connect-IPPSSession | 2.0.6-Preview5 2022/03/17 で対応 <br> (Install-Module -Name ExchangeOnlineManagement -AllowPrerelease を実行のこと)| 未対応 |
 | Azure AD | Connect-AzureAD | 対応済み| 対応 |
 | SharePoint | Connect-SPOSerivce| 未対応 | 未対応 |
 | Teams| Connect-MicrosoftTeams | 未対応 | 対応 |
@@ -32,6 +34,7 @@ Connect-IPPSSession -AppId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" -CertificateFi
 ````
 
 # ② SecureString をスクリプトに埋め込む
+端末上のユーザー プロファイル固有の暗号化鍵を使って、事前に暗号化したパスワードを用意しておき、それをスクリプトに直接記載する方法。
 ## 資格情報の事前生成
 ````
 $Password = "xxxx"
@@ -52,6 +55,7 @@ Connect-ExchangeOnline -credential $Credential
 ````
 
 # ③ OS の資格情報マネージャーを利用
+Windows OS の資格情報マネージャーに資格情報を登録しておき、スクリプトから取得する方法。
 ## 事前準備
 管理者 PowerShell で一度以下を実行。
 ````
@@ -61,10 +65,24 @@ Install-Module CredentialManager
 ````
 $Id="xxxx@xxxx.onmicrosoft.com"
 $Password = "xxxx"
-New-StoredCredential -Target "Office 365" -Username $Id -Password $Password 
+New-StoredCredential -Target "Office 365" -Username $Id -Password $Password -Persist Enterprise
 ````
 ## スクリプトでの資格情報の取得と利用
 ````
 $Credential=Get-StoredCredential -Target  "Office 365"
 Connect-ExchangeOnline -credential $SecPass
 ````
+## UI へのアクセス
+Windows の資格情報マネージャーは、コントロール パネルから起動するか、Windows キー + R の「ファイル名を指定して実行」から以下のコマンドを入力して起動可能。
+````
+control /name Microsoft.CredentialManager 
+````
+
+# ④ Azure Automation の資格情報管理機能を利用
+Azure Automation を使った PowerShell スクリプトの定期実行の場合、Automation アカウントに登録しておいた資格情報を呼び出して利用可能。別途、Automation にて ExchangeOnlineManagement などのモジュールの読み込み設定をしておき、Automation アカウントの資格情報にて、"Office 365" の名称等で、ID/パスワードを設定しておくこと。
+## スクリプトでの資格情報の取得と利用
+````
+$Credential = Get-AutomationPSCredential -Name "Office 365"
+Connect-ExchangeOnline -credential $Credential
+````
+
