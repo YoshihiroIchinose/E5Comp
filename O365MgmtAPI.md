@@ -10,7 +10,7 @@ Search-UnifiedAuditLog よりも大規模に対応する Office 365 Management A
 7. 取得したログを CSV で出力する際、値が省略されないように、ConvertTo-Json の処理を入れた Script Block を用意する
 8. 取得したデータを CSV で出力するために、1 アイテムごとにログ全体の全列の値を出力
 9. 取得したデータを CSV で出力する
-10.CSV 出力したファイルを、テーブル変換した .xlsx として保存しなおす
+10. CSV 出力したファイルを、テーブル変換した .xlsx として保存しなおす
 
 なお 1 分間に、2,000 を超える要求がある場合には、規模によってリクエストがエラーになることがあります。詳細は[こちら](https://docs.microsoft.com/ja-jp/office/office-365-management-api/office-365-management-activity-api-reference#api-throttling)。
 
