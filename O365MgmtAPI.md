@@ -62,7 +62,7 @@ foreach($sub in $subs){
 
 # 3.サブスクリプションが有効でなければ作成
 if(!$enabled){
-	$response = Invoke-WebRequest -Method Post -Headers $OfficeToken -Uri "$BaseURI/start?contentType=$Subscription" -UseBasicParsing -ErrorAction Stop
+	Invoke-WebRequest -Method Post -Headers $OfficeToken -Uri "$BaseURI/start?contentType=$Subscription" -UseBasicParsing -ErrorAction Stop
 }
 
 #4.対象となる日付の期間を指定し、複数のログの BLOB ファイルの URL を取得する
