@@ -86,7 +86,7 @@ $FieldName=@()
 foreach($Operation in $OperationTypes){
     $FieldsinLog=$Operation.Group[0]|get-member -type NoteProperty
     foreach($f in $FieldsinLog){
-      if($FieldName.Contains($f.Name) -eq $false) { $FieldName+=$f.Name}
+      if(!$FieldName.Contains($f.Name)) { $FieldName+=$f.Name}
     }
 }
 
