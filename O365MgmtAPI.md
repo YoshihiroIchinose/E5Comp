@@ -60,7 +60,7 @@ foreach($uri in $uris){
 	$Logdata+= Invoke-RestMethod -Uri $uri -Headers $Officetoken -Method Get
 }
 
-#取得したデータを CSV で出力するために Operation の種類ごとに最初の 1 つ目のアイテムから含まれているフィールドを取得
+#取得したデータを CSV で出力するために Operation の種類ごとに最初の 1 つ目のアイテムから含まれている列を取得し集計
 $OperationTypes=$Logdata|Group-Object Operation
 $FieldName=@()
 foreach($Operation in $OperationTypes){
@@ -70,19 +70,20 @@ foreach($Operation in $OperationTypes){
     }
 }
 
-#取得したデータを CSV で出力するために、Script Block を用意
+#取得した列ごとに CSV で出力するために、Script Block を用意、値が省略されないように、ConvertTo-Json を挟む
 $Fields=@()
 foreach($f in $FieldName){
 $sb=[scriptblock]::Create('$att=$d.'+$f+';if($att.GetType().Name -eq "Object[]" -or $att.GetType().Name -eq "PSCustomObject"){ConvertTo-Json -Compress -Depth 10 $att} else {$att}')        
 $Fields+=@{Name=$f;Expression=$sb}
 }
 
-#取得したデータを CSV で出力するために、1 アイテム、1 行で出力
+#取得したデータを CSV で出力するために、1 アイテムごとに全列の値を出力
 $csv=@();
 foreach($d in $Logdata){
     $output=$d|Select-Object -Property $Fields
     $csv+=$output
  }
 
+#取得したデータを CSV で出力する
 $csv|Export-Csv -Path $filename -NoTypeInformation -Encoding UTF8
 ````
