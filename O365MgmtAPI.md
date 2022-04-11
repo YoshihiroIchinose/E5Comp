@@ -67,10 +67,11 @@ if(!$enabled){
 
 #4.対象となる日付の期間を指定し、複数のログの BLOB ファイルの URL を取得する
 $output=""
-$NextContentPageURI="$BaseURI/content?contentType=$Subscription&PublisherIdentifier=$TenantGUID&$filter"
-while ($NextContentPageURI){
-	$output + = (Invoke-WebRequest -Headers $OfficeToken -Uri $NextContentPageURI -UseBasicParsing).Content
-	$NextContentPageURI = $response.Headers.NextPageUri
+$next="$BaseURI/content?contentType=$Subscription&PublisherIdentifier=$TenantGUID&$filter"
+while ($next){
+	$repsonse=Invoke-WebRequest -Headers $OfficeToken -Uri $next -UseBasicParsing
+	$output += $repsonse.Content
+	$next = $response.Headers.NextPageUri
 }
 $uris = (ConvertFrom-Json $output).contentUri
 
