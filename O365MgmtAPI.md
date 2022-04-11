@@ -50,7 +50,7 @@ try{
 }
 catch {
     	write-host -ForegroundColor Red "Invoke-RestMethod failed." + $error[0]
-    exit
+    	exit
 }
 
 # 2.サブスクリプションの確認
