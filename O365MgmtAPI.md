@@ -9,14 +9,19 @@ $OutputPath = "C:\Users\user01\Desktop\MGMTLog\"
 
 $APIResource ="https://manage.office.com"
 $BaseURI = "$APIResource/api/v1.0/$tenantGUID/activity/feed/subscriptions"
+
+#以下の 5 種類の中からいずれか一つを選択
 $Subscription = "Audit.General"
 #$Subscription = "Audit.AzureActiveDirectory"
 #$Subscription = "Audit.Exchange"
 #$Subscription = "Audit.SharePoint"
 #$Subscription = "DLP.All"
 
+
 $today=(Get-Date)
-$daysdiff=3 #1-7
+#ログは、7日前の中で、最大 24 時間の範囲で取得できる
+#ローカルの日時で1-6 日前のデータを1日分取得する
+$daysdiff=3
 $end=$today.AddDays(-$daysdiff+1).Date.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")
 $start = $today.AddDays(-$daysdiff).Date.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")
 $filter="startTime="+$start+"&endTime="+$end
@@ -25,10 +30,11 @@ $filename = ($OutputPath + $Subscription + "_" + $today.AddDays(-$daysdiff).Date
 # アクセス トークンの取得
 $body = @{grant_type="client_credentials";resource=$APIResource;client_id=$AppClientID;client_secret=$ClientSecretValue}
 try{
-    $oauth = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$tenantdomain/oauth2/token?api-version=1.0" -Body $body -ErrorAction Stop
-    $OfficeToken = @{'Authorization'="$($oauth.token_type) $($oauth.access_token)"}
-} catch {
-    write-host -ForegroundColor Red "Invoke-RestMethod failed." + $error[0]
+	$oauth = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$tenantdomain/oauth2/token?api-version=1.0" -Body $body -ErrorAction Stop
+	$OfficeToken = @{'Authorization'="$($oauth.token_type) $($oauth.access_token)"}
+}
+catch {
+    	write-host -ForegroundColor Red "Invoke-RestMethod failed." + $error[0]
     exit
 }
 
@@ -41,7 +47,7 @@ foreach($sub in $subs){
 
 #サブスクリプションが有効でなければ作成
 if(!$enabled){
-$response = Invoke-WebRequest -Method Post -Headers $OfficeToken -Uri "$BaseURI/start?contentType=$Subscription" -UseBasicParsing -ErrorAction Stop
+	$response = Invoke-WebRequest -Method Post -Headers $OfficeToken -Uri "$BaseURI/start?contentType=$Subscription" -UseBasicParsing -ErrorAction Stop
 }
 
 #ログの集約のURLを取得
