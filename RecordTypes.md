@@ -195,3 +195,11 @@ New-UnifiedAuditLogRetentionPolicy -name "1Year Policy for All" -RetentionDurati
 
 # 監査ログの保持ポリシーが有効となるタイミングについて
 ログが生成されたタイミングでのライセンス有無および保持ポリシーに従ってログが保持されるようです。なので現在残っているログに対して、今、保持ポリシーを適用しても期間を延長できない一方、ライセンスが切れた後も、当時ライセンスが有効だった期間のログについては、当時のポリシーに従ってログが保持されます。保持する期間が既定の 90 日、6 カ月、9 カ月、1 年、10 年の 5 種類のパターンしかないことから、ログ生成時に保持ポリシーに応じて、ログの入れ物を論理的に分けていて、入れ物ごとの有効期間で、古いログの切り捨てを行っているものと想像できます。
+
+# Compliance Center 上で保持ポリシーの操作できなくなった場合
+PowerShell で公開されていないドラフト段階の RecordType に対する保持ポリシーを設定していて、その RecordType の内部の名称が変更となった場合、Compliance Center の[監査保持ポリシー](https://compliance.microsoft.com/auditlogsearch?viewid=Retention)の画面で、保持ポリシーの一覧や新規監査保持ポリシーの作成ができなくことがあります。そういった場合、PowerShell から古い RecordType の名称を指定している監査ログの保持ポリシーを削除する必要があります。
+```
+Connect-IPPSSession -UserPrincipalName xxxx@xxxx.onmicrosoft.com
+Remove-UnifiedAuditLogRetentionPolicy -Identity "1Year Policy for All" -ForceDeletion
+```
+PowerShell 上 Get-UnifiedAuditLog の操作もエラーとなるので、ポリシーの削除に当たっては、ポリシーの名称を把握している必要があります。もし過去作成した監査ログのポリシー名称が分からなくなった場合には、[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/Office365Audit.md)のページを参考に、SecurityComplianceCenterEOPCmdlet の監査ログを抽出し、Operation が New-UnifiedAuditLogRetentionPolicy となっているログの Parameters から -Name の引数を参照します。
