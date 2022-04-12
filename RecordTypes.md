@@ -85,7 +85,7 @@
 |78|WDATPAlerts|Yes|||
 |79|PowerPlatformAdminDlp||||
 |80|PowerPlatformAdminEnvironment||||
-|81|MDATPAudit|Yes||Yes|
+|81|MDATPAudit|||Yes|
 |82|SensitivityLabelPolicyMatch|Yes|||
 |83|SensitivityLabelAction|Yes|||
 |84|SensitivityLabeledFileAction|Yes|||
