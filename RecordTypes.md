@@ -61,7 +61,7 @@
 |54|SharePointListItemOperation|Yes|||
 |55|SharePointContentTypeOperation|Yes|Yes|Yes|
 |56|SharePointFieldOperation|Yes|Yes|Yes|
-|57|MicrosoftTeamsAdmin|Yes|||
+|57|MicrosoftTeamsAdmin|Yes||Yes||
 |58|HRSignal|Yes|||
 |59|MicrosoftTeamsDevice|Yes|||
 |60|MicrosoftTeamsAnalytics|Yes|||
@@ -135,7 +135,7 @@
 |128|FilteringMailMetadata||||
 |129|CDPClassificationMailItem||||
 |130|CDPClassificationDocument||||
-|131|OfficeScriptsRunAction||||
+|131|OfficeScriptsRunAction|||Yes||
 |132|FilteringPostMailDeliveryAction||||
 |133|CDPUnifiedFeedback||||
 |134|TenantAllowBlockList||||
@@ -151,31 +151,31 @@
 |144|PowerBIDlp||||
 |145|FilteringUrlInfo||||
 |146|FilteringAttachmentInfo||||
-|147|CoreReportingSettings|Yes||Yes|
+|147|CoreReportingSettings|Yes|Yes||
 |148|ComplianceConnector||||
-|149|PowerPlatformLockboxResourceAccessRequest||||
-|150|PowerPlatformLockboxResourceCommand||||
+|149|PowerPlatformLockboxResourceAccessRequest|||Yes||
+|150|PowerPlatformLockboxResourceCommand|||Yes||
 |151|CDPPredictiveCodingLabel||||
 |152|CDPCompliancePolicyUserFeedback||||
 |153|WebpageActivityEndpoint||||
-|154|OMEPortal||||
+|154|OMEPortal|||Yes||
 |155|CMImprovementActionChange||||
-| | FilteringUrlClick||||
-| | MipLabelAnalyticsAuditRecord||||
-| | FilteringEntityEvent||||
-| | FilteringRuleHits||||
-| | FilteringMailSubmission||||
-| | LabelExplorer||||
-| | MicrosoftManagedServicePlatform||||
-| | PowerPlatformServiceActivity||||
-| | ScorePlatformGenericAuditRecord||||
-| | TimeTravelFilteringDocMetadata||||
-| | Alert||||
-| | AlertStatus||||
-| | AlertIncident||||
-| | IncidentStatus||||
-| | Case||||
-| | CaseInvestigation||||
+|156| FilteringUrlClick||||
+|157| MipLabelAnalyticsAuditRecord||||
+|158| FilteringEntityEvent||||
+|159| FilteringRuleHits||||
+|160| FilteringMailSubmission||||
+|161| LabelExplorer||||
+|162| MicrosoftManagedServicePlatform||||
+|163| PowerPlatformServiceActivity|||Yes||
+|164| ScorePlatformGenericAuditRecord||||
+|165| TimeTravelFilteringDocMetadata||||
+|166| Alert||||
+|167| AlertStatus||||
+|168| AlertIncident||||
+|169| IncidentStatus||||
+|170| Case||||
+|171| CaseInvestigation||||
 # 監査ログの保持ポリシーについて
 Advanced Audit が含まれているライセンスがあれば、最長 1 年間のログの保持ができ、さらに追加のアドオン ライセンスがあれば、最長 10 年間のログ保存が設定できます。ただし、[Docs](
 https://docs.microsoft.com/ja-jp/microsoft-365/compliance/audit-log-retention-policies?view=o365-worldwide#create-and-manage-audit-log-retention-policies-in-powershell) に記載がある通り、UI から保持ポリシーを設定できるログの種類は限定されているためその他のログも含めて、保持設定をする場合には、別途 PowerShell での設定が必要です。
