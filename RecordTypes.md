@@ -181,15 +181,15 @@ Advanced Audit が含まれているライセンスがあれば、最長 1 年�
 https://docs.microsoft.com/ja-jp/microsoft-365/compliance/audit-log-retention-policies?view=o365-worldwide#create-and-manage-audit-log-retention-policies-in-powershell) に記載がある通り、UI から保持ポリシーを設定できるログの種類は限定されているためその他のログも含めて、保持設定をする場合には、別途 PowerShell での設定が必要です。
 
 ## PowerShell での保持ポリシー設定例
-以下の PowerShell では、欠番となる数字を除き、1 から 155 までの数字が入った配列を用意して、それらのログの種類について、ユーザー指定なしで、保持ポリシーを設定するものとなっています。
+以下の PowerShell では、1 番から 147 番までの範囲で、Docs に記載があるか、UI 上の保持ポリシーで対象として設定できるログの種類を対象に、ユーザー指定なしで、保持ポリシーを設定するものとなっています。
 ```
 Connect-IPPSSession -UserPrincipalName xxxx@xxxx.onmicrosoft.com
 
 $range=@();
 $i=1;
-$skip=@(26,27,137);
-while ($i -le 155){if(!$skip.Contains($i)){$range+=$i;}$i++;}
-
+$skip=@(5,26,27,74,79,80,104,108);
+while ($i -le 109){if(!$skip.Contains($i)){$range+=$i;}$i++;}
+$range+=113,147
 New-UnifiedAuditLogRetentionPolicy -name "1Year Policy for All" -RetentionDuration TwelveMonths -priority 200 -recordtypes $range
 ```
 
