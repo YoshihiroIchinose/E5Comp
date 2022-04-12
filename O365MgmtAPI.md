@@ -14,6 +14,18 @@ Search-UnifiedAuditLog よりも大規模に対応する Office 365 Management A
 
 なお 1 分間に、2,000 を超える要求がある場合には、規模によってリクエストがエラーになることがあります。詳細は[こちら](https://docs.microsoft.com/ja-jp/office/office-365-management-api/office-365-management-activity-api-reference#api-throttling)。
 
+# DLP.ALL について
+こちらの [Blog](https://techcommunity.microsoft.com/t5/security-compliance-and-identity/microsoft-365-compliance-audit-log-activities-via-o365/ba-p/2957297) によると、DLP.ALL には以下のログが記録され、Audit.Exchange や、Audit.SharePoint、Audit.General で記録されるものと、重複しています。例えば、DLPEndpoint のログは、DLP.ALL からも、Audit.General からも取得できます。
+
+|RecordType|Name|
+| --- | --- |
+|11|ComplianceDLPSharePoint|
+|13|ComplianceDLPExchange|
+|33|ComplianceDLPSharePointClassification|
+|63|DLPEndpoint|
+|99|OnPremisesFileShareScannerDlp|
+|100|OnPremisesSharePointScannerDlp|
+
 # PowerShell のサンプル コード
 ````
 $AppClientID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx"
