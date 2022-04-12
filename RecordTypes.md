@@ -200,6 +200,9 @@ New-UnifiedAuditLogRetentionPolicy -name "1Year Policy for All" -RetentionDurati
 PowerShell で公開されていないドラフト段階の RecordType に対する保持ポリシーを設定していて、その RecordType の内部の名称が変更となった場合、Compliance Center の[監査保持ポリシー](https://compliance.microsoft.com/auditlogsearch?viewid=Retention)の画面で、保持ポリシーの一覧や新規監査保持ポリシーの作成ができなくことがあります。そういった場合、PowerShell から古い RecordType の名称を指定している監査ログの保持ポリシーを削除する必要があります。
 ```
 Connect-IPPSSession -UserPrincipalName xxxx@xxxx.onmicrosoft.com
+#削除コマンドレットで pending deletion state になる
+Remove-UnifiedAuditLogRetentionPolicy -Identity "1Year Policy for All"
+#再度 -ForceDeletion をつけて削除コマンドレットを実行することで、即時削除できる
 Remove-UnifiedAuditLogRetentionPolicy -Identity "1Year Policy for All" -ForceDeletion
 ```
 PowerShell 上 Get-UnifiedAuditLog の操作もエラーとなるので、ポリシーの削除に当たっては、ポリシーの名称を把握している必要があります。もし過去作成した監査ログのポリシー名称が分からなくなった場合には、[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/Office365Audit.md)のページを参考に、SecurityComplianceCenterEOPCmdlet の監査ログを抽出し、Operation が New-UnifiedAuditLogRetentionPolicy となっているログの Parameters から -Name の引数を参照します。
