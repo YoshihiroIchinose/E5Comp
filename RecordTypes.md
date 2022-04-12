@@ -117,7 +117,7 @@
 |110|MSDEResponseActions|||Yes|
 |111|MSDEGeneralSettings|||Yes|
 |112|MSDEIndicatorsSettings|||Yes|
-|113|MS365DCustomDetection|||Yes|
+|113|MS365DCustomDetection|Yes||Yes|
 |114|MSDERolesSettings|||Yes|
 |115|MAPGAlerts|||Yes|
 |116|MAPGPolicy|||Yes|
@@ -151,7 +151,7 @@
 |144|PowerBIDlp||||
 |145|FilteringUrlInfo||||
 |146|FilteringAttachmentInfo||||
-|147|CoreReportingSettings|||Yes|
+|147|CoreReportingSettings|Yes||Yes|
 |148|ComplianceConnector||||
 |149|PowerPlatformLockboxResourceAccessRequest||||
 |150|PowerPlatformLockboxResourceCommand||||
