@@ -78,13 +78,13 @@
 |71|MipAutoLabelSharePointItem|Yes|||
 |72|MipAutoLabelSharePointPolicyLocation|Yes|||
 |73|MicrosoftTeamsShifts|Yes|||
-|74|欠番||||
+|74|SecureScore||||
 |75|MipAutoLabelExchangeItem|Yes|||
 |76|CortanaBriefing|Yes|||
 |77|Search|Yes|||
 |78|WDATPAlerts|Yes|||
-|79|欠番||||
-|80|欠番||||
+|79|PowerPlatformAdminDlp||||
+|80|PowerPlatformAdminEnvironment||||
 |81|MDATPAudit|Yes||Yes|
 |82|SensitivityLabelPolicyMatch|Yes|||
 |83|SensitivityLabelAction|Yes|||
@@ -108,11 +108,11 @@
 |101|ExchangeSearch|Yes||Yes|
 |102|SharePointSearch|Yes||Yes|
 |103|PrivacyDataMinimization|Yes|||
-|104|欠番||||
+|104|LabelAnalyticsAggregate||||
 |105|MyAnalyticsSettings|Yes||Yes|
 |106|SecurityComplianceUserChange|Yes|||
 |107|ComplianceDLPExchangeClassification|Yes|||
-|108|欠番||||
+|108|ComplianceDLPEndpoint||||
 |109|MipExactDataMatch|Yes||Yes|
 |110|MSDEResponseActions|||Yes|
 |111|MSDEGeneralSettings|||Yes|
@@ -132,11 +132,11 @@
 |125|LargeContentMetadata||||
 |126|Microsoft365Group|||Yes|
 |127|CDPMlInferencingResult||||
-|128|CDPHygieneSummary||||
+|128|FilteringMailMetadata||||
 |129|CDPClassificationMailItem||||
 |130|CDPClassificationDocument||||
-|131|OfficeScripts||||
-|132|CDPPostMailDeliveryAction||||
+|131|OfficeScriptsRunAction||||
+|132|FilteringPostMailDeliveryAction||||
 |133|CDPUnifiedFeedback||||
 |134|TenantAllowBlockList||||
 |135|ConsumptionResource||||
@@ -146,11 +146,11 @@
 |139|CDPCompliancePolicyExecution
 |140|MultiStageDisposition|||Yes|
 |141|PrivacyDataMatch||||
-|142|CDPEdgeBlockedMessage||||
-|143|CDPEmailFeatures||||
+|142|FilteringDocMetadata||||
+|143|FilteringAttachmentInfo||||
 |144|PowerBIDlp||||
-|145|CDPHygieneUrlInfo||||
-|146|CDPHygieneAttachmentInfo||||
+|145|FilteringUrlInfo||||
+|146|FilteringAttachmentInfo||||
 |147|CoreReportingSettings|||Yes|
 |148|ComplianceConnector||||
 |149|PowerPlatformLockboxResourceAccessRequest||||
@@ -160,8 +160,22 @@
 |153|WebpageActivityEndpoint||||
 |154|OMEPortal||||
 |155|CMImprovementActionChange||||
-
-
+| | FilteringUrlClick||||
+| | MipLabelAnalyticsAuditRecord||||
+| | FilteringEntityEvent||||
+| | FilteringRuleHits||||
+| | FilteringMailSubmission||||
+| | LabelExplorer||||
+| | MicrosoftManagedServicePlatform||||
+| | PowerPlatformServiceActivity||||
+| | ScorePlatformGenericAuditRecord||||
+| | TimeTravelFilteringDocMetadata||||
+| | Alert||||
+| | AlertStatus||||
+| | AlertIncident||||
+| | IncidentStatus||||
+| | Case||||
+| | CaseInvestigation||||
 # 監査ログの保持ポリシーについて
 Advanced Audit が含まれているライセンスがあれば、最長 1 年間のログの保持ができ、さらに追加のアドオン ライセンスがあれば、最長 10 年間のログ保存が設定できます。ただし、[Docs](
 https://docs.microsoft.com/ja-jp/microsoft-365/compliance/audit-log-retention-policies?view=o365-worldwide#create-and-manage-audit-log-retention-policies-in-powershell) に記載がある通り、UI から保持ポリシーを設定できるログの種類は限定されているためその他のログも含めて、保持設定をする場合には、別途 PowerShell での設定が必要です。
@@ -173,7 +187,7 @@ Connect-IPPSSession -UserPrincipalName xxxx@xxxx.onmicrosoft.com
 
 $range=@();
 $i=1;
-$skip=@(26,27,74,79,80,104,108,137);
+$skip=@(26,27);
 while ($i -le 155){if(!$skip.Contains($i)){$range+=$i;}$i++;}
 
 New-UnifiedAuditLogRetentionPolicy -name "1Year Policy for All" -RetentionDuration TwelveMonths -priority 200 -recordtypes $range
