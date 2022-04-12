@@ -187,7 +187,7 @@ Connect-IPPSSession -UserPrincipalName xxxx@xxxx.onmicrosoft.com
 
 $range=@();
 $i=1;
-$skip=@(26,27);
+$skip=@(26,27,137);
 while ($i -le 155){if(!$skip.Contains($i)){$range+=$i;}$i++;}
 
 New-UnifiedAuditLogRetentionPolicy -name "1Year Policy for All" -RetentionDuration TwelveMonths -priority 200 -recordtypes $range
