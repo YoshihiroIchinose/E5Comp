@@ -1,5 +1,5 @@
-# Microsoft 365 E5 Compliance 研究所
-Microsoft 365 E5 Compliance に関する技術検証結果などを共有するサイトです。
+# Microsoft Purview (E5 Compliance) 研究所
+Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有するサイトです。
 
 | ページ | 内容 |
 | --- | ---- |
