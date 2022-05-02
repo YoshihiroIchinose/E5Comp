@@ -1,4 +1,4 @@
-# Azure Informatino Protection で保護されたファイルを外部ユーザーと共有する
+# Azure Information Protection で保護されたファイルを外部ユーザーと共有する
 Azure Informatino Protection では、自社テナントだけではなく、以下のような社外アカウントを利用するユーザーとも暗号化されたファイルの共有が可能となっています。  
 <br>
 
