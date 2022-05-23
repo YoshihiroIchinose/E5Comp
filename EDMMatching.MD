@@ -20,7 +20,7 @@
 
 これは以下のような Exchange Online 上の Test-TextExtraction を用いて確認することができる。
 なお、Exchange Online では、BOM なし UTF-8 のテキストや、ANSI(Shift-JIS) 形式のテキストには対応しないため、これらの形式のテキストを指定した場合は解析できないというエラーとなる。
-また SharePoint Online や Endpoint DLP ではエンジンが異なるため、多少動作がことなる可能性がある。
+また SharePoint Online や Endpoint DLP ではエンジンが異なるため、多少動作も異なる可能性あり。
 ```
 Connect-ExchangOnline
 $content = Test-TextExtraction -FileData ([System.IO.File]::ReadAllBytes("E:\WorkData\Comp\テストデータ.docx"))
