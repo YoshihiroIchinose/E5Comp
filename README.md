@@ -16,3 +16,4 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 | [サービス プランの割り当て状況に応じたセキュリティ グループのメンテナンス](https://github.com/YoshihiroIchinose/E5Comp/blob/main/LicensePowerShell.md) | ライセンスを細分化したアプリ単位となるサービス プランの割り当て状況に応じたセキュリティ グループのメンテナンスを実施する PowerShel スクリプトのサンプルです。 |
 | [Office 365 管理用の PowerShell スクリプトでの資格情報の管理手法について](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SecretsInScripts.md) | 各種 Office 365 管理用のスクリプトの中で、無人で定期実行したい場合には、対話的に資格情報を入力できないため資格情報を何等かの形で事前に持たせておく必要があります。 そういったスクリプトの用途に利用可能な資格の保管・呼び出し方法についてまとめています。 |
 |[Office 365 Management API を利用した監査ログの取得について](https://github.com/YoshihiroIchinose/E5Comp/blob/main/O365MgmtAPI.md)|Search-UnifiedAuditLog よりも大規模に対応する Office 365 Management API を利用した PowerShell からの Office 365 監査ログの取得サンプルです。|
+|[機密情報や Exact Data Match の動作に関して](https://github.com/YoshihiroIchinose/E5Comp/blob/main/EDMMatching.MD)| 機密情報の検出や、Exact Data Match における日本語環境での現状の動作をまとめています。 |
