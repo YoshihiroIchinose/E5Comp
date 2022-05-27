@@ -35,7 +35,10 @@
 | ー | 30FC | Katakana-Hiragana Prolonged Sound Mark | ー (30FC 変わらず) |ー (30FC 変わらず) |
 | ｰ | FF70 | Halfwidth Katakana-Hiragana Prolonged Sound Mark | ー (30FC に変換)|ー (30FC に変換) |
 
-
+上記を踏まえると Microsoft 365 内での上記ハイフン一文字は、以下の正規表現で見つけられることになる。
+```
+[-|\x{2010}-\x{2015}|\x{2043}|\x{2212}|\x{30FC}]
+```
 
 
 これは以下のような Exchange Online 上の Test-TextExtraction を用いて確認することができる。
