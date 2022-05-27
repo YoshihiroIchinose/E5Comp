@@ -18,6 +18,26 @@
 | 「」”’‘ | これらの全角記号はそのまま | 「」”’‘ | 「」”’‘ |
 | ！＃＄％＆（）－＾￥＠「；：」，．／＝～｜‘｛＋＊｝＜＞？＿ | これらの全角記号は半角に変換される | !#$%&()-^¥@「;:」,./=~\|‘{+*}<>?_ | !#$%&()-^¥@「;:」,./=~\|‘{+*}<>?_ |
 
+## ハイフンの変換
+| 文字 | Unicode Code Point | Description | BOM あり UTF-8 の .txt 形式でのテキスト抽出 | .docx 形式の Word でのテキスト抽出 |
+|:---:|---:|---:|:---|:---:|
+| - | 2D | Hyphen-Minus | - (2D 半角ハイフンに変換) | - (2D 半角ハイフンに変換) |
+| ﹣ | FE63 | Small Hyphen-Minus | - (2D 半角ハイフンに変換) | - (2D 半角ハイフンに変換) |
+| － | FF0D | Fullwidth Hyphen-Minus | - (2D 半角ハイフンに変換) | - (2D 半角ハイフンに変換) |
+| ‐ | 2010 | Another Hyphen | ‐ (2010 変わらず) | ‐ (2010 変わらず) |
+| ‑ | 2011 | Non-Breaking Hyphen | ‐ (2010 に変換) | ‐ (2010 に変換) |
+| ‒ | 2012 | Figure Dash | ‒ (2012 変わらず)| ‒ (2012 変わらず) |
+| – | 2013 | En Dash | – (2013 変わらず)|  – (2013 変わらず) |
+| — | 2014 | Em Dash | — (2014 変わらず)| — (2014 変わらず) |
+| ― | 2015 | Horizontal Bar | ― (2015 変わらず) | ― (2015 変わらず) |
+| ⁃ | 2043 | Hyphen Bullet | ⁃ (2043 変わらず)| ⁃ (2043 変わらず) |
+| − | 2212 | Minus Sign | − (2212 変わらず)| − (2212 変わらず) |
+| ー | 30FC | Katakana-Hiragana Prolonged Sound Mark | ー (30FC 変わらず) |ー (30FC 変わらず) |
+| ｰ | FF70 | Halfwidth Katakana-Hiragana Prolonged Sound Mark | ー (30FC に変換)|ー (30FC に変換) |
+
+
+
+
 これは以下のような Exchange Online 上の Test-TextExtraction を用いて確認することができる。
 なお、Exchange Online では、BOM なし UTF-8 のテキストや、ANSI(Shift-JIS) 形式のテキストには対応しないため、これらの形式のテキストを指定した場合は解析できないというエラーとなる。(2022/05/23 時点) また SharePoint Online や Endpoint DLP ではエンジンが異なるため、多少動作も異なる可能性あり。
 ```
