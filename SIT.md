@@ -86,7 +86,7 @@ Office 365 内のテキストのマッチングにおいては、全角英数字
 | ⁃ | E28183 | U+2043 | Hyphen Bullet ||
 | ﹣ | EFB9A3 | U+FE63 | Small Hyphen-Minus ||
 | ｰ | EFBDB0 | U+FF70 | Halfwidth Katakana-Hiragana Prolonged Sound Mark ||
-| - | EFBC8D | U+FF0D | Fullwidth Hyphen-Minus | x |
+| － | EFBC8D | U+FF0D | Fullwidth Hyphen-Minus | x |
 
 # SIT3.メール リンク
 メール アドレスとなる文字列ではなく、Office ファイルに記載され mailto のリンクになっているメールアドレスを検出します。  
