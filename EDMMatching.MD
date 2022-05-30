@@ -19,21 +19,21 @@
 | ！＃＄％＆（）－＾￥＠「；：」，．／＝～｜‘｛＋＊｝＜＞？＿ | これらの全角記号は半角に変換される | !#$%&()-^¥@「;:」,./=~\|‘{+*}<>?_ | !#$%&()-^¥@「;:」,./=~\|‘{+*}<>?_ |
 
 ## ハイフンの変換
-| 文字 | Unicode Code Point | Description | BOM あり UTF-8 の .txt 形式でのテキスト抽出 | .docx 形式の Word でのテキスト抽出 |
-|:---:|---:|---:|:---|:---:|
-| - | 2D | Hyphen-Minus | - (2D 半角ハイフンに変換) | - (2D 半角ハイフンに変換) |
-| ﹣ | FE63 | Small Hyphen-Minus | - (2D 半角ハイフンに変換) | - (2D 半角ハイフンに変換) |
-| － | FF0D | Fullwidth Hyphen-Minus | - (2D 半角ハイフンに変換) | - (2D 半角ハイフンに変換) |
-| ‐ | 2010 | Another Hyphen | ‐ (2010 変わらず) | ‐ (2010 変わらず) |
-| ‑ | 2011 | Non-Breaking Hyphen | ‐ (2010 に変換) | ‐ (2010 に変換) |
-| ‒ | 2012 | Figure Dash | ‒ (2012 変わらず)| ‒ (2012 変わらず) |
-| – | 2013 | En Dash | – (2013 変わらず)|  – (2013 変わらず) |
-| — | 2014 | Em Dash | — (2014 変わらず)| — (2014 変わらず) |
-| ― | 2015 | Horizontal Bar | ― (2015 変わらず) | ― (2015 変わらず) |
-| ⁃ | 2043 | Hyphen Bullet | ⁃ (2043 変わらず)| ⁃ (2043 変わらず) |
-| − | 2212 | Minus Sign | − (2212 変わらず)| − (2212 変わらず) |
-| ー | 30FC | Katakana-Hiragana Prolonged Sound Mark | ー (30FC 変わらず) |ー (30FC 変わらず) |
-| ｰ | FF70 | Halfwidth Katakana-Hiragana Prolonged Sound Mark | ー (30FC に変換)|ー (30FC に変換) |
+| 文字 | Unicode Code Point | Description | BOM あり UTF-8 の .txt 形式でのテキスト抽出 | .docx 形式の Word でのテキスト抽出 | クレジットカードの SIT でハイフンとして扱われるか? |
+|:---:|---:|---:|:---|:---:|:---:|
+| - | 2D | Hyphen-Minus | - (2D 半角ハイフンに変換) | - (2D 半角ハイフンに変換) | Yes |
+| ﹣ | FE63 | Small Hyphen-Minus | - (2D 半角ハイフンに変換) | - (2D 半角ハイフンに変換) | Yes |
+| － | FF0D | Fullwidth Hyphen-Minus | - (2D 半角ハイフンに変換) | - (2D 半角ハイフンに変換) | Yes |
+| ‐ | 2010 | Another Hyphen | ‐ (2010 変わらず) | ‐ (2010 変わらず) | No |
+| ‑ | 2011 | Non-Breaking Hyphen | ‐ (2010 に変換) | ‐ (2010 に変換) | No |
+| ‒ | 2012 | Figure Dash | ‒ (2012 変わらず)| ‒ (2012 変わらず) | No |
+| – | 2013 | En Dash | – (2013 変わらず)|  – (2013 変わらず) | No |
+| — | 2014 | Em Dash | — (2014 変わらず)| — (2014 変わらず) | No |
+| ― | 2015 | Horizontal Bar | ― (2015 変わらず) | ― (2015 変わらず) | No |
+| ⁃ | 2043 | Hyphen Bullet | ⁃ (2043 変わらず)| ⁃ (2043 変わらず) | No |
+| − | 2212 | Minus Sign | − (2212 変わらず)| − (2212 変わらず) | No |
+| ー | 30FC | Katakana-Hiragana Prolonged Sound Mark | ー (30FC 変わらず) |ー (30FC 変わらず) | No |
+| ｰ | FF70 | Halfwidth Katakana-Hiragana Prolonged Sound Mark | ー (30FC に変換)|ー (30FC に変換) | No |
 
 上記を踏まえると Microsoft 365 内での上記ハイフン一文字は、以下の正規表現で見つけられることになる。
 ```
