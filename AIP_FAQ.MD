@@ -28,8 +28,7 @@ AIP Viewer、Edge、Acrobat などでは、AIP 保護された PDF ファイル�
 ProxyAddresses に設定がなければ、UserPrincipalName の値で、指定されたメール アドレスに合致するかどうかを判定します。  
 [参考: Preparing users and groups for Azure Information Protection](https://docs.microsoft.com/en-us/azure/information-protection/prepare)  
 
-同様に外部ユーザーも、メール アドレスで指定します。なおメール アドレスが有効なグループ(セキュリティ、配布グループ、Microsoft 365 グループ)も利用することが可能です。
-またメール アドレスが分かっていれば社外の Office 365 テナントのグループであっても、メール アドレスを指定し、権限制御に利用することが可能です。  
+同様に外部ユーザーも、メール アドレスで指定します。なおメール アドレスが有効なグループ(セキュリティ、配布グループ、Microsoft 365 グループ)も利用することができ、自テナントのユーザーをグループに追加することや、Azure AD B2B の機能で外部ユーザーを招待していれば、そのゲスト アカウントを自テナントのグループに追加して権限を付与することも可能です。またメール アドレスが分かっていれば社外の Office 365 テナントのグループであっても、メール アドレスを指定し、権限制御に利用することが可能です。  
   
 上記のような直接のユーザーやグループの指定以外にも、ドメイン単位で権限を設定することも可能ですが、設定できる方法が限られていて、エンドユーザーにおいては、AIP Clientをインストールし、エクスプローラー上で、ファイルを右クリックして「分類して保護する」のメニューから権限設定をする必要がある点には注意が必要です。なおドメインで許可した場合、それが Office 365 テナントで利用されているドメインであれば、そのドメインが利用されているテナント全体のユーザーに権限が与えられます。  
 [参考: アクセス許可を今すぐ割り当てる](https://docs.microsoft.com/ja-jp/microsoft-365/compliance/encryption-sensitivity-labels?view=o365-worldwide#assign-permissions-now)
