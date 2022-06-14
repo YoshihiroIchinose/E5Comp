@@ -133,3 +133,18 @@ Exact Data Match では以下の 3 段階の定義に従って、検出および
   Exact Data Match の検索可能な列・主要素の検知においては、    
   A の前段階の機密情報の定義に従った正規用表現で対象となるテキストが抜き出されて、    
   ハッシュが生成され比較されるので、ワードブレークには依存せずこのような問題は見られない。
+  
+  この問題への対処として、上の5のステップで、ワードブレークした単語でハッシュ化するのではなく、   
+  別途補助要素に対して、キーワード辞書、正規表現などでパターンを定義し、見つかったパターンで   
+  ハッシュを生成し、見比べることでの対応が可能。ただし、PowerShell による操作が必要で、   
+  EDM の機密情報定義の XML をダウンロードし、   
+  主要素の idMatch のタグと同様に、補助要素の Match のタグにも、   
+  classification で前段となるカスタムの機密情報の定義を指定した上でアップロードし直す。    
+  詳細は[こちら](https://microsoft.github.io/ComplianceCxE/resources/files/Deploying%20EDM%20for%20accurate%20classification%20v2%20(2).pdf)の P.23 を参照のこと。
+```
+Connect-IPPSSession
+$def = Get-DlpSensitiveInformationTypeRulePackage -Identity "EDM Customer DB"
+[System.IO.File]::WriteAllBytes('C:\EDM\EDM Customer DB.xml', $def.SerializedClassificationRuleCollection)
+(XML を編集)
+Set-DlpSensitiveInformationTypeRulePackage -FileData ([System.IO.File]::ReadAllBytes('C:\EDM\EDM Customer DB.xml'))
+```
