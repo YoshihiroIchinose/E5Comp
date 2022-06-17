@@ -1,6 +1,59 @@
 # EDM のデータ アップロード用に全角の英数字・記号を半角に変換する
-こちらの PowerShell のサンプルで、EDM のデータ アップロード用の CSV ファイルを事前処理し、全角の英数字・記号を半角に変換することができます。
+こちらの PowerShell のサンプルで、EDM のデータ アップロード用の CSV ファイルを事前処理し、全角の英数字・記号を半角に変換することができます。また以下のコードでは、半角カナを全角カナに変換します。変換元ファイルは、BOM 付き UTF-8、UTF-16 LE、UTF-16 BE のいずれかである必要があり、BOM なし UTF-8 ではだめです。既定のファイル出力結果は、UTF-16 LE になります。
 
+## Normalize メソッドを利用する方法
+以下のサンプルは Normalize メソッドを利用して行ごとに一括正規化します。
+```
+$source="E:\WorkData\Comp\EDM_Test\DB\EDM_CustomerDB.csv"
+$target="E:\WorkData\Comp\EDM_Test\DB\EDM_CustomerDB_c.csv"
+
+$output=@()
+$lines=Get-Content $source
+foreach($line in $lines){
+   $output+=$line.Normalize([System.Text.NormalizationForm]::FormKC)
+}
+$output|out-file $target
+```
+### 実行結果
+## ソース
+```
+ABCabc
+ＡＢＣａｂｃ
+０３－３３３３－３３３３
+03-3333-3333
+#$%&
+＃＄％＆
+アイウエオ
+ァィゥェォ
+ｧｨｩｪｫ
+パピプペポ
+ﾊﾟﾋﾟﾌﾟﾍﾟﾎﾟ
+ダヂヅデド
+ﾀﾞﾁﾞﾂﾞﾃﾞﾄﾞ
+ャュョ
+ｬｭｮ
+```
+## 変換後
+```
+ABCabc
+ABCabc
+03-3333-3333
+03-3333-3333
+#$%&
+#$%&
+アイウエオ
+ァィゥェォ
+ァィゥェォ
+パピプペポ
+パピプペポ
+ダヂヅデド
+ダヂヅデド
+ャュョ
+ャュョ
+```
+
+## 愚直に文字置換する方法
+以下のサンプルは愚直に 1 文字 1 文字置き換えるコードの例です。ただし、こちらの場合は、半角カナを考慮していません。半角カナを置き換える場合、濁音・半濁音が独立した文字となっているため、2 文字 -> 1 文字の置換となるため、実装の工夫が必要です。
 ```
 $source="E:\WorkData\Comp\EDM_Test\DB\EDM_CustomerDB.csv"
 $target="E:\WorkData\Comp\EDM_Test\DB\EDM_CustomerDB_c.csv"
@@ -114,4 +167,42 @@ foreach($line in $lines){
    $output+=ConvertTo-SingleBytes $line
 }
 $output|out-file $target
+```
+
+### 実行結果
+## ソース
+```
+ABCabc
+ＡＢＣａｂｃ
+０３－３３３３－３３３３
+03-3333-3333
+#$%&
+＃＄％＆
+アイウエオ
+ァィゥェォ
+ｧｨｩｪｫ
+パピプペポ
+ﾊﾟﾋﾟﾌﾟﾍﾟﾎﾟ
+ダヂヅデド
+ﾀﾞﾁﾞﾂﾞﾃﾞﾄﾞ
+ャュョ
+ｬｭｮ
+```
+## 変換後
+```
+ABCabc
+ABCabc
+03-3333-3333
+03-3333-3333
+#$%&
+#$%&
+アイウエオ
+ァィゥェォ
+ｧｨｩｪｫ
+パピプペポ
+ﾊﾟﾋﾟﾌﾟﾍﾟﾎﾟ
+ダヂヅデド
+ﾀﾞﾁﾞﾂﾞﾃﾞﾄﾞ
+ャュョ
+ｬｭｮ
 ```
