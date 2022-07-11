@@ -56,6 +56,7 @@ for($i = 0; $i -lt 10; $i++){
     "Query "+($i+1)+" round: "+$result.Count.ToString() + " results"
     if($result.count -ne 5000){break}
 }
+Disconnect-ExchangeOnline
 "Total: "+$output.Count.ToString() + " results"
     
 #Operation の種類ごとに最初の 1 つ目のアイテムから Json に含まれているフィールドを取得
@@ -109,6 +110,7 @@ $ctx.Credentials=$cre
 $fs = new-object System.IO.FileStream($outfile ,[System.IO.FileMode]::Open,[System.IO.FileAccess]::Read)
 [Microsoft.SharePoint.Client.File]::SaveBinaryDirect($ctx,$targeturl , $fs, $true)
 $fs.Close()
+$ctx.Dispose()
 "Upload completed."
 ```
 ## Power BI レポート サンプル
