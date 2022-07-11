@@ -56,7 +56,7 @@ for($i = 0; $i -lt 10; $i++){
     "Query "+($i+1)+" round: "+$result.Count.ToString() + " results"
     if($result.count -ne 5000){break}
 }
-Disconnect-ExchangeOnline
+Disconnect-ExchangeOnline -Confirm:$false
 "Total: "+$output.Count.ToString() + " results"
     
 #Operation の種類ごとに最初の 1 つ目のアイテムから Json に含まれているフィールドを取得
