@@ -1,6 +1,6 @@
 # Azure Automation を利用して Office 365 の監査ログから特定の操作を CSV 形式で出力し SharePoint Online サイトにアップロードする
 こちらのサンプルでは、DLPEndpoint のログの種類から、"FileAccessedByUnallowedApp", "FileCopiedToRemovableMedia", "FilePrinted","FileUploadedToCloud" の 4 つのログを、
-最大 5 万件、昨日から 32 日前までの 31 日分のログを抽出し、 CSV 形式で SharePoint Online サイトにアップロードします。
+最大 5 万件、昨日から 32 日前までの 31 日分の範囲でログを抽出し、 CSV 形式で SharePoint Online サイトにアップロードします。
 なお Audit Data に含まれる、ログについては、1 階層分のみパースして、CSV の列としています。
 またこのスクリプトにより、固定の名前の CSV ファイルとして SharePoint Online 上に出力し、 Daily 更新することができるので、SharePoint Online 上の CSV ファイルを
 データソースとして、Power BI に取り込んで、Daily 更新のダッシュボードを作ることも可能となります。
