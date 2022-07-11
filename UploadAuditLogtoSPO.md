@@ -111,3 +111,6 @@ $fs = new-object System.IO.FileStream($outfile ,[System.IO.FileMode]::Open,[Syst
 $fs.Close()
 "Upload completed."
 ```
+## Power BI レポート サンプル
+SharePoint Online サイト上の CSV ファイルは、Web 版の Power BI から、"データセットの追加"で、"ファイル"を"取得"を選択して、レポートに取り込むことが可能で、1 時間ごとに更新されたデータを自動取得できる。
+![サンプル](img/PowerBI_EDLP.png)
