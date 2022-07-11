@@ -27,7 +27,7 @@ $date=Get-Date
 $Startdate=$date.addDays(-32).ToString("yyyy/MM/dd")
 $Enddate=$date.addDays(-1).ToString("yyyy/MM/dd")
 $outfile="C:\Report\DLPEndpoint.csv"
-$siteUrl="https://xxxx.sharepoint.com/sites/Contents2/"
+$siteUrl="https://xxxx.sharepoint.com/sites/DLPLogs/"
 $targeturl ="/sites/DLPLogs/Shared Documents/DLPEndpoint.csv"
 
 #対象のログ
