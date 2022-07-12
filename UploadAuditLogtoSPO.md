@@ -13,7 +13,7 @@
   Microsoft.Online.SharePoint.PowerShell   
   ExchangeOnlineManagement   
 3. Azure Automation アカウントの"資格情報"->"資格情報の追加"で、監査ログの抽出権限があり、   
-  指定の SharePoint Online サイトに投稿権限があるアカウントの ID とパスワードを登録しておく。
+  指定の SharePoint Online サイトに投稿権限があるアカウントの ID とパスワードを "Office 365" という名称で登録しておく。
 4. Azure Automation アカウントの"Runbook"->"Runbook の作成"で PowerShell、ランタイム バージョンの 5.1 の Runbook を作成する
 5. 作成した Runbook に以下のスクリプトをコピー ペストする
 6. 適宜スクリプト内の SharePoint Site の URL および、ファイル保存先の相対 URL (FQDN を除いたもの) を書き変え、保存し、公開する
@@ -31,18 +31,16 @@ $outfile="C:\Report\"+$RecordType+".csv"
 $siteUrl="https://xxx.sharepoint.com/sites/DLPLogs/"
 $targeturl ="/sites/DLPLogs/Shared Documents/"+$RecordType+".csv"
 
-#対象のログ
+#取得対象の Operataions (指定なしも可能)
 $Operations="FileAccessedByUnallowedApp","FileCopiedToRemovableMedia","FilePrinted","FileUploadedToCloud"
 
-#その他のログ
+#その他の Operations
 #"ArchiveCreated","FileCopiedToClipboard","FileCopiedToRemoteDesktopSession","FileCreated",
 #"FileCreatedOnNetworkShare","FileCreatedOnRemovableMedia","FileDeleted","FileDownloadedFromBrowser",
 #"FileModified","FileRead","FileRenamed","RemovableMediaMount","RemovableMediaUnmount"
 
-#Credentialの生成
+#Credential の生成と接続
 $Credential = Get-AutomationPSCredential -Name "Office 365"
-
-Import-Module ExchangeOnlineManagement
 Connect-ExchangeOnline -credential $Credential
 
 #日付と時刻で固有のセッション ID 文字列を生成
@@ -51,12 +49,23 @@ $sessionId=$RecordType+(Get-Date -Format "yyyyMMdd-HHmm")
 #最大 5,000 x 10 回のループでログを取得
 $output=@();
 for($i = 0; $i -lt 10; $i++){
-    $result=Search-UnifiedAuditLog -RecordType $RecordType -Operations $Operations -Startdate $Startdate -Enddate $Enddate -SessionId $sessionId -SessionCommand ReturnLargeSet -ResultSize 5000
+	if($Operations -ne $null -and $Operations.Length -ne 0)
+	{
+    	$result=Search-UnifiedAuditLog -RecordType $RecordType -Operations $Operations -Startdate $Startdate -Enddate $Enddate -SessionId $sessionId -SessionCommand ReturnLargeSet -ResultSize 5000
+	}
+	else
+	{
+		$result=Search-UnifiedAuditLog -RecordType $RecordType -Startdate $Startdate -Enddate $Enddate -SessionId $sessionId -SessionCommand ReturnLargeSet -ResultSize 5000
+	}
     $output+=$result
     "Query "+($i+1)+" round: "+$result.Count.ToString() + " results"
     if($result.count -ne 5000){break}
 }
 Disconnect-ExchangeOnline -Confirm:$false
+if($output.count -eq 0){
+	"No data"
+	exit
+	}
 "Total: "+$output.Count.ToString() + " results"
     
 #Operation の種類ごとに最初の 1 つ目のアイテムから Json に含まれているフィールドを取得
@@ -90,7 +99,7 @@ foreach($row in $output){
 #出力
 $csv|Export-Csv -Path $outfile -NoTypeInformation -Encoding UTF8
 
-#CSOM のアセンブリのロード
+#CSOM のアセンブリのロードと SPO への接続
 Load-SPOnlineCSOMAssemblies
 $ctx = New-Object Microsoft.SharePoint.Client.ClientContext($siteUrl)
 $username =$Credential.UserName
