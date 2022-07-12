@@ -49,12 +49,10 @@ $sessionId=$RecordType+(Get-Date -Format "yyyyMMdd-HHmm")
 #最大 5,000 x 10 回のループでログを取得
 $output=@();
 for($i = 0; $i -lt 10; $i++){
-	if($Operations -ne $null -and $Operations.Length -ne 0)
-	{
-    	$result=Search-UnifiedAuditLog -RecordType $RecordType -Operations $Operations -Startdate $Startdate -Enddate $Enddate -SessionId $sessionId -SessionCommand ReturnLargeSet -ResultSize 5000
+	if($Operations -ne $null -and $Operations.Length -ne 0){
+    		$result=Search-UnifiedAuditLog -RecordType $RecordType -Operations $Operations -Startdate $Startdate -Enddate $Enddate -SessionId $sessionId -SessionCommand ReturnLargeSet -ResultSize 5000
 	}
-	else
-	{
+	else {
 		$result=Search-UnifiedAuditLog -RecordType $RecordType -Startdate $Startdate -Enddate $Enddate -SessionId $sessionId -SessionCommand ReturnLargeSet -ResultSize 5000
 	}
     $output+=$result
