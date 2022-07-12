@@ -3,7 +3,7 @@
 最大 5 万件、昨日から 32 日前までの 31 日分の範囲でログを抽出し、 CSV 形式で SharePoint Online サイトにアップロードします。
 なお Audit Data に含まれる、ログについては、1 階層分のみパースして、CSV の列としています。
 またこのスクリプトにより、固定の名前の CSV ファイルとして SharePoint Online 上に出力し、 Daily 更新することができるので、SharePoint Online 上の CSV ファイルを
-データソースとして、Power BI に取り込んで、Daily 更新のダッシュボードを作ることも可能となります。
+データソースとして、Power BI に取り込んで、Daily 更新のダッシュボードを作ることも可能となります。なおこちらのスクリプトをベースに、$RecordType="SensitivityLabelAction"、$Operations="" とすることで、秘密度ラベルの付与・変更・削除の操作のログを同様に CSV 形式で出力し、特定の SharePoint Online サイトにアップロード可能です。
 
 ## 準備
 1. Azure 環境にて Azure Automation アカウントを作成
