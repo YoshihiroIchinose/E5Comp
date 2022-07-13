@@ -1,6 +1,6 @@
 # Azure Automation を利用して Office 365 の監査ログから特定の操作を CSV 形式で出力し SharePoint Online サイトにアップロードする
 こちらのサンプルでは、DLPEndpoint のログの種類から、"FileAccessedByUnallowedApp", "FileCopiedToRemovableMedia", "FilePrinted","FileUploadedToCloud" の 4 つのログを、
-最大 5 万件、昨日から 32 日前までの 31 日分の範囲でログを抽出し、 CSV 形式で SharePoint Online サイトにアップロードします。
+最大 5 万件、昨日から 31 日前までの 31 日分の範囲でログを抽出し、 CSV 形式で SharePoint Online サイトにアップロードします。
 なお Audit Data に含まれる、ログについては、1 階層分のみパースして、CSV の列としています。
 またこのスクリプトにより、固定の名前の CSV ファイルとして SharePoint Online 上に出力し、 Daily 更新することができるので、SharePoint Online 上の CSV ファイルを
 データソースとして、Power BI に取り込んで、Daily 更新のダッシュボードを作ることも可能となります。なおこちらのスクリプトをベースに、$RecordType="SensitivityLabelAction"、$Operations="" とすることで、秘密度ラベルの付与・変更・削除の操作のログを同様に CSV 形式で出力し、特定の SharePoint Online サイトにアップロード可能です。
@@ -24,8 +24,8 @@
 ```
 #変数
 $date=Get-Date
-$Startdate=$date.addDays(-32).ToString("yyyy/MM/dd")
-$Enddate=$date.addDays(-1).ToString("yyyy/MM/dd")
+$Startdate=$date.addDays(-31).ToString("yyyy/MM/dd")
+$Enddate=$date.ToString("yyyy/MM/dd")
 $RecordType="DLPEndpoint"
 $outfile="C:\Report\"+$RecordType+".csv"
 $siteUrl="https://xxx.sharepoint.com/sites/DLPLogs/"
@@ -128,8 +128,8 @@ SharePoint Online サイト上の CSV ファイルは、Web 版の Power BI か�
 ```
 #変数
 $global:date=Get-Date
-$global:Startdate=$date.addDays(-32).ToString("yyyy/MM/dd")
-$global:Enddate=$date.addDays(-1).ToString("yyyy/MM/dd")
+$global:Startdate=$date.addDays(-31).ToString("yyyy/MM/dd")
+$global:Enddate=$date.ToString("yyyy/MM/dd")
 
 #対象のログ
 $RecordTypes="ExchangeAdmin","ExchangeItem","ExchangeItemGroup","SharePoint","SyntheticProbe","SharePointFileOperation"
