@@ -15,7 +15,7 @@
 3. Azure Automation アカウントの"資格情報"->"資格情報の追加"で、監査ログの抽出権限があり、   
   指定の SharePoint Online サイトに投稿権限があるアカウントの ID とパスワードを "Office 365" という名称で登録しておく。
 4. Azure Automation アカウントの"Runbook"->"Runbook の作成"で PowerShell、ランタイム バージョンの 5.1 の Runbook を作成する
-5. 作成した Runbook に以下のスクリプトをコピー ペストする
+5. 作成した Runbook に以下のスクリプトをコピー & ペーストする
 6. 適宜スクリプト内の SharePoint Site の URL および、ファイル保存先の相対 URL (FQDN を除いたもの) を書き変え、保存し、公開する
 7. 作成した Runbook を"開始"し、動作を確認する
 8. 必要に応じて Daily 等のスケジュール実行を設定する
