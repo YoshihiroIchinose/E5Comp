@@ -87,14 +87,17 @@ if($g -eq $null){
 }
 else{
     "IRMTargetGroup is found."
+    
     #Get current users in "IRMTargetGroup"
     $mem=Get-DistributionGroupMember -Identity $IRMTargetGroup -ResultSize 2000
+    
     #Create a list of users in "IRMTargetGroup"
     foreach($m in $mem){
         if($m.PrimarySmtpAddress)
             {$members+=$m.PrimarySmtpAddress.ToLower()}
         else{$members+=($m.Identity+"@"+$m.OrganizationalUnitRoot).ToLower()}
     }
+    
     #Show current users in IRMTargetGroup
     "Current users in IRMTargetGroup ("+$members.count+" users)"
     $members
