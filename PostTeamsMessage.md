@@ -1,5 +1,5 @@
 # Graph API を利用して Teams のチャネル チャットに投稿する
-CC / DLP のテストなどに利用するため、Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。
+CC / DLP のテストなどに利用するため、Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。管理者による同意を不要としたバージョンは[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage2.md)。
 
 ## 事前準備
 1. Azure AD でアプリケーションを登録する
