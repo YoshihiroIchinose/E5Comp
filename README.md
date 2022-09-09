@@ -20,4 +20,4 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 |[機密情報や Exact Data Match の動作に関して](https://github.com/YoshihiroIchinose/E5Comp/blob/main/EDMMatching.MD)| 機密情報の検出や、Exact Data Match における日本語環境での現状の動作をまとめています。 |
 |[EDM のデータ アップロード用に全角英数字・記号を半角に変換する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/EDM_Preprocess.md)|EDM のデータ アップロード用に CSV ファイルの中の全角の英数字・記号を半角に変換する PowerShell スクリプトのサンプルです。|
 |[Insider Risk Management の HR Connector に関連したスクリプト](https://github.com/YoshihiroIchinose/E5Comp/blob/main/IRM_HR_Connector.md)|Azure Storage にアップロードされた CSV ファイルを、Azure Automation のスクリプトを通じて IRM の HR Connector に取り込むサンプルと、HR Connector で取り込む CSV ファイルを元に、メールが有効なセキュリティ グループを作成し、グループメンバーシップをメンテナンスするサンプルを紹介しています。|
-|[Graph API で Teams チャネルに投稿する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage.md)|CC / DLP のテストなどに利用するため、Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。|
+|[Graph API で Teams チャネルに投稿する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage2.md)|CC / DLP のテストなどに利用するため、Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。|
