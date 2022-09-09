@@ -2,8 +2,8 @@
 CC / DLP のテストなどに利用するため、Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。管理者による同意を不要としたバージョンは[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage2.md)。
 
 ## 事前準備
-1. Azure AD でアプリケーションを登録する
-2. 作成したアプリケーションに、Group.Read.All、Channel.ReadBasic.All、ChannelMessage.Send の権限を与え、管理者の同意を実施する
+1. Azure AD (https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
+2. 作成したアプリケーションの API のアクセス許可で、Group.Read.All、Channel.ReadBasic.All、ChannelMessage.Send の権限を与え、管理者の同意を実施する
 3. 事前準備したアプリケーションの Client Secret を新規作成する
 4. 以下のスクリプトで、作成したアプリケーションの ClientID、Client Secret、ユーザーの ID/パスワード、および投稿先のチーム名、チャネル名、投稿内容を書き換える
 ## スクリプト本体
