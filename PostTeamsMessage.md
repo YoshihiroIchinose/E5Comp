@@ -4,7 +4,7 @@ CC / DLP のテストなどに利用するため、Teams のチャネル チャ�
 ## 事前準備
 1. Azure AD (https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
 2. 作成したアプリケーションの API のアクセス許可で、委任されたアクセス許可として Group.Read.All、Channel.ReadBasic.All、ChannelMessage.Send の権限を与え、管理者の同意を実施する    
-   (ChannelMessage.Send はアプリケーションとしては実行できず、必ずユーザーの委任としての操作が必要。）
+   (ChannelMessage.Send はアプリケーションとしては実行できず、必ずユーザーの委任としての操作が必要で、Group.Read.All は管理者による同意が必須。）
 3. 事前準備したアプリケーションの Client Secret を新規作成する
 4. 以下のスクリプトで、作成したアプリケーションの ClientID、Client Secret、ユーザーの ID/パスワード、および投稿先のチーム名、チャネル名、投稿内容を書き換える
 ## スクリプト本体
