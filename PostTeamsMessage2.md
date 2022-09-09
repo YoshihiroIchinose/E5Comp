@@ -8,8 +8,8 @@ CC / DLP のテストなどに利用するため、Teams のチャネル チャ�
 (ChannelMessage.Send はアプリケーションとしては実行できず、必ずユーザーの委任としての操作が必要。）
 3. 作成したアプリケーションの Client ID を用いて以下の URL の後ろのパラーメーターを書き換え   
    https://login.microsoftonline.com/common/oauth2/authorize?response_type=code&client_id=XXXXX   
-その URL に　InPrivate モードなどの状態のブラウザでアクセスし、利用するアカウントで認証を通し権限の同意を実施する   
-認証が通り権限に同意していれば「AADSTS500113: No reply address is registered for the application.」というエラーになるがこの状態になれば OK 
+その URL に InPrivate モードなどの状態のブラウザでアクセスし、利用するアカウントで認証を通し権限の同意を実施する   
+認証が通り権限に同意できていれば「AADSTS500113: No reply address is registered for the application.」というエラーになるがこの状態になれば OK 
 4. 事前準備したアプリケーションの Client Secret を新規作成する
 5. 以下のスクリプトで、作成したアプリケーションの ClientID、Client Secret、ユーザーの ID/パスワード、および投稿先のチーム名、チャネル名、投稿内容を書き換える
 ## スクリプト本体
