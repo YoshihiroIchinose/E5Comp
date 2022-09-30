@@ -21,3 +21,4 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 |[EDM のデータ アップロード用に全角英数字・記号を半角に変換する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/EDM_Preprocess.md)|EDM のデータ アップロード用に CSV ファイルの中の全角の英数字・記号を半角に変換する PowerShell スクリプトのサンプルです。|
 |[Insider Risk Management の HR Connector に関連したスクリプト](https://github.com/YoshihiroIchinose/E5Comp/blob/main/IRM_HR_Connector.md)|Azure Storage にアップロードされた CSV ファイルを、Azure Automation のスクリプトを通じて IRM の HR Connector に取り込むサンプルと、HR Connector で取り込む CSV ファイルを元に、メールが有効なセキュリティ グループを作成し、グループメンバーシップをメンテナンスするサンプルを紹介しています。|
 |[Graph API で Teams チャネルに投稿する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage2.md)|CC / DLP のテストなどに利用するため、Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。|
+|[アクティビティ エクスプローラのログの CSV への書き出しサンプル](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ActivityExplorerData.md)|新たに追加された Export-ActivityExplorerData のコマンドを利用して、最大 30 日分、5 万行 (5,000 行x 10 回)のログを取得するサンプルです。|
