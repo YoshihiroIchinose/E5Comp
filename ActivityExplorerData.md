@@ -77,3 +77,5 @@ $book.SaveAs($OutputFile.replace(".csv",".xlsx"),51)
 $book.close()
 $excel.quit()
 ```
+## Excel 出力結果例
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AE.png">
