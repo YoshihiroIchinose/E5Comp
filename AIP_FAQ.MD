@@ -1,6 +1,11 @@
 # Azure Information Protection で保護されたファイルを外部ユーザーと共有する
 Azure Informatino Protection では、自社テナントだけではなく、以下のような社外アカウントを利用するユーザーとも暗号化されたファイルの共有が可能となっています。 ただし、ファイルを共有しようとするユーザーからは完全にコントロールすることが難しい、各種前提条件もあり、あまり活用が進んでいないかと思われます。本ページでは、利用可否の判断をより具体的に行ってもらうことを目的に、これら前提条件や注意事項を明確にします。    
 
+## 権限によらないテスト用ファイル
+以下のファイルは、任意の認証済みユーザー (AuthenticatedUsers) に権限を付与して暗号化保護したファイルとなっており、どの外部ユーザーでも権限関係なしに開けるはずです。権限を抜きにして、ファイルを開ける環境かどうかテストする場合にお使いください。   
+[Word ファイル](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AIP/AnyoneProtection.docx): M365 Apps もしくは Office + AIP UL Office アドインでの参照が必要   
+[PDF ファイル](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AIP/AnyoneProtection.pdf): Edge もしくは AIP Viewer での参照が必要   
+[PPNG ファイル](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AIP/AnyoneProtection.ppng): AIP Viewer での参照が必要   
 
 ## AIP で認証に利用できるアカウント
 A. 外部の Office 365 テナントのアカウント  
