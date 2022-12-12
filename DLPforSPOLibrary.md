@@ -15,14 +15,14 @@ SharePoint Online に対する DLP のみであれば、Office 365 E3 や ShareP
 5. ライブラリ内のフォルダに、保持ラベルを設定した場合、フォルダ配下のファイルの保持ラベルは、フォルダに設定された保持ラベルで置き換わる。
 
 ### DLP の回避について
-DLP の適用有無を保持ラベルで制御するため、以下のような方法で DLP の回避ができてしまうため、この方法は DLP による完全なデータ制御ではなく、うっかりミスを防ぐような手立てとして位置づける必要があります。
-1. サイトの管理者によるライブラリの設定変更で、サイト内の任意のライブラリで保持ラベルを変更し、DLP の適用を回避できる。
-3. 一旦はライブラリの設定に従った、DLP の判定は行われるものの、一般のユーザーが、ファイルやフォルダの保持ラベルを変更することで、DLP でブロックされたファイルを、DLP 対象外にすることでブロックを解除できてしまう。
+DLP の適用有無を保持ラベルで制御するため、以下のような方法で DLP の回避ができてしまい、この方法は DLP による完全なデータ制御を行うものではなく、うっかりミスを防ぐような手立てとして位置づける必要があります。
+1. サイト管理者によるライブラリの設定変更で、サイト内のライブラリの既定の保持ラベルを変更し、DLP の適用を回避できてしまう。
+3. 一旦は既定の保持ラベルの設定に従った DLP の判定は行われるものの、一般のユーザーが、ファイルやフォルダの保持ラベルを変更することで、DLP でブロックされたファイルを、DLP 対象外にすることでブロックを解除できてしまう。
 
 ## 設定手順
 1. Micrsoft Purview ポータルの[データ ライフサイクル管理](https://compliance.microsoft.com/informationgovernance)にアクセスする。    
-    1.A. 特定のライブラリを除外するケースでは、"共有可能"といった名称で、保持の設定なく、保持ラベルを作成する。    
-    1.B. 特定のライブラリだけを対象とする場合は、"共有不可"といった名称で、保持の設定なく、保持ラベルを作成する。<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/DLPbyRetention01.png"/>    
+    1.A. 特定のライブラリを DLP から除外するケースでは、"共有可能"といった名称で、保持の設定なく、保持ラベルを作成する。    
+    1.B. 特定のライブラリだけを DLP 対象とする場合は、"共有不可"といった名称で、保持の設定なく、保持ラベルを作成する。<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/DLPbyRetention01.png"/>    
      
 2. データ ライフサイクル管理の[ラベル ポリシー](https://compliance.microsoft.com/informationgovernance?viewid=labelpolicies)にて、1 で作成した保持ラベルを、特定の SharePoint Online サイトに発行する。
     
@@ -31,5 +31,5 @@ DLP の適用有無を保持ラベルで制御するため、以下のような�
     3.B. このライブラリのみを DLP 対象とする場合は、"共有不可"の保持ラベルを既定の保持ラベルとして設定する。<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/DLPbyRetention02.png"/>     
     
 4. Micrsoft Purview ポータルの[データ損失防止](https://compliance.microsoft.com/datalossprevention?viewid=policies)で、上記の特定の SharePoint Oline サイトを対象とした、DLP ポリシーを作成する。    
-    4.A. DLP のルールで、特定のライブラリを DLP から除外するケースでは、"グループ"を追加し、"条件の追加"から"保持ラベル"を選択し、"共有可能"のラベルを追加する。ルールのグループの "Not" を有効化し、保持ラベルが"共有可能"となっているアイテムを除外する設定とする。その他 DLP の条件も合わせて設定する。<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/DLPbyRetention03.png"/>     
-    4.B. 特定のライブラリだけを DLP 対象とする場合は、"条件の追加"から"保持ラベル"を選択し、"共有不可"のラベルを追加し、保持ラベルが"共有不可"となっているアイテムのみを対象に設定する。その他 DLP の条件も合わせて設定する。<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/DLPbyRetention04.png"/> 
+    4.A. DLP のルールで、特定のライブラリを DLP から除外するケースでは、"グループ"を追加し、"条件の追加"から"保持ラベル"を選択し、"共有可能"のラベルを追加する。ルールのグループの "Not" を有効化し、保持ラベルが"共有可能"となっているアイテムを除外する設定とする。その他 DLP の条件も適宜設定する。<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/DLPbyRetention03.png"/>     
+    4.B. 特定のライブラリだけを DLP 対象とする場合は、"条件の追加"から"保持ラベル"を選択し、"共有不可"のラベルを追加し、保持ラベルが"共有不可"となっているアイテムのみを対象に設定する。その他 DLP の条件も適宜設定する。<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/DLPbyRetention04.png"/> 
