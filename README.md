@@ -22,3 +22,4 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 |[Insider Risk Management の HR Connector に関連したスクリプト](https://github.com/YoshihiroIchinose/E5Comp/blob/main/IRM_HR_Connector.md)|Azure Storage にアップロードされた CSV ファイルを、Azure Automation のスクリプトを通じて IRM の HR Connector に取り込むサンプルと、HR Connector で取り込む CSV ファイルを元に、メールが有効なセキュリティ グループを作成し、グループメンバーシップをメンテナンスするサンプルを紹介しています。|
 |[Graph API で Teams チャネルに投稿する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage2.md)|CC / DLP のテストなどに利用するため、Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。|
 |[アクティビティ エクスプローラのログの CSV への書き出しサンプル](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ActivityExplorerData.md)|新たに追加された Export-ActivityExplorerData のコマンドを利用して、最大 30 日分、5 万行 (5,000 行x 10 回)のログを取得するサンプルです。|
+|[SharePoint Online のライブラリ単位で DLP を適用・除外する方法](https://github.com/YoshihiroIchinose/E5Comp/blob/main/DLPforSPOLibrary.md)|ライブラリに対する既定の保持ラベルを DLP の条件とすることで、SharePoint Online のサイト内で、ライブラリ単位に DLP の適用や、DLP の適用除外を制御する方法について紹介します。|
