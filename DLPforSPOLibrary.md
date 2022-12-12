@@ -33,3 +33,10 @@ DLP の適用有無を保持ラベルで制御するため、以下のような�
 4. Micrsoft Purview ポータルの[データ損失防止](https://compliance.microsoft.com/datalossprevention?viewid=policies)で、上記の特定の SharePoint Oline サイトを対象とした、DLP ポリシーを作成する。    
     4.A. DLP のルールで、特定のライブラリを DLP から除外するケースでは、"グループ"を追加し、"条件の追加"から"保持ラベル"を選択し、"共有可能"のラベルを追加する。ルールのグループの "Not" を有効化し、保持ラベルが"共有可能"となっているアイテムを除外する設定とする。その他 DLP の条件も適宜設定する。<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/DLPbyRetention03.png"/>     
     4.B. 特定のライブラリだけを DLP 対象とする場合は、"条件の追加"から"保持ラベル"を選択し、"共有不可"のラベルを追加し、保持ラベルが"共有不可"となっているアイテムのみを対象に設定する。その他 DLP の条件も適宜設定する。<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/DLPbyRetention04.png"/> 
+
+## 保持ラベルに応じた検索
+ライブラリ内で、特定の保持ラベルがついたアイテムのみを検索したい場合には、"ComplianceTag" という管理プロパティを用いて、以下の KQL で検索が可能。    
+`ComplianceTag:"共有不可"`    
+    
+ライブラリ内で、特定の保持ラベルがついていないアイテムのみを検索したい場合には、"ComplianceTag" という管理プロパティを用いて、以下の KQL で検索が可能。    
+`-ComplianceTag:"共有可能"`    
