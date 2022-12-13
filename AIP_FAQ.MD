@@ -41,7 +41,7 @@ ProxyAddresses に設定がなければ、UserPrincipalName の値で、指定�
 |Azure Informatino Clienet をインストールした上で、ファイルを右クリックして権限設定する場合 | 〇 | 〇 | × |
 |テナント管理者が秘密度ラベルの保護設定を定義する場合| 〇 | 〇 | 〇 |
 
-## Office 365 Apps for Business -> ドメインの設定ができない
+## Microsoft 365 Apps -> ドメインの設定ができない
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_PIC01.png">  
 (特殊な AllStaff-7184AB3F-CCD1-46F3-8233-3E09E9CF0E66@ドメイン名という指定方法でドメインのすべてのユーザーを指定することは可能。)  
   
@@ -60,7 +60,7 @@ AIP 保護されたファイルを開く際には、AIP に対応した Office �
 ## 保護された Office ファイルを開く場合
 | 環境 | Office 365 アカウントでの AIP 保護されたファイルの参照 | Microsoft Account での AIP 保護されたファイルの参照 | Azure AD B2B (ワンタイム パスコード含む)を利用した AIP 保護されたファイルの参照 |
 |:---:|:---:|:---:|:---:|
-|Office 365 Apps for Business | 〇 | 〇 | 〇 |
+|Microsoft 365 Apps | 〇 | 〇 | 〇 |
 |Office 2019 | 〇 | 〇 | 〇 |
 |Office 2013, 2016 | 〇 | × | 〇 |
 |Office 2010 | 〇 開けるが AIP Client のインストール必須 | × | × 先進認証に対応しないため Azure AD B2B での利用は不可 |  
