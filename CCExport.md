@@ -56,6 +56,8 @@ $a=Get-ComplianceSearchAction -identity ( $SearchName  + '_Export')
 
 #Edge 経由での ClickOnce のアプリ起動をする
 $a=Get-ComplianceSearchAction -identity ( $SearchName  + '_Export') -includeCredential
+Disconnect-ExchangeOnline -Confirm:$false
+
 $temp=$a.Results.Substring(0,$a.Results.IndexOf(";"))
 $url=[System.Uri]::EscapeDataString($temp.Substring($temp.IndexOf("https://")))
 
