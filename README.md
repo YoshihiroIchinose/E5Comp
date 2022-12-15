@@ -23,3 +23,4 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 |[Graph API で Teams チャネルに投稿する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage2.md)|CC / DLP のテストなどに利用するため、Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。|
 |[アクティビティ エクスプローラのログの CSV への書き出しサンプル](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ActivityExplorerData.md)|新たに追加された Export-ActivityExplorerData のコマンドを利用して、最大 30 日分、5 万行 (5,000 行x 10 回)のログを取得するサンプルです。|
 |[SharePoint Online のライブラリ単位で DLP を適用・除外する方法](https://github.com/YoshihiroIchinose/E5Comp/blob/main/DLPforSPOLibrary.md)|ライブラリに対する既定の保持ラベルを DLP の条件とすることで、SharePoint Online のサイト内で、ライブラリ単位に DLP の適用や、DLP の適用除外を制御する方法について紹介します。|
+|[Communication Complinance のポリシーで合致した内容を一括ダウンロードする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/CCExport.md)|Communication Compliance の特定のポリシーに合致したメッセージを抽出する操作を自動化するサンプル スクリプトをご紹介します。|
