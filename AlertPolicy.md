@@ -24,6 +24,11 @@ New-ProtectionAlert -Category DataLossPrevention -Name SensitivityLabelRemoved -
 Connect-IPPSSession
 New-ProtectionAlert -Category DataLossPrevention -Name SensitivityLabelUpdated -NotifyUser admin@mxxx.onmicrosoft.com  -ThreatType Activity -Operation SensitivityLabelUpdated -NotificationCulture ja-JP -Threshold 3 -TimeWindow 60
 ````
+### アラート通知
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert01.png">
+
+### アラート詳細
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert02.png">
 
 ### 補足
 秘密度ラベルの手動操作は、下記の RecodTyped で記録され、それぞれ SharePoint Online 上の Office for the Web、M365 Apps、AIP Client の操作が記録される。<br>
@@ -52,6 +57,10 @@ FileSensitivityLabelRemoved
 アラート ポリシーを利用して秘密度ラベルの操作を監視する場合においては、以下の制限事項がある。
 1. ラベルの変更や削除などの操作に対してアラート設定は可能だが、ログが分かれておらず、ログの内容に応じたフィルタもできないため、秘密度ラベルのダウングレード操作のみを対象とすることはできない。
 2. アラート対象となるユーザーをグループで限定しておくことはできない。アラートを設定する場合、テナント全体のユーザーに対して共通の閾値で設定することとなる。(ユーザーの属性などでフィルタ出来る可能性もあるが、一見したところ、Azure AD の属性や、セキュリティ グループなどでフィルタすることはできなさそう。)
-3. アラートは発令し、アラートを確認した場合には、誰がいつその操作を何回行ったかは判別可能であるが、監査ログに記録されているものがそのまま記載されているわけではないため、どんなラベルからどう変更したかなどは判別できない。
+3. アラートは発令し、アラートを確認した場合には、誰がいつその操作を何回行ったかは判別可能であるが、監査ログに記録されているものがそのまま記載されているわけではないため、どんなラベルからどう変更したかなどは判別できない。<br>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert03.png"><br>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert04.png"><br>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert05.png"><br>
 
-これらを踏まえると、アラートが発令された場合に調査を行いたければ、Activity Explorer の [UI](https://compliance.microsoft.com/dataclassification?viewid=activitiesexplorer) もしくは、[PowerShell で抜き出した情報](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ActivityExplorerData.md)を元に詳細を分析することが望ましい。Acvitiy Explorer の情報では、元の秘密度ラベルや、現行の秘密度ラベルだけではなく、監査ログには記録されていない、LabelDowgarded や LabelUpgraded などのラベル イベントの種類が判定されているため、より効率的なフィルタや調査が可能となっている。
+これらを踏まえると、アラートが発令された場合に調査を行いたければ、Activity Explorer の [UI](https://compliance.microsoft.com/dataclassification?viewid=activitiesexplorer) もしくは、[PowerShell で抜き出した情報](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ActivityExplorerData.md)を元に詳細を分析することが望ましい。Acvitiy Explorer の情報では、元の秘密度ラベルや、現行の秘密度ラベルだけではなく、監査ログには記録されていない、LabelDowgarded や LabelUpgraded などのラベル イベントの種類が判定されているため、より効率的なフィルタや調査が可能となっている。<br>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert06.png">
