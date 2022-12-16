@@ -3,10 +3,10 @@ Purview Portal の[アラート ポリシー](https://learn.microsoft.com/ja-jp/
 DLP の設定などに応じて、どういった状況でアラートを生成し、管理者への通知を行うかの設定が確認できます。
 またこのアラート ポリシーの仕組みを用いて、監査ログに記録される各種操作に応じたアラートの発令も設定することができます。
 ただし、[Web UI](https://compliance.microsoft.com/alertpoliciesv2) からでの設定では、任意の監査ログの Operation を選択することができず、やや汎用性にかけます。
-一方で PowerShell で用意されている New-ProtectionAlert のコマンドレットを利用することで、任意の監査ログの Operation に応じたアラートの定義可能です。
+一方で PowerShell で用意されている [New-ProtectionAlert](https://learn.microsoft.com/ja-jp/powershell/module/exchange/new-protectionalert?view=exchange-ps) のコマンドレットを利用すれば、任意の監査ログの Operation に応じたアラートの定義が可能です。
 
 ## ライセンス
-一定時間の閾値を設定する場合、E5、MDO P2、eDiscovery and Auditのいずれかのライセンスが必要となる。時間の範囲は最も短くて 60 分、操作回数の閾値の下限は 3。
+一定時間の閾値や、7 日間のアノマリーで閾値を設定する場合、MDO P2、E5、E5 Complinace、eDiscovery and Audit のいずれかのライセンスが必要となる。時間の範囲は最も短くて 60 分、操作回数の閾値の下限は 3。
 
 # 秘密度ラベル操作に応じたアラート例
 
