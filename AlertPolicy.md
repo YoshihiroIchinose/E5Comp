@@ -65,7 +65,7 @@ FileSensitivityLabelRemoved
 これらを踏まえると、アラートが発令された場合に調査を行いたければ、Activity Explorer の [UI](https://compliance.microsoft.com/dataclassification?viewid=activitiesexplorer) もしくは、[PowerShell で抜き出した情報](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ActivityExplorerData.md)を元に詳細を分析することが望ましい。Acvitiy Explorer の情報では、元の秘密度ラベルや、現行の秘密度ラベルだけではなく、監査ログには記録されていない、LabelDowgarded や LabelUpgraded などのラベル イベントの種類が判定されているため、より効率的なフィルタや調査が可能となっている。<br>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert06.png" height="400px">
 
-なお監査ログにおいては、LabelEventType の値で秘密度ラベルのアップグレードかダウングレードか識別可能。    
+なお監査ログにおいては、SensitivityLabelEventData の LabelEventType の値で秘密度ラベルのアップグレードかダウングレードか識別可能。    
 
 | 値 | 内容 | 意味 |    
 | :--- | :--- | :--- |    
