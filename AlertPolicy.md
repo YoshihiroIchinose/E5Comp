@@ -49,7 +49,7 @@ SensitivityLabeledFileOpened
 
 一方で Office for the Web で秘密度ラベルを操作した際には、6 SharePointFileOperation の RecordType で M365 Apps や AIP Client とは
 違った以下の名称の Operation で操作が記録されるため、これらを対象にする場合には、別途アラートの定義を行う必要がある。    
-FileSensitivityLabelApplied
+FileSensitivityLabelApplied    
 FileSensitivityLabelChanged    
 FileSensitivityLabelRemoved    
 
