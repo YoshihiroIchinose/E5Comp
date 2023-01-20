@@ -19,8 +19,8 @@ Log Anlytics からこの AIPHeartBeat のログのみを削除するサンプ�
 ## 注意事項
 1. [REST API リファレンス](https://learn.microsoft.com/ja-jp/rest/api/loganalytics/workspace-purge/purge?tabs=HTTP)によると、
 データの消去は、制限なく認められるのものではなく、1 時間当たり 50 要求に制限されること、GDPR への準拠に必要な消去操作のみがサポートされ、
-GDPR 準拠に関連しない要求は拒否される可能性があることが示されています。
-2. 消去の操作をキックした後、即座に消去が行われるわけではなく、ある程度時間をかけて実行されます。
+GDPR 準拠に関連しない要求は拒否される可能性があることが示されており、ログ整理のためだけの削除要求は、拒否される可能性があります。
+2. 消去の操作をキックした後、即座に消去が行われるわけではなく、処理が行われるまで数時間時間がかかります。
 以下のような REST AIP を通じて、スタータスを確認することは可能です。    
 [Get Purge Status](https://learn.microsoft.com/ja-jp/rest/api/loganalytics/workspace-purge/get-purge-status?tabs=HTTP)
 
