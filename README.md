@@ -25,3 +25,5 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 |[SharePoint Online のライブラリ単位で DLP を適用・除外する方法](https://github.com/YoshihiroIchinose/E5Comp/blob/main/DLPforSPOLibrary.md)|ライブラリに対する既定の保持ラベルを DLP の条件とすることで、SharePoint Online のサイト内で、ライブラリ単位に DLP の適用や、DLP の適用除外を制御する方法について紹介します。|
 |[Communication Complinance のポリシーで合致した内容を一括ダウンロードする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/CCExport.md)|Communication Compliance の特定のポリシーに合致したメッセージを抽出する操作を自動化するサンプル スクリプトをご紹介します。|
 |[アラート ポリシーを利用して監査ログに記録された操作に応じてアラートを発令する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AlertPolicy.md)|アラート ポリシーを、PowerShell から設定することで、1 時間の中で 3 回以上、秘密度ラベルを変更するとアラートを生成する方法について紹介します。|
+|[Microsoft Sentinel (Log Analytics) の特定のログを削除する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelDataPurge.md)|Azure Automation を利用して、 Log Anlytics から AIPHeartBeat のログのみを削除するサンプル コードを共有します。|
+|[Sentinel で秘密度ラベルのダウングレード操作をアラートする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelKusto.md)|Microsoft Purview Information Protection のデータ コネクタで取り込んだ秘密度ラベルの操作のログを元に、 一定期間内に複数回秘密度ラベルのダウングレードがあった場合に、それらをアラートする仕組みを Kusto クエリで作成するサンプルです。|
