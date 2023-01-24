@@ -44,7 +44,7 @@ $a|convertto-json
     "5759c9fa-cc5c-4c01-9858-a0e53b65e13e":  "業務"
 }
 ```
-## 秘密度ラベルを表示名に変換する Kusto クエリ例
+## 秘密度ラベルを表示名に置き換えた Kusto クエリ例
 先の PowerShell で得られた出力結果を貼り付け、GUID で記録していた部分を、表示名に置き換える処理を入れることで、Sentinel のアラーとで、
 秘密度ラベルを表示名で確認することができるようになります。なお JSON の Kusto クエリの貼り付けに当たっては、各 GUID と表示名を
 マッピングする行の前後を、'(シングル クォーテーション)で囲むこと、JSON 定義の後は、;(セミコロン)を入れて、空白行を入れずに
@@ -64,3 +64,7 @@ MicrosoftPurviewInformationProtection
 | summarize counts=count(), LabelDetails=make_set(LabelDetail) by UserId, length=bin(TimeGenerated, 60m)
 | where counts >=3
 ```
+## Kusto クエリのサンプル結果
+上記クエリにより、毎時 3 回を超えて秘密度ラベルのダウングレードがあったユーザーおよびその回数がクエリ結果として得られ、具体的な操作内容は、
+LabelDetails で確認できます。
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/SensitiveLabelKusto.png"/>
