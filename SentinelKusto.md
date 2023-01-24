@@ -19,14 +19,14 @@ MicrosoftPurviewInformationProtection
 | where counts >=3
 ```
 
-## 秘密度ラベルの表示名にする
+## 秘密度ラベルの GUID を表示名にする
 MicrosoftPurviewInformationProtection のログでは各秘密度ラベルは、GUID で記録されるため表示名で秘密度ラベルを確認したい場合、
 GUID から表示名に変換するマッピング テーブルを用意する必要があります。これは以下の公式サイトでも紹介されています。
 [秘密度ラベルの表示名をマッピングする](https://learn.microsoft.com/en-us/azure/sentinel/connect-microsoft-purview#known-issues-and-limitations)
 
 ## 秘密度ラベルの情報を PowerShell で取得する
 上記サイトで紹介されているマッピング テーブルを作成する場合には、Exchange Online PowerShell を用いて、
-定義済みの秘密度ラベルの情報を参照することで、得られます。以下のサンプルは、PowerShell を用いて、
+定義済みの秘密度ラベルの情報を参照します。以下のサンプルは、PowerShell を用いて、
 Kusto クエリに張り付けやすい JSON 形式で、秘密度ラベルの GUID と表示名の情報を出力するサンプルです。
 ```
 Connect-IPPSSession
