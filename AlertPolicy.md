@@ -22,7 +22,7 @@ New-ProtectionAlert -Category DataLossPrevention -Name SensitivityLabelRemoved -
 ### 1 時間の中で 3 回以上、秘密度ラベルを変更するとアラートを生成する。
 ````
 Connect-IPPSSession
-New-ProtectionAlert -Category DataLossPrevention -Name SensitivityLabelUpdated -NotifyUser admin@mxxx.onmicrosoft.com  -ThreatType Activity -Operation SensitivityLabelUpdated -NotificationCulture ja-JP -Threshold 3 -TimeWindow 60
+New-ProtectionAlert -Category DataLossPrevention -Name SensitivityLabelUpdated -NotifyUser admin@mxxx.onmicrosoft.com  -ThreatType Activity -Operation SensitivityLabelUpdated -NotificationCulture ja-JP -AlertBy User -Threshold 3 -TimeWindow 60
 ````
 ### アラート通知
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert01.png" height="400px">
@@ -57,7 +57,7 @@ FileSensitivityLabelRemoved
 アラート ポリシーを利用して秘密度ラベルの操作を監視する場合においては、以下の制限事項がある。
 1. ラベルの変更や削除などの操作に対してアラート設定は可能だが、ログが分かれておらず、ログの内容に応じたフィルタもできないため、秘密度ラベルのダウングレード操作のみを対象とすることはできない。
 2. アラート対象となるユーザーをグループで限定しておくことはできない。アラートを設定する場合、テナント全体のユーザーに対して共通の閾値で設定することとなる。(ユーザーの属性などでフィルタ出来る可能性もあるが、一見したところ、Azure AD の属性や、セキュリティ グループなどでフィルタすることはできなさそう。)
-3. アラートは発令し、アラートを確認した場合には、誰がいつその操作を何回行ったかは判別可能であるが、監査ログに記録されているものがそのまま記載されているわけではないため、どんなラベルからどう変更したかなどは判別できない。<br>
+3. アラートが発令してアラートを確認した際、アラートからは誰がいつその操作を何回行ったかは判別可能であるが、監査ログに記録されているものがそのまま記載されているわけではないため、どんなラベルからどう変更したかなどは判別できない。<br>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert03.png"><br>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert04.png" height="400px"><br>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/alert/Alert05.png" height="400px"><br>
