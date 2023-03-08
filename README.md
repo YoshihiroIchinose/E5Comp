@@ -27,4 +27,4 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 |[アラート ポリシーを利用して監査ログに記録された操作に応じてアラートを発令する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AlertPolicy.md)|アラート ポリシーを、PowerShell から設定することで、1 時間の中で 3 回以上、秘密度ラベルを変更するとアラートを生成する方法について紹介します。|
 |[Microsoft Sentinel (Log Analytics) の特定のログを削除する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelDataPurge.md)|Azure Automation を利用して、 Log Anlytics から AIPHeartBeat のログのみを削除するサンプル コードを共有します。|
 |[Sentinel で秘密度ラベルのダウングレード操作をアラートする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelKusto.md)|Microsoft Purview Information Protection のデータ コネクタで取り込んだ秘密度ラベルの操作のログを元に、 一定期間内に複数回秘密度ラベルのダウングレードがあった場合に、それらをアラートする仕組みを Kusto クエリで作成するサンプルです。|
-|[B2B コラボレーションを中心とした外部共有のログの確認](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelKusto.md)|B2B コラボレーションで、外部共有先を把握するために、3 つの操作を対象に共有先のゲスト ユーザーを含め外部共有に関するログを CSV 形式で抽出するスクリプトです。|
+|[B2B コラボレーションを中心とした外部共有のログの確認](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ExternalSharingLogs.md)|B2B コラボレーションで、外部共有先を把握するために、3 つの操作を対象に共有先のゲスト ユーザーを含め外部共有に関するログを CSV 形式で抽出するスクリプトです。|
