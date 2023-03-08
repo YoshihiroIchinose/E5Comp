@@ -13,6 +13,7 @@
 ただし、上記ログは、Azure AD B2B Federation を前提とした操作のみを対象としているため、
 B2B Direct を利用する Teams Connect や、匿名リンクなどは対象外となります。
 
+本ページのスクリプトでは、ログの取得はそれぞれの操作につき、最大 5,000 件の範囲を対象としていますが、5,000 件を超えるログの取得については合わせて[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/Office365Audit.md)を参照ください。その他 SharePoint の共有操作に関する UI ベースでの監査ログの確認については、[こちら](https://learn.microsoft.com/ja-jp/microsoft-365/compliance/audit-log-sharing?view=o365-worldwide)を参考にしてください。
 ## スクリプト
 ```
 #接続に利用するID / パスワード
