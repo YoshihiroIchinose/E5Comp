@@ -28,3 +28,5 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 |[Microsoft Sentinel (Log Analytics) の特定のログを削除する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelDataPurge.md)|Azure Automation を利用して、 Log Anlytics から AIPHeartBeat のログのみを削除するサンプル コードを共有します。|
 |[Sentinel で秘密度ラベルのダウングレード操作をアラートする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelKusto.md)|Microsoft Purview Information Protection のデータ コネクタで取り込んだ秘密度ラベルの操作のログを元に、 一定期間内に複数回秘密度ラベルのダウングレードがあった場合に、それらをアラートする仕組みを Kusto クエリで作成するサンプルです。|
 |[B2B コラボレーションを中心とした外部共有のログの確認](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ExternalSharingLogs.md)|B2B コラボレーションで、外部共有先を把握するために、3 つの操作を対象に共有先のゲスト ユーザーを含め外部共有に関するログを CSV 形式で抽出するスクリプトです。|
+|[許可されていないドメインへの外部共有をメール通知する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ExternalSharingMonitoring.md)|SharePoint リストで用意する許可されたドメイン一覧の情報も加味しながら、許可されたドメイン以外の外部ユーザーへの共有をログから見つけて、Azure Automate/Power Automate/SharePoint Online リストを駆使して、共有操作を行ったユーザーに注意喚起のメール通知を行うソシューション サンプルです。|
+
