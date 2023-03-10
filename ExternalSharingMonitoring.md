@@ -35,11 +35,10 @@ c. SharingActivities のリストの設定から、列のインデックス付�
 ```
 #変数
 $Credential = Get-AutomationPSCredential -Name "Office 365"
-$SiteUrl="https://m365x209793.sharepoint.com/sites/CustomNotification/"
+$SiteUrl="https://xxxx.sharepoint.com/sites/CustomNotification/"
 $AllowedDomainList="AllowedDomains"
 $SharingActivitiesList="SharingActivities"
-Connect-PnPOnline -Url $SiteUrl -credentials $Credential
-$daysInterval=3
+$daysInterval=2
 
 #ログの取得範囲は 2 日間の範囲
 $date=Get-Date
@@ -47,6 +46,7 @@ $Start=$date.addDays($daysInterval*-1).ToUniversalTime().ToString("yyyy-MM-ddTHH
 $End=$date.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 
 #ドメイン許可リストの取得
+Connect-PnPOnline -Url $SiteUrl -credentials $Credential
 $AllowedDmains=@()
 foreach($item in Get-PnPListItem -list $AllowedDomainList -PageSize 1000){
     $AllowedDmains+=$item.FieldValues["Title"].ToLower()
@@ -83,15 +83,20 @@ Connect-ExchangeOnline -credential $Credential
 $RecordType="SharePointSharingOperation"
 $Operation="AddedToGroup"
 $output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation -ResultSize 5000 -SessionCommand ReturnNextPreviewPage|?{$_.UserIds -ne "app@sharepoint"}
-"Site sharing activities logs since $Start"+": "+$output.ResultCount
+#結果がNullでなければ、まずは結果は1個とし、結果が複数個返されている場合には、そのカウントを取得
+$count=0
+if($output -ne $null){$count=1}
+if($output.count -ne $null){$count=$output.count}
+"Site sharing activities logs since $Start"+": "+$count
 
 $csv=@()
 foreach($i in $output){
 $AuditData=$i.AuditData|ConvertFrom-Json
-#ゲスト以外の追加は除く
+#ゲスト以外の追加や、許可されたドメインのゲスト追加は除く
 If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
 $guest=ExtractGuest $AuditData.TargetUserOrGroupName
 If(isAllowed($guest)){continue}
+
 $line = New-Object -TypeName PSObject
 AddMember $line "User" $i.UserIds
 AddMember $line "Guest" $guest
@@ -110,7 +115,7 @@ foreach($i in ($csv|Group-Object LogId)){
     $line = $i.Group[0]
     $AdditionalData=@()
     foreach($d in $i.Group){
-    $AdditionalData+=$d.AdditionalData
+        $AdditionalData+=$d.AdditionalData
     }
     $line.AdditionalData=$AdditionalData -join "`r`n"
 $GroupedCsv+=$line
@@ -121,12 +126,16 @@ $GroupedCsv+=$line
 $RecordType="SharePointSharingOperation"
 $Operation="AddedToSecureLink"
 $output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation -ResultSize 5000 -SessionCommand ReturnNextPreviewPage
-"File sharing activities logs since $Start"+": "+$output.ResultCount
+#結果がNullでなければ、まずは結果は1個とし、結果が複数個返されている場合には、そのカウントを取得
+$count=0
+if($output -ne $null){$count=1}
+if($output.count -ne $null){$count=$output.count}
+"File sharing activities logs since $Start"+": "+$count
 
 $count=0
 foreach($i in $output){
 $AuditData=$i.AuditData|ConvertFrom-Json
-#ゲスト以外への共有は除く
+#ゲスト以外への共有や、許可されたドメインのゲストへの共有は除く
 If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
 $guest=ExtractGuest $AuditData.TargetUserOrGroupName
 If(isAllowed($guest)){continue}
@@ -148,14 +157,10 @@ $count++
 $GroupedCsv2=@()
 foreach($i in ($GroupedCsv|Group-Object LogId)){
     $line = $i.Group[0]
+　　$AdditionalData=@()
     foreach($j in $i.Group){
-        if($j.Operation -eq "File Shared"){
-            $line=$j
-        }
-    }
-    $AdditionalData=@()
-    foreach($d in $i.Group){
-    $AdditionalData+=$d.AdditionalData
+		$AdditionalData+=$j.AdditionalData
+	    if($j.Operation -eq "File Shared"){$line=$j}
     }
     $line.AdditionalData=$AdditionalData -join "`r`n"
     $GroupedCsv2+=$line
@@ -166,7 +171,11 @@ foreach($i in ($GroupedCsv|Group-Object LogId)){
 $RecordType="AzureActiveDirectory"
 $Operation="Add member to group."
 $output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation
-"Adding member activities since $Start"+": "+$output.ResultCount
+#結果がNullでなければ、まずは結果は1個とし、結果が複数個返されている場合には、そのカウントを取得
+$count=0
+if($output -ne $null){$count=1}
+if($output.count -ne $null){$count=$output.count}
+"Adding member activities since $Start"+": "+$count
 Disconnect-ExchangeOnline -Confirm:$false
 
 $count=0
@@ -208,8 +217,7 @@ foreach($item in (Get-PnPListItem -list $SharingActivitiesList -PageSize 1000 -Q
 "Newly identified total sharing activities since $Start"+": "+$GroupedCsv2.count
 
 #リスト側にない検索結果はリストアイテムとして新規に登録する
-#Add-PnPListItemのBatch処理だとUTCでタイムスタンプが書き込めなかったため
-#CSOMを利用
+#Add-PnPListItemのBatch処理だとUTCでタイムスタンプが書き込めなかったためCSOMを利用
 $ctx=get-pnpcontext
 $list = $ctx.get_web().get_lists().getByTitle($SharingActivitiesList)
 $count=0
@@ -225,9 +233,10 @@ $i.set_item("SharedItem", $item.SharedItem)
 $i.set_item("AdditionalData", $item.AdditionalData)
 $i.update()
 $count++
+#書き込みが多い場合には、一旦 100 アイテムで反映
   if($count % 100 -eq 0){
     $ctx.ExecuteQuery()}
-}#csv
+}
 $ctx.ExecuteQuery()
 "File sharing activities were synched with the list."
 Disconnect-PnPOnline
