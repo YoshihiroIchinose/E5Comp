@@ -295,3 +295,4 @@ Disconnect-PnPOnline
 1. フローを保存する
 送信されるメール通知は以下の通り。   
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification3.png"/>
+その他、Power Automate を活用することで、ファイル共有操作をした上司を取得し、CC に上司を入れてメール通知することや、共有メールボックスを作成し、代理人として送信の権限を付与することで、共有メールボックスのアカウントを送信元としたメール通知も可能。
