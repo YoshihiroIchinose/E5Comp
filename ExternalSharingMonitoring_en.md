@@ -62,11 +62,11 @@ $Credential = Get-AutomationPSCredential -Name "Office 365"
 $SiteUrl="https://xxxx.sharepoint.com/sites/CustomNotification/"
 $AllowedDomainList="AllowedDomains"
 $SharingActivitiesList="SharingActivities"
-$daysInterval=2
+$HoursInterval=48
 
-#Log retrieval range is 2 days as a test
+#Log retrieval range is 48 hours as a test
 $date=Get-Date
-$Start=$date.addDays($daysInterval*-1).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+$Start=$date.addHours($HoursInterval*-1).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 $End=$date.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 
 #Get a domain allowlist
@@ -276,7 +276,7 @@ Disconnect-PnPOnline
 1. Add the "Send an email (V2)" action in "Office 365 Outlook" category in "If yes" section
 1. In the "To", type the administrator's fixed email address
 1. In the "Subject", type "Guest user sharing to unauthorized domain"
-1. Approximately include the following in the "Body" ([] refers to the list column in dynamic content) 
+1. Approximately include the following in the "Body" ([] refers to the list column in dynamic content)   
 A guest user shared to an unauthorized domain.   
 Please check the contents. 
 User: [User]   
@@ -287,8 +287,7 @@ Share with: [Guest]
 1. Add the "Send an email (V2)" action in "Office 365 Outlook" category in "If No" section as well
 1. In the "To", add [User] in the list column as dynamic content 
 1. In the "Subject", type "Sharing to unauthorized domains"
-1. Approximately include the following in the "Body" ([] refers to the list column in dynamic content) 
-
+1. Approximately include the following in the "Body" ([] refers to the list column in dynamic content)   
 Sharing to an unauthorized domain occurred. If it's an unintended sharing, unshare it.   
 If it is necessary for business purposes, please contact Help Desk to request permission for the domain.   
 User: [User]   
