@@ -18,7 +18,7 @@ before it writes logs to the SharePoint list.
 4. If you want to send another email notification for testing again, delete the item related to the sharing activities from the SharePoint list.
 This ensures that when Azure Automate writes the log again in the SharePoint list, Power Automate sends an email notification for that item.
 
-# Advance preparation
+# Preparation
 ## 1. Prepare a SharePoint site to store external sharing operations
 1. Create a dedicated SharePoint team site under the name "CustomeNotifcation"   
 1. Create two blank lists from the site content of the site you created with the following names  
@@ -240,8 +240,8 @@ foreach($item in (Get-PnPListItem -list $SharingActivitiesList -PageSize 1000 -Q
 }
 "Newly identified total sharing activities since $Start"+": "+$GroupedCsv2.count
 
-#Search results that are not on the list side are newly registered as list items.
-#Add-PnPListItemのBatch処理だとUTCでタイムスタンプが書き込めなかったためCSOMを利用
+#Write logs that are not on the SharePoint List
+#In the Batch process of Add-PnPListItem, the timestamp could not be written in UTC, so use CSOM.
 $ctx=get-pnpcontext
 $list = $ctx.get_web().get_lists().getByTitle($SharingActivitiesList)
 $count=0
@@ -257,7 +257,7 @@ $i.set_item("SharedItem", $item.SharedItem)
 $i.set_item("AdditionalData", $item.AdditionalData)
 $i.update()
 $count++
-#書き込みが多い場合には、一旦 100 アイテムで反映
+#If there are many writes, reflect them per 100 items
   if($count % 100 -eq 0){
     $ctx.ExecuteQuery()}
 }
@@ -266,41 +266,42 @@ $ctx.ExecuteQuery()
 Disconnect-PnPOnline
 ```
 
-## 3. Power Automate によるメール通知の設定
-1. SharingActivities のリストのメニューの統合から Power Automate を選択し、フローの作成を選択
-1. "新しい SharePoint リスト アイテムが追加されたらカスタマイズされたメールを送信する"のフローを選択しフローを作成する
-1. 編集から"Get My profile (V2)" および "Send Email" のステップを削除する
-1. 新しいステップで "コントロール" の "条件" を追加する
-1. 条件の値で、動的なコンテンツの "User" を指定し、"次の値を含む"、"#ext#" という条件を設定する   
-   (共有操作を行ったのが外部ユーザーであれば、メール通知を本人に行わないようにするため)
-1. "はいの場合" に "Outlook" の "メールの送信 (V2)" のアクションを追加する
-1. 宛先に管理者のメールアドレスを設定する
-1. 件名に "ゲスト ユーザーによる承認されていないドメインへの共有" と入力する
-1. 本文におおよそ以下の内容を記載する([] は動的なコンテンツでリスト列を参照する)   
-ゲスト ユーザーによる承認されていないドメインへの共有が行われました。   
-内容を確認して下さい。   
-ユーザー: [User]   
-時間(UTC): [Time]   
-共有されたアイテム: [SharedItem]   
-共有先: [Guest]   
+## 3. Set up email notifications with Power Automate
+1. Select Power Automate from the "Integrate" in the menu of SharingActivities list, and then select "Create a flow"
+1. Create a flow by selecting the "Send a customized email when a new SharePoint list item is added" flow
+1. Edit a flow and Remove the "Get My profile (V2)" and "Send Email" steps
+1. Add a "Condition" in a "Control"category as a new step
+1. In the condition value, specify "User" for Dynamic content, and set the condition "contains" and "#ext#" as a value 
+   (If the sharing operation was performed by an external user, to prevent the user from receiving email notifications)
+1. Add the "Send Email (V2)" action in "Outlook" category in "If yes" section
+1. In the "To", type the administrator's fixed email address
+1. In the "Subject", type "Guest user sharing to unauthorized domain"
+1. Approximately include the following in the "Body" ([] refers to the list column in dynamic content) 
+A guest user shared to an unauthorized domain.   
+Please check the contents. 
+User: [User]   
+Time(UTC): [Time]   
+SharedItem: [SharedItem]   
+Share with: [Guest]   
 
-1. "いいえの場合" にも "Outlook" の "メールの送信 (V2)" のアクションを追加する
-1. 宛先に動的なコンテンツでリスト列の "User" を指定する
-1. 件名に"承認されていないドメインへの共有"と入力する
-1. 本文におおよそ以下の内容を記載する([] は動的なコンテンツでリスト列を参照する)   
-承認されていないドメインへの共有が行われました。意図しない共有の場合は、共有を解除ください。   
-業務上必要な操作の場合には、Help Desk に連絡し、ドメインの許可を申請してください。  
-ユーザー: [User]   
-時間(UTC): [Time]   
-共有されたアイテム: [SharedItem]   
-共有先: [Guest]   
+1. Add the "Send Email (V2)" action in "Outlook" category in "If No" section as well
+1. In the "To", add [User] in the list column as dynamic content 
+1. In the "Subject", type "Sharing to unauthorized domains"
+1. Approximately include the following in the "Body" ([] refers to the list column in dynamic content) 
 
-1. 後ろに新しいステップを追加し、"項目の更新" のアクションを追加する
-1. サイトのアドレスで、"Customnotification" のサイトを指定し、リスト名で "SharingActivities" を指定する
-1. ID を動的なコンテンツでリスト列の "ID" を指定する
-1. タイトルを動的なコンテンツでリスト列の "タイトル" を指定する
-1. "Notified" を "はい" に指定する
-1. フローを保存する
-送信されるメール通知は以下の通り。   
+Sharing to an unauthorized domain occurred. If it's an unintended sharing, unshare it.   
+If it is necessary for business purposes, please contact Help Desk to request permission for the domain.   
+User: [User]   
+Time(UTC): [Time]   
+SharedItem: [SharedItem]   
+Share with: [Guest]   
+
+1. Add a new step at the last and add an "Update Item" action
+1. Specify the site for "Customnotification" in the site address and "SharingActivities" in the list name
+1. Specify the [ID] of a list column as dynamic content
+1. Specify the [title] of a list column as dynamic content
+1. Specify "Notified" as "Yes"
+1. Save the flow
+The email notification sent is as follows. 
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification3.png"/>
-その他、Power Automate を活用することで、ファイル共有操作をした上司を取得し、CC に上司を入れてメール通知することや、共有メールボックスを作成し、代理人として送信の権限を付与することで、共有メールボックスのアカウントを送信元としたメール通知も可能。
+In addition, by utilizing Power Automate, it is possible to get the manager who performed the file sharing operation and put the manager in CC to notify by e-mail, and by creating a shared mailbox and granting the permission to send as a proxy, it is also possible to send e-mail notifications from the account of the shared mailbox.
