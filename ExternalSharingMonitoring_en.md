@@ -48,41 +48,41 @@ When logs are written to this list, it looks like the following.
 register the ID and password of an account with the name "Office 365" that has permission to extract audit logs and 
 has permission to write to the specified SharePoint Online site.
 1. In "Runbooks", "Create a runbook" for "PowerShell" with runtime version 5.1 named "ExtractSharingActivities"      
-1. 作成した Runbook に以下のスクリプトをコピー & ペーストする   
-1. 適宜スクリプト内の SharePoint Site の URL および、リスト名を変更・保存し、公開する   
-1. 作成した Runbook を"開始"し、動作を確認する   
-1. 必要に応じて Daily 等のスケジュール実行を設定する   
-Azure Automation で本スクリプトを実行すると、以下のように処理されたログの件数が出力される。   
+1. Copy and paste the following script into the runbook you created   
+1. Edit the SharePoint site URL and list name in the script as appropriate, then save, and publish the Runbook
+1. Start the runbook you created and check how it works   
+1. Set up schedule execution such as daily as necessary    
+When this script is executed in Azure Automation, the number of logs processed is output as follows.     
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification2.png"/>
 
-#### Aure Automation サンプル スクリプト
+#### Aure Automation Sample Script
 ```
-#変数
+#Variables which should be modified based on the environment
 $Credential = Get-AutomationPSCredential -Name "Office 365"
 $SiteUrl="https://xxxx.sharepoint.com/sites/CustomNotification/"
 $AllowedDomainList="AllowedDomains"
 $SharingActivitiesList="SharingActivities"
 $daysInterval=2
 
-#ログの取得範囲は 2 日間の範囲
+#Log retrieval range is 2 days as a test
 $date=Get-Date
 $Start=$date.addDays($daysInterval*-1).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 $End=$date.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 
-#ドメイン許可リストの取得
+#Get a domain allowlist
 Connect-PnPOnline -Url $SiteUrl -credentials $Credential
 $AllowedDmains=@()
 foreach($item in Get-PnPListItem -list $AllowedDomainList -PageSize 1000){
     $AllowedDmains+=$item.FieldValues["Title"].ToLower()
 }
 
-#オブジェクトに値を設定する Function
+#A function for adding a member to the object
 Function AddMember{
     Param($a,$b,$c)
     add-member -InputObject $a -NotePropertyName $b  -NotePropertyValue $c
 }
 
-#Azure AD B2B のゲスト ID の表記を見やすくする Function
+#A function that makes the Azure AD B2B guest ID notation easier to read
 Function ExtractGuest{
     Param($a)
     $a=$a.replace("#EXT#","#ext#")
@@ -92,7 +92,7 @@ Function ExtractGuest{
     return $a
 }
 
-#ドメイン許可リストに含まれているか判定する Funciton
+#A function to determine if a domain is on the allowlist
 Function IsAllowed{
     Param($a)
     $a=$a.ToLower()
@@ -102,12 +102,12 @@ Function IsAllowed{
     return $false
 }
 
-#1. ゲスト ユーザーを SharePoint グループに追加し権限を付与する操作のログの取得
+#1. Get logs of operations that add guest users to SharePoint groups and grant permissions
 Connect-ExchangeOnline -credential $Credential
 $RecordType="SharePointSharingOperation"
 $Operation="AddedToGroup"
 $output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation -ResultSize 5000 -SessionCommand ReturnNextPreviewPage|?{$_.UserIds -ne "app@sharepoint"}
-#結果がNullでなければ、まずは結果は1個とし、結果が複数個返されている場合には、そのカウントを取得
+#If the result is not null, consider the number of result is one at first, and if multiple results are returned, get the count
 $count=0
 if($output -ne $null){$count=1}
 if($output.count -ne $null){$count=$output.count}
@@ -116,7 +116,7 @@ if($output.count -ne $null){$count=$output.count}
 $csv=@()
 foreach($i in $output){
 $AuditData=$i.AuditData|ConvertFrom-Json
-#ゲスト以外の追加や、許可されたドメインのゲスト追加は除く
+#Excludes non-guest additions and guest additions from allowed domains
 If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
 $guest=ExtractGuest $AuditData.TargetUserOrGroupName
 If(isAllowed($guest)){continue}
@@ -133,7 +133,7 @@ $csv+=$line
 }
 "Unallowed site sharing activities since $Start"+": "+$csv.count
 
-#同じ CorrelationID のログをマージ
+#Merge logs with the same CorrelationID
 $GroupedCsv=@()
 foreach($i in ($csv|Group-Object LogId)){
     $line = $i.Group[0]
@@ -146,11 +146,11 @@ $GroupedCsv+=$line
 }
 "Unallowed site sharing activities merged since $Start"+": "+$GroupedCsv.count
 
-#2.ファイルを直接ゲスト ユーザーに共有する操作のログの取得
+#2. Get logs of operations that share files directly to guest users
 $RecordType="SharePointSharingOperation"
 $Operation="AddedToSecureLink"
 $output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation -ResultSize 5000 -SessionCommand ReturnNextPreviewPage
-#結果がNullでなければ、まずは結果は1個とし、結果が複数個返されている場合には、そのカウントを取得
+#If the result is not null, consider the number of result is one at first, and if multiple results are returned, get the count
 $count=0
 if($output -ne $null){$count=1}
 if($output.count -ne $null){$count=$output.count}
@@ -159,7 +159,7 @@ if($output.count -ne $null){$count=$output.count}
 $count=0
 foreach($i in $output){
 $AuditData=$i.AuditData|ConvertFrom-Json
-#ゲスト以外への共有や、許可されたドメインのゲストへの共有は除く
+#Excludes non-guest additions and guest additions from allowed domains
 If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
 $guest=ExtractGuest $AuditData.TargetUserOrGroupName
 If(isAllowed($guest)){continue}
@@ -177,7 +177,7 @@ $count++
 }
 "Unallowed file sharing activities since $Start"+": "+$count
 
-#1と2で共通する CorrelationID のログをFile Shared 優先でマージ
+#Merge logs of 1 and 2 with the same CorrelationID while prioritizing 2, "File Shared"
 $GroupedCsv2=@()
 foreach($i in ($GroupedCsv|Group-Object LogId)){
     $line = $i.Group[0]
@@ -191,11 +191,11 @@ foreach($i in ($GroupedCsv|Group-Object LogId)){
 }
 "Unallowed total sharing activities since $Start"+": "+$GroupedCsv2.count
 
-#3.既存グループへのゲスト ユーザーの追加操作のログの取得
+#3.Get logs for adding a guest user to an existing group
 $RecordType="AzureActiveDirectory"
 $Operation="Add member to group."
 $output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation
-#結果がNullでなければ、まずは結果は1個とし、結果が複数個返されている場合には、そのカウントを取得
+#If the result is not null, consider the number of result is one at first, and if multiple results are returned, get the count
 $count=0
 if($output -ne $null){$count=1}
 if($output.count -ne $null){$count=$output.count}
@@ -205,7 +205,7 @@ Disconnect-ExchangeOnline -Confirm:$false
 $count=0
 foreach($i in $output){
     $AuditData=$i.AuditData|ConvertFrom-Json
-    #ゲスト以外の追加は除く
+    #Excludes non-guest additions
     If(!$AuditData.ObjectId.Contains("#EXT#")){continue}
     $guest=ExtractGuest $AuditData.ObjectId
     If(isAllowed($guest)){continue}
@@ -223,7 +223,7 @@ foreach($i in $output){
 }
 "Unallowed adding member activities since $Start"+": "+$count
 
-#現在のリスト アイテムと重複するものは削除してアップロードしない
+#Remove duplicates of current list items and do not upload them
 $CAML="<Query><Where><Geq><FieldRef Name='Time'/><Value Type='DateTime' IncludeTimeValue='TRUE'>$Start</Value></Geq></Where></Query>"
 $GroupedCsv2 = {$GroupedCsv2}.Invoke()
 foreach($item in (Get-PnPListItem -list $SharingActivitiesList -PageSize 1000 -Query $CAML)){
@@ -240,7 +240,7 @@ foreach($item in (Get-PnPListItem -list $SharingActivitiesList -PageSize 1000 -Q
 }
 "Newly identified total sharing activities since $Start"+": "+$GroupedCsv2.count
 
-#リスト側にない検索結果はリストアイテムとして新規に登録する
+#Search results that are not on the list side are newly registered as list items.
 #Add-PnPListItemのBatch処理だとUTCでタイムスタンプが書き込めなかったためCSOMを利用
 $ctx=get-pnpcontext
 $list = $ctx.get_web().get_lists().getByTitle($SharingActivitiesList)
