@@ -269,7 +269,7 @@ Disconnect-PnPOnline
 ## 3. Set up email notifications with Power Automate
 1. Select Power Automate from the "Integrate" in the menu of SharingActivities list, and then select "Create a flow"
 1. Create a flow by selecting the "Send a customized email when a new SharePoint list item is added" flow
-1. Edit a flow and Remove the "Get My profile (V2)" and "Send Email" steps
+1. Edit a flow and Remove the "Get My profile (V2)" and "Send an email" steps
 1. Add a "Condition" in a "Control"category as a new step
 1. In the condition value, specify "User" for Dynamic content, and set the condition "contains" and "#ext#" as a value 
    (If the sharing operation was performed by an external user, to prevent the user from receiving email notifications)
