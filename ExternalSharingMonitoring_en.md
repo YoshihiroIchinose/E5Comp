@@ -273,7 +273,7 @@ Disconnect-PnPOnline
 1. Add a "Condition" in a "Control"category as a new step
 1. In the condition value, specify "User" for Dynamic content, and set the condition "contains" and "#ext#" as a value 
    (If the sharing operation was performed by an external user, to prevent the user from receiving email notifications)
-1. Add the "Send Email (V2)" action in "Outlook" category in "If yes" section
+1. Add the "Send an email (V2)" action in "Office 365 Outlook" category in "If yes" section
 1. In the "To", type the administrator's fixed email address
 1. In the "Subject", type "Guest user sharing to unauthorized domain"
 1. Approximately include the following in the "Body" ([] refers to the list column in dynamic content) 
@@ -284,7 +284,7 @@ Time(UTC): [Time]
 SharedItem: [SharedItem]   
 Share with: [Guest]   
 
-1. Add the "Send Email (V2)" action in "Outlook" category in "If No" section as well
+1. Add the "Send an email (V2)" action in "Office 365 Outlook" category in "If No" section as well
 1. In the "To", add [User] in the list column as dynamic content 
 1. In the "Subject", type "Sharing to unauthorized domains"
 1. Approximately include the following in the "Body" ([] refers to the list column in dynamic content) 
