@@ -284,6 +284,8 @@ Time(UTC): [Time]
 SharedItem: [SharedItem]   
 Share with: [Guest]   
 
+1. Add "Get manager (V2)" action in "If No" section
+1. In the "User (UPN)", add [User] from the list column as dynamic content
 1. Add the "Send an email (V2)" action in "Office 365 Outlook" category in "If No" section as well
 1. In the "To", add [User] in the list column as dynamic content 
 1. In the "Subject", type "Sharing to unauthorized domains"
@@ -300,7 +302,11 @@ Share with: [Guest]
 1. Specify the [ID] of a list column as dynamic content
 1. Specify the [title] of a list column as dynamic content
 1. Specify "Notified" as "Yes"
-1. Save the flow
-The email notification sent is as follows. 
-<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification3.png"/>
-In addition, by utilizing Power Automate, it is possible to get the manager who performed the file sharing operation and put the manager in CC to notify by e-mail, and by creating a shared mailbox and granting the permission to send as a proxy, it is also possible to send e-mail notifications from the account of the shared mailbox.
+1. Save the flow   
+
+## The overview of this flow should be like below.    
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification5.png"/>
+
+## The email notifications sent by this flow are as follows. 
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification4.png"/>
+In addition, by utilizing Power Automate, it is possible to send e-mail notifications from the account of the shared mailbox by creating a shared mailbox and granting the permission to send as a proxy.
