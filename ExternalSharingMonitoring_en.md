@@ -43,7 +43,7 @@ When logs are written to this list, it looks like the following.
 1. In your Azure Automation account, go to "Modules" -> "Browse Gallery" and add the following three modules:   
 (Runtime version is 5.1)   
   SharePointOnline.CSOM    
-  PnP.PowerShell 
+  PnP.PowerShell   
   ExchangeOnlineManagement   
 1. In "Credentials" > "Add Credentials" for your Azure Automation account,
 register the ID and password of an account with the name "Office 365" that has permission to extract audit logs and 
