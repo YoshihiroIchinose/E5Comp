@@ -24,7 +24,8 @@ This ensures that when Azure Automate writes the log again in the SharePoint lis
 1. Create two blank lists from the site content of the site you created with the following names  
 ### AllowedDomains
 Title-only list without any additional columns. Add domains as list items that you don't want to be notified of.
-If the guest user's ID ends with these domains, the sharing activity for this guest will not be recorded.
+If the guest user's ID ends with these domains, the sharing activity for this guest will not be recorded.   
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification6.png"/>
 
 ### SharingActivities   
 Add the following columns other than the title: To make it easier to handle in PowerShell, create columns with alphanumeric names as follows.      
