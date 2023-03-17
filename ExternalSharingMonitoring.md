@@ -300,6 +300,10 @@ Disconnect-PnPOnline
 1. タイトルを動的なコンテンツでリスト列の [タイトル] を指定する
 1. "Notified" を "はい" に指定する
 1. フローを保存する
-送信されるメール通知は以下の通り。   
+
+### 設定後の Power Automte フローの全体
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification7.png"/>
+
+### 送信されるメール通知例
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification3.png"/>
 その他、Power Automate では、共有メールボックスを作成し、代理人として送信の権限を付与することで、共有メールボックスのアカウントを送信元としたメール通知も可能。
