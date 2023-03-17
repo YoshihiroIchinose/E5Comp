@@ -290,7 +290,8 @@ Share with: [Guest]
 1. Add the "Send an email (V2)" action in "Office 365 Outlook" category in "If No" section as well
 1. In the "To", add [User] in the list column as dynamic content 
 1. In the "Subject", type "Sharing to unauthorized domains"
-1. Approximately include the following in the "Body" ([] refers to the list column in dynamic content)   
+1. Click "Show advanced options", then in the "CC", add [Mail] as dynamic content which was obtained in a previous action
+3. Approximately include the following in the "Body" ([] refers to the list column in dynamic content)   
 Sharing to an unauthorized domain occurred. If it's an unintended sharing, unshare it.   
 If it is necessary for business purposes, please contact Help Desk to request permission for the domain.   
 User: [User]   
