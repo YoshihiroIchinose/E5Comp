@@ -1,3 +1,4 @@
+English version is [here](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ExternalSharingMonitoring_en.md)   
 # 許可されていない B2B 外部共有操作をメール通知する
 DLP の補完として、許可されていないドメインの外部ユーザーにSharePoint Online / OneDriver for Business / Teams 等を通じて、
 ファイルの共有を行った際、それらの操作を監査ログから拾ってメール通知することを実現するサンプルの手順を紹介します。
@@ -18,7 +19,9 @@ DLP の補完として、許可されていないドメインの外部ユーザ�
 1. 専用の SharePoint チーム サイトを CustomeNotifcation の名称で作成する   
 1. 作成したサイトのサイト コンテンツから以下の名称で 2 つの空白のリストを作成する   
 ### AllowedDomains
-特に列の追加なくタイトルのみのリスト。通知対象外とするドメインを追加しておく。ゲスト ユーザーの ID と後方一致でマッチングを行って、許可されたユーザーをドメインで除外する。
+特に列の追加なくタイトルのみのリスト。通知対象外とするドメインを追加しておく。ゲスト ユーザーの ID と後方一致でマッチングを行って、許可されたユーザーをドメインで除外する。リスト作成後、許可ドメインを追加した画面は以下。   
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification6.png"/>
+
 ### SharingActivities   
 タイトル以外の以下の列を追加する。PowerShell で扱いやすくするために、以下の通り英数字で列は作成する。   
 | 列の名称 | タイトル | User | Guest | Time | Operation | SharedItem | AdditionalData | Notified |
@@ -54,11 +57,11 @@ $Credential = Get-AutomationPSCredential -Name "Office 365"
 $SiteUrl="https://xxxx.sharepoint.com/sites/CustomNotification/"
 $AllowedDomainList="AllowedDomains"
 $SharingActivitiesList="SharingActivities"
-$daysInterval=2
+$HoursInterval=48
 
-#ログの取得範囲は 2 日間の範囲
+#ログの取得範囲はテスト環境として過去 48 時間の範囲
 $date=Get-Date
-$Start=$date.addDays($daysInterval*-1).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+$Start=$date.addHours($HoursInterval*-1).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 $End=$date.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 
 #ドメイン許可リストの取得
@@ -264,7 +267,7 @@ Disconnect-PnPOnline
 1. 編集から"Get My profile (V2)" および "Send Email" のステップを削除する
 1. 新しいステップで "コントロール" の "条件" を追加する
 1. 条件の値で、動的なコンテンツの "User" を指定し、"次の値を含む"、"#ext#" という条件を設定する   
-   (共有操作を行ったのが外部ユーザーであれば、メール通知を本人に行わないようにするため)
+   (共有操作を行ったのが外部ユーザーであれば、メール通知を本人に行わないようにして、決まった管理者にメール通知する)
 1. "はいの場合" に "Outlook" の "メールの送信 (V2)" のアクションを追加する
 1. 宛先に管理者のメールアドレスを設定する
 1. 件名に "ゲスト ユーザーによる承認されていないドメインへの共有" と入力する
@@ -276,9 +279,13 @@ Disconnect-PnPOnline
 共有されたアイテム: [SharedItem]   
 共有先: [Guest]   
 
-1. "いいえの場合" にも "Outlook" の "メールの送信 (V2)" のアクションを追加する
-1. 宛先に動的なコンテンツでリスト列の "User" を指定する
+1. "いいえの場合" セクションに "上司の取得 (V2)"のアクションを追加する
+　 (社内ユーザーによる共有の場合、To に共有を行った社内ユーザー、CC のその上司を入れてメール通知する)
+1. "User (UPN)" に動的なコンテンツでリスト列の [User] を追加する
+1. 続いて "Outlook" の "メールの送信 (V2)" のアクションを追加する
+1. 宛先に動的なコンテンツでリスト列の [User] を指定する
 1. 件名に"承認されていないドメインへの共有"と入力する
+1. "Show advanced options" をクリックして、"CC" に動的なコンテンツで上司となる [Mail] を追加する
 1. 本文におおよそ以下の内容を記載する([] は動的なコンテンツでリスト列を参照する)   
 承認されていないドメインへの共有が行われました。意図しない共有の場合は、共有を解除ください。   
 業務上必要な操作の場合には、Help Desk に連絡し、ドメインの許可を申請してください。  
@@ -289,10 +296,10 @@ Disconnect-PnPOnline
 
 1. 後ろに新しいステップを追加し、"項目の更新" のアクションを追加する
 1. サイトのアドレスで、"Customnotification" のサイトを指定し、リスト名で "SharingActivities" を指定する
-1. ID を動的なコンテンツでリスト列の "ID" を指定する
-1. タイトルを動的なコンテンツでリスト列の "タイトル" を指定する
+1. ID を動的なコンテンツでリスト列の [ID] を指定する
+1. タイトルを動的なコンテンツでリスト列の [タイトル] を指定する
 1. "Notified" を "はい" に指定する
 1. フローを保存する
 送信されるメール通知は以下の通り。   
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification3.png"/>
-その他、Power Automate を活用することで、ファイル共有操作をした上司を取得し、CC に上司を入れてメール通知することや、共有メールボックスを作成し、代理人として送信の権限を付与することで、共有メールボックスのアカウントを送信元としたメール通知も可能。
+その他、Power Automate では、共有メールボックスを作成し、代理人として送信の権限を付与することで、共有メールボックスのアカウントを送信元としたメール通知も可能。
