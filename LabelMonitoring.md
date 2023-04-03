@@ -2,7 +2,7 @@
 秘密度ラベルの変更に伴う情報漏えいを監視するため、M365 Apps、SharePoint (Office for the web)、AIP アドインのそれぞれの監査ログから、
 秘密ラベルのダウングレード・秘密度ラベルの削除・サブ ラベルの変更による暗号化解除の操作を抜き出し、これら操作のログを、Azure Automate を利用して、
 SharePoint リストに書き込むと共に、Power Automate を利用して、カスタムのメール通知を行うソリューションの実装サンプルになります。
-構造や作り方は外部共有操作をメール通知する[こちら](https://github.com/YoshihiroIchinose/E5Comp/edit/main/ExternalSharingMonitoring.md)のサンプルと同じなので、
+構造や作り方は外部共有操作をメール通知する[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ExternalSharingMonitoring.md)のサンプルと同じなので、
 併せて参考にしてください。
 
 おおよその動作の仕組みとしては以下の通りです。
@@ -226,5 +226,5 @@ $ctx.ExecuteQuery()
 Disconnect-PnPOnline
 ```
 ## 3. Power Automate によるメール通知の設定
-[こちら](https://github.com/YoshihiroIchinose/E5Comp/edit/main/ExternalSharingMonitoring.md)を参考に、LabelActivities のリストに対して、
+[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ExternalSharingMonitoring.md)を参考に、LabelActivities のリストに対して、
 新規リスト アイテムが登録された際、起動する Power Automate のフローを作成し、カスタムのメール通知を設定する。必要に応じて EncryptionStatusChange で、EncryptionRemoved のみを対象としてもよい。
