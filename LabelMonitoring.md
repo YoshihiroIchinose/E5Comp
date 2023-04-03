@@ -70,7 +70,7 @@ Function AddMember{
 #秘密度ラベルを GUID から表示名に変換する Function
 Function GetLabelName{
     Param($a)
-    if($a -eq $null){return $null}
+    if($a -eq $null -or $a -eq ""){return $null}
     foreach($l in $labels){if($l.Guid -eq $a){return $l.Name}}
     return "Not Found"
 }
