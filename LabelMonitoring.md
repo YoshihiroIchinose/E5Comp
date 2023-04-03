@@ -77,41 +77,41 @@ Function IsEncryptionLabel{
     Param($a)
     if($a -eq $null){return $false}
     foreach($l in $labels){
-      if($l.Guid -ne $a){continue}
-      foreach($act in $l.LabelActions){
-        $j=convertfrom-json $act
-        If($j.Type -eq "encrypt"){return $true}
-      }
+        if($l.Guid -ne $a){continue}
+	foreach($act in $l.LabelActions){
+	    $j=convertfrom-json $act
+	    If($j.Type -eq "encrypt"){return $true}
+	}
     }
     return $false
 }
 
 #監査ログを 5,000 件 x 最大 10 回で 50,000 件取得し、$global:output に格納する Function
 Function ExtractAuditLog{
-  Param($type,$op)
-  if($type -eq $null){return}
-  $itemcount=0
-	for($i = 0; $i -lt 10; $i++){
+    Param($type,$op)
+    if($type -eq $null){return}
+    $itemcount=0
+    for($i = 0; $i -lt 10; $i++){
         $result=Search-UnifiedAuditLog -RecordType $type -StartDate $global:Start -EndDate $global:End -SessionId $type -Operations $op	-SessionCommand ReturnLargeSet -ResultSize 5000
-        "Query for $type, Round("+($i+1)+"): "+$result.Count.ToString() + " items"
-        $global:output+=$result
-        $itemcount+=$result.Count
-        if($result.count -ne 5000){break}
+	"Query for $type, Round("+($i+1)+"): "+$result.Count.ToString() + " items"
+	$global:output+=$result
+	$itemcount+=$result.Count
+	if($result.count -ne 5000){break}
     }
     "$type Total: "+$itemcount.ToString() + " items"
 }
 
 #3 M365Apps, SharePoin(WAC), AIP の種類によらず $global:output からラベル操作の内容を抽出し、$global:csv に書き出す
 Function FormatLabelActitivyLog {
-  foreach($i in $global:output){
+    foreach($i in $global:output){
     $Operation=""
     $EncryptionStatusChange=""
     $AuditData=$i.AuditData|ConvertFrom-Json
     $Operation=switch($AuditData.SensitivityLabelEventData.LabelEventType){
-      1 {"LabelUpgraded"}
-      2 {"LavelDowngraded"}
-      3 {"LavelRemoved"}
-      4 {"LabelChangedSameOrder"}
+        1 {"LabelUpgraded"}
+	2 {"LavelDowngraded"}
+	3 {"LavelRemoved"}
+	4 {"LabelChangedSameOrder"}
     }
     #ラベルのアップグレードは除外
     if($Operation -eq "LabelUpgraded"){continue}
@@ -120,24 +120,23 @@ Function FormatLabelActitivyLog {
     $isEncrypted=$AuditData.IrmContentId -ne $null -or $AuditData.ProtectionEventData.IsProtected
     #Office for the web の場合はラベルの設定から暗号化を判断
     $isEncrypted=$isEncrypted -or ($AuditData.UserAgent -eq "MSWAC" -and (IsEncryptionLabel($AuditData.SensitivityLabelEventData.SensitivityLabelId)))
-	  #以前暗号化されていたか判定。AIP の場合、暗号化フラグを参照
+    #以前暗号化されていたか判定。AIP の場合、暗号化フラグを参照
     $wasEncrypted=$AuditData.Workload -eq "AIP" -and $AuditData.ProtectionEventData.IsProtectedBefore
     #AIP 以外の場合、以前のラベルの秘密度ラベル設定から暗号化有無を判断
     $wasEncrypted=$wasEncrypted -or (IsEncryptionLabel($AuditData.SensitivityLabelEventData.OldSensitivityLabelId))
     #暗号化の変更状況を判断
     if($isEncrypted){
-      If($wasEncrypted){$EncryptionStatusChange="NoChangeWithEncryption"}
-      Else {$EncryptionStatusChange="NewlyEncrypted"}
+        If($wasEncrypted){$EncryptionStatusChange="NoChangeWithEncryption"}
+	Else {$EncryptionStatusChange="NewlyEncrypted"}
     }
     Else{
-      If($wasEncrypted){$EncryptionStatusChange="EncryptionRemoved"}
-      Else {$EncryptionStatusChange="NoChangeWithoutEncryption"}
+        If($wasEncrypted){$EncryptionStatusChange="EncryptionRemoved"}
+	Else {$EncryptionStatusChange="NoChangeWithoutEncryption"}
     }
     
     #同一の機密度のサブ ラベル変更は、暗号化が削除されたケースのみを対象にする
     if($Operation -eq "LabelChangedSameOrder" -and $Operation -ne "EncryptionRemoved"){continue}
-	
-	  $line = New-Object -TypeName PSObject
+    $line = New-Object -TypeName PSObject
     AddMember $line "LogId" $Auditdata.Id
     AddMember $line "User" $i.UserIds
     AddMember $line "Time" $i.CreationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
