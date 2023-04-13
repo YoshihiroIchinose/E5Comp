@@ -1,21 +1,20 @@
 # Email notification of unauthorized B2B external sharing operations
-As a complement to DLP, I'd like to introduce a sample procedure that recognizes those operations from the audit log and notifies them by email
-when internal users share files to external users in unauthorized domains through SharePoint Online, OneDriver for Business, Teams, etc.
-The approximate mechanism of this operation is as follows.
+As a complement to DLP, I'd like to introduce a sample solution that recognizes those operations from the audit log and notifies them by email
+when internal users share files, sites, or groups to external users in unauthorized domains through SharePoint Online, OneDriver for Business, Teams, etc.   
+The approximate implementation of this solution is as follows.
 1. Repare a SharePoint list to manage allowed domains
 2. Repare a SharePoint list to record sharing operations
-3. Set up an email notification to the user who performed the sharing operation triggered by an item creation in the SharPoint list via Power Automate 
-4. Use Azure Automate to pull unauthorized share operations to external users of domains from the audit log at regular intervals and
-write logs of new share operations to the SharePoint list while eliminating duplicates
+3. Set up an email notification to the user who performed the sharing operation via Power Automate which will be triggered by an item creation in the SharPoint list 
+4. Use Azure Automate to extract unauthorized share operations to external users of domains from the audit log at regular intervals and
+write logs of new sharing operations to the SharePoint list while eliminating duplicates
 
 Considerations
-1. Azure Automate is not expensive but pay-as-you-go charges based on throughput
-2. Power Automate email notifications are email notifications sent by the user who set them up, and Office 365 built-in licenses have a processing limit of 6,000 per day
+1. Azure Automate is not expensive but provided as pay-as-you-go charges based on throughput
+2. Power Automate email notifications will be sent by the user who set them up, and Office 365 built-in licenses have a processing limit of 6,000 per day
 3. If you want to provide timely notifications in units of several hours, the range of logs extracted 
 by Azure Automate should also be limited to the range of the last few hours, and the frequency of schedule execution of Azure Automate should be several hours cycles.
-It's ok that ranges of logs extracted by Auzre Automate overlap because this script elimantes duplicated activities by comparing recored activities in the SharePoint list
-before it writes logs to the SharePoint list.
-4. If you want to send another email notification for testing again, delete the item related to the sharing activities from the SharePoint list.
+It's ok that ranges of logs extracted by Auzre Automate overlap because this script elimantes duplicated activities by comparing recored activities in the SharePoint list before it writes logs to the SharePoint list.
+4. If you want to send another email notification again for testing, delete the item related to the sharing activities from the SharePoint list.
 This ensures that when Azure Automate writes the log again in the SharePoint list, Power Automate sends an email notification for that item.
 
 # Preparation
@@ -28,7 +27,7 @@ If the guest user's ID ends with these domains, the sharing activity for this gu
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification6.png"/>
 
 ### SharingActivities   
-Add the following columns other than the title: To make it easier to handle in PowerShell, create columns with alphanumeric names as follows.      
+Add the following columns with specified column types other than the title: To make it easier to handle in PowerShell, create columns with alphanumeric names as follows.      
 | Column name | Title | User | Guest | Time | Operation | SharedItem | AdditionalData | Notified |
 |-------|----|----|----|----|----|----|----|----|
 | Column Type | Text | Text | Text | Date and time* | Text | Text | Multiple lines of text | Yes/No (Default No) |
@@ -54,7 +53,7 @@ has permission to write to the specified SharePoint Online site.
 1. Start the runbook you created and check how it works   
 1. Set up schedule execution such as daily as necessary    
 When this script is executed in Azure Automation, the number of logs processed is output as follows.     
-<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification2.png"/>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification2B.png"/>
 
 #### Aure Automation Sample Script
 ```
@@ -88,7 +87,7 @@ Function ExtractGuest{
     Param($a)
     $a=$a.replace("#EXT#","#ext#")
     If($a.Contains("#ext#")){
-    return $a.Substring(0,$a.IndexOf("#ext#")).replace("_","@")
+        return $a.Substring(0,$a.IndexOf("#ext#")).replace("_","@")
     }
     return $a
 }
@@ -103,11 +102,26 @@ Function IsAllowed{
     return $false
 }
 
+#A function to extract audit logs into $global:output up to 50,000 activities by 5,000 activitiees retrieval * 10 times
+Function ExtractAuditLog{
+    Param($type,$op)
+    if($type -eq $null){return}
+    $itemcount=0
+    for($i = 0; $i -lt 10; $i++){
+        $result=Search-UnifiedAuditLog -RecordType $type -StartDate $global:Start -EndDate $global:End -SessionId ($type+$op) -Operations $op	-SessionCommand ReturnLargeSet -ResultSize 5000
+	    "Query for $type, $op, Round("+($i+1)+"): "+$result.Count.ToString() + " items"
+	    $global:output+=$result
+	    $itemcount+=$result.Count
+	    if($result.count -ne 5000){break}
+    }
+    "$type, $op Total: "+$itemcount.ToString() + " items"
+}
+
 #1. Get logs of operations that add guest users to SharePoint groups and grant permissions
 Connect-ExchangeOnline -credential $Credential
-$RecordType="SharePointSharingOperation"
-$Operation="AddedToGroup"
-$output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation -ResultSize 5000 -SessionCommand ReturnNextPreviewPage|?{$_.UserIds -ne "app@sharepoint"}
+$output=@()
+ExtractAuditLog "SharePointSharingOperation" "AddedToGroup"
+
 #If the result is not null, consider the number of result is one at first, and if multiple results are returned, get the count
 $count=0
 if($output -ne $null){$count=1}
@@ -116,21 +130,22 @@ if($output.count -ne $null){$count=$output.count}
 
 $csv=@()
 foreach($i in $output){
-$AuditData=$i.AuditData|ConvertFrom-Json
-#Excludes non-guest additions and guest additions from allowed domains
-If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
-$guest=ExtractGuest $AuditData.TargetUserOrGroupName
-If(isAllowed($guest)){continue}
-
-$line = New-Object -TypeName PSObject
-AddMember $line "User" $i.UserIds
-AddMember $line "Guest" $guest
-AddMember $line "Time" $i.CreationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
-AddMember $line "Operation" "Site Shared"
-AddMember $line "SharedItem" $AuditData.SiteUrl
-AddMember $line "LogId" $AuditData.CorrelationId
-AddMember $line "AdditionalData" $AuditData.EventData
-$csv+=$line
+    $AuditData=$i.AuditData|ConvertFrom-Json
+    #Exclude initial site set up by SPO app account
+    if($i.UserIds -eq "app@sharepoint"){continue}
+    #Excludes non-guest additions and guest additions from allowed domains
+    If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
+    $guest=ExtractGuest $AuditData.TargetUserOrGroupName
+    If(isAllowed($guest)){continue}
+    $line = New-Object -TypeName PSObject
+    AddMember $line "User" $i.UserIds
+    AddMember $line "Guest" $guest
+    AddMember $line "Time" $i.CreationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
+    AddMember $line "Operation" "Site Shared"
+    AddMember $line "SharedItem" $AuditData.SiteUrl
+    AddMember $line "LogId" $AuditData.CorrelationId
+    AddMember $line "AdditionalData" $AuditData.EventData
+    $csv+=$line
 }
 "Unallowed site sharing activities since $Start"+": "+$csv.count
 
@@ -143,14 +158,14 @@ foreach($i in ($csv|Group-Object LogId)){
         $AdditionalData+=$d.AdditionalData
     }
     $line.AdditionalData=$AdditionalData -join "`r`n"
-$GroupedCsv+=$line
+    $GroupedCsv+=$line
 }
 "Unallowed site sharing activities merged since $Start"+": "+$GroupedCsv.count
 
 #2. Get logs of operations that share files directly to guest users
-$RecordType="SharePointSharingOperation"
-$Operation="AddedToSecureLink"
-$output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation -ResultSize 5000 -SessionCommand ReturnNextPreviewPage
+$output=@()
+ExtractAuditLog "SharePointSharingOperation" "AddedToSecureLink"
+
 #If the result is not null, consider the number of result is one at first, and if multiple results are returned, get the count
 $count=0
 if($output -ne $null){$count=1}
@@ -159,22 +174,21 @@ if($output.count -ne $null){$count=$output.count}
 
 $count=0
 foreach($i in $output){
-$AuditData=$i.AuditData|ConvertFrom-Json
-#Excludes non-guest additions and guest additions from allowed domains
-If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
-$guest=ExtractGuest $AuditData.TargetUserOrGroupName
-If(isAllowed($guest)){continue}
-
-$line = New-Object -TypeName PSObject
-AddMember $line "User" $i.UserIds
-AddMember $line "Guest" $guest
-AddMember $line "Time" $i.CreationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
-AddMember $line "Operation" "File Shared"
-AddMember $line "SharedItem" $AuditData.ObjectId
-AddMember $line "LogId" $AuditData.CorrelationId
-AddMember $line "AdditionalData" $AuditData.EventData
-$GroupedCsv+=$line
-$count++
+    $AuditData=$i.AuditData|ConvertFrom-Json
+    #Excludes non-guest additions and guest additions from allowed domains
+    If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
+    $guest=ExtractGuest $AuditData.TargetUserOrGroupName
+    If(isAllowed($guest)){continue}
+    $line = New-Object -TypeName PSObject
+    AddMember $line "User" $i.UserIds
+    AddMember $line "Guest" $guest
+    AddMember $line "Time" $i.CreationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
+    AddMember $line "Operation" "File Shared"
+    AddMember $line "SharedItem" $AuditData.ObjectId
+    AddMember $line "LogId" $AuditData.CorrelationId
+    AddMember $line "AdditionalData" $AuditData.EventData
+    $GroupedCsv+=$line
+    $count++
 }
 "Unallowed file sharing activities since $Start"+": "+$count
 
@@ -193,9 +207,8 @@ foreach($i in ($GroupedCsv|Group-Object LogId)){
 "Unallowed total sharing activities since $Start"+": "+$GroupedCsv2.count
 
 #3.Get logs for adding a guest user to an existing group
-$RecordType="AzureActiveDirectory"
-$Operation="Add member to group."
-$output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation
+$output=@()
+ExtractAuditLog "AzureActiveDirectory" "Add member to group."
 #If the result is not null, consider the number of result is one at first, and if multiple results are returned, get the count
 $count=0
 if($output -ne $null){$count=1}
@@ -210,7 +223,6 @@ foreach($i in $output){
     If(!$AuditData.ObjectId.Contains("#EXT#")){continue}
     $guest=ExtractGuest $AuditData.ObjectId
     If(isAllowed($guest)){continue}
-
     $line = New-Object -TypeName PSObject
     AddMember $line "User" $i.UserIds
     AddMember $line "Guest" $guest
@@ -247,20 +259,20 @@ $ctx=get-pnpcontext
 $list = $ctx.get_web().get_lists().getByTitle($SharingActivitiesList)
 $count=0
 foreach($item in $GroupedCsv2){
-$lic = New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
-$i = $list.AddItem($lic)
-$i.set_item("Title", $item.LogId)
-$i.set_item("User", $item.User)
-$i.set_item("Guest", $item.Guest)
-$i.set_item("Time", $item.Time)
-$i.set_item("Operation", $item.Operation)
-$i.set_item("SharedItem", $item.SharedItem)
-$i.set_item("AdditionalData", $item.AdditionalData)
-$i.update()
-$count++
+    $lic = New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
+    $i = $list.AddItem($lic)
+    $i.set_item("Title", $item.LogId)
+    $i.set_item("User", $item.User)
+    $i.set_item("Guest", $item.Guest)
+    $i.set_item("Time", $item.Time)
+    $i.set_item("Operation", $item.Operation)
+    $i.set_item("SharedItem", $item.SharedItem)
+    $i.set_item("AdditionalData", $item.AdditionalData)
+    $i.update()
+    $count++
 #If there are many writes, reflect them per 100 items
-  if($count % 100 -eq 0){
-    $ctx.ExecuteQuery()}
+    if($count % 100 -eq 0){
+        $ctx.ExecuteQuery()}
 }
 $ctx.ExecuteQuery()
 "File sharing activities were synched with the list."
