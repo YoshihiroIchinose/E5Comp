@@ -48,7 +48,7 @@ DLP の補完として、許可されていないドメインの外部ユーザ�
 1. 作成した Runbook を"開始"し、動作を確認する   
 1. 必要に応じて Daily 等のスケジュール実行を設定する   
 Azure Automation で本スクリプトを実行すると、以下のように処理されたログの件数が出力される。   
-<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification2.png"/>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/Notification2B.png"/>
 
 #### Aure Automation サンプル スクリプト
 ```
@@ -82,7 +82,7 @@ Function ExtractGuest{
     Param($a)
     $a=$a.replace("#EXT#","#ext#")
     If($a.Contains("#ext#")){
-    return $a.Substring(0,$a.IndexOf("#ext#")).replace("_","@")
+        return $a.Substring(0,$a.IndexOf("#ext#")).replace("_","@")
     }
     return $a
 }
@@ -97,11 +97,26 @@ Function IsAllowed{
     return $false
 }
 
+#監査ログを 5,000 件 x 最大 10 回で 50,000 件取得し、$global:output に格納する Function
+Function ExtractAuditLog{
+    Param($type,$op)
+    if($type -eq $null){return}
+    $itemcount=0
+    for($i = 0; $i -lt 10; $i++){
+        $result=Search-UnifiedAuditLog -RecordType $type -StartDate $global:Start -EndDate $global:End -SessionId ($type+$op) -Operations $op	-SessionCommand ReturnLargeSet -ResultSize 5000
+	    "Query for $type, $op, Round("+($i+1)+"): "+$result.Count.ToString() + " items"
+	    $global:output+=$result
+	    $itemcount+=$result.Count
+	    if($result.count -ne 5000){break}
+    }
+    "$type, $op Total: "+$itemcount.ToString() + " items"
+}
+
 #1. ゲスト ユーザーを SharePoint グループに追加し権限を付与する操作のログの取得
 Connect-ExchangeOnline -credential $Credential
-$RecordType="SharePointSharingOperation"
-$Operation="AddedToGroup"
-$output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation -ResultSize 5000 -SessionCommand ReturnNextPreviewPage|?{$_.UserIds -ne "app@sharepoint"}
+$output=@()
+ExtractAuditLog "SharePointSharingOperation" "AddedToGroup"
+
 #結果がNullでなければ、まずは結果は1個とし、結果が複数個返されている場合には、そのカウントを取得
 $count=0
 if($output -ne $null){$count=1}
@@ -110,21 +125,22 @@ if($output.count -ne $null){$count=$output.count}
 
 $csv=@()
 foreach($i in $output){
-$AuditData=$i.AuditData|ConvertFrom-Json
-#ゲスト以外の追加や、許可されたドメインのゲスト追加は除く
-If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
-$guest=ExtractGuest $AuditData.TargetUserOrGroupName
-If(isAllowed($guest)){continue}
-
-$line = New-Object -TypeName PSObject
-AddMember $line "User" $i.UserIds
-AddMember $line "Guest" $guest
-AddMember $line "Time" $i.CreationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
-AddMember $line "Operation" "Site Shared"
-AddMember $line "SharedItem" $AuditData.SiteUrl
-AddMember $line "LogId" $AuditData.CorrelationId
-AddMember $line "AdditionalData" $AuditData.EventData
-$csv+=$line
+    $AuditData=$i.AuditData|ConvertFrom-Json
+    #サイト作成時の SPO の App アカウントによる権限設定は除く
+    if($i.UserIds -eq "app@sharepoint"){continue}
+    #ゲスト以外の追加や、許可されたドメインのゲスト追加は除く
+    If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
+    $guest=ExtractGuest $AuditData.TargetUserOrGroupName
+    If(isAllowed($guest)){continue}
+    $line = New-Object -TypeName PSObject
+    AddMember $line "User" $i.UserIds
+    AddMember $line "Guest" $guest
+    AddMember $line "Time" $i.CreationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
+    AddMember $line "Operation" "Site Shared"
+    AddMember $line "SharedItem" $AuditData.SiteUrl
+    AddMember $line "LogId" $AuditData.CorrelationId
+    AddMember $line "AdditionalData" $AuditData.EventData
+    $csv+=$line
 }
 "Unallowed site sharing activities since $Start"+": "+$csv.count
 
@@ -137,14 +153,14 @@ foreach($i in ($csv|Group-Object LogId)){
         $AdditionalData+=$d.AdditionalData
     }
     $line.AdditionalData=$AdditionalData -join "`r`n"
-$GroupedCsv+=$line
+    $GroupedCsv+=$line
 }
 "Unallowed site sharing activities merged since $Start"+": "+$GroupedCsv.count
 
 #2.ファイルを直接ゲスト ユーザーに共有する操作のログの取得
-$RecordType="SharePointSharingOperation"
-$Operation="AddedToSecureLink"
-$output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation -ResultSize 5000 -SessionCommand ReturnNextPreviewPage
+$output=@()
+ExtractAuditLog "SharePointSharingOperation" "AddedToSecureLink"
+
 #結果がNullでなければ、まずは結果は1個とし、結果が複数個返されている場合には、そのカウントを取得
 $count=0
 if($output -ne $null){$count=1}
@@ -153,22 +169,21 @@ if($output.count -ne $null){$count=$output.count}
 
 $count=0
 foreach($i in $output){
-$AuditData=$i.AuditData|ConvertFrom-Json
-#ゲスト以外への共有や、許可されたドメインのゲストへの共有は除く
-If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
-$guest=ExtractGuest $AuditData.TargetUserOrGroupName
-If(isAllowed($guest)){continue}
-
-$line = New-Object -TypeName PSObject
-AddMember $line "User" $i.UserIds
-AddMember $line "Guest" $guest
-AddMember $line "Time" $i.CreationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
-AddMember $line "Operation" "File Shared"
-AddMember $line "SharedItem" $AuditData.ObjectId
-AddMember $line "LogId" $AuditData.CorrelationId
-AddMember $line "AdditionalData" $AuditData.EventData
-$GroupedCsv+=$line
-$count++
+    $AuditData=$i.AuditData|ConvertFrom-Json
+    #ゲスト以外への共有や、許可されたドメインのゲストへの共有は除く
+    If($AuditData.TargetUserOrGroupType -ne "Guest" ){continue}
+    $guest=ExtractGuest $AuditData.TargetUserOrGroupName
+    If(isAllowed($guest)){continue}
+    $line = New-Object -TypeName PSObject
+    AddMember $line "User" $i.UserIds
+    AddMember $line "Guest" $guest
+    AddMember $line "Time" $i.CreationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
+    AddMember $line "Operation" "File Shared"
+    AddMember $line "SharedItem" $AuditData.ObjectId
+    AddMember $line "LogId" $AuditData.CorrelationId
+    AddMember $line "AdditionalData" $AuditData.EventData
+    $GroupedCsv+=$line
+    $count++
 }
 "Unallowed file sharing activities since $Start"+": "+$count
 
@@ -187,9 +202,8 @@ foreach($i in ($GroupedCsv|Group-Object LogId)){
 "Unallowed total sharing activities since $Start"+": "+$GroupedCsv2.count
 
 #3.既存グループへのゲスト ユーザーの追加操作のログの取得
-$RecordType="AzureActiveDirectory"
-$Operation="Add member to group."
-$output=Search-UnifiedAuditLog -RecordType $RecordType -StartDate $Start -EndDate $End -Operations $Operation
+$output=@()
+ExtractAuditLog "AzureActiveDirectory" "Add member to group."
 #結果がNullでなければ、まずは結果は1個とし、結果が複数個返されている場合には、そのカウントを取得
 $count=0
 if($output -ne $null){$count=1}
@@ -204,7 +218,6 @@ foreach($i in $output){
     If(!$AuditData.ObjectId.Contains("#EXT#")){continue}
     $guest=ExtractGuest $AuditData.ObjectId
     If(isAllowed($guest)){continue}
-
     $line = New-Object -TypeName PSObject
     AddMember $line "User" $i.UserIds
     AddMember $line "Guest" $guest
@@ -241,20 +254,20 @@ $ctx=get-pnpcontext
 $list = $ctx.get_web().get_lists().getByTitle($SharingActivitiesList)
 $count=0
 foreach($item in $GroupedCsv2){
-$lic = New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
-$i = $list.AddItem($lic)
-$i.set_item("Title", $item.LogId)
-$i.set_item("User", $item.User)
-$i.set_item("Guest", $item.Guest)
-$i.set_item("Time", $item.Time)
-$i.set_item("Operation", $item.Operation)
-$i.set_item("SharedItem", $item.SharedItem)
-$i.set_item("AdditionalData", $item.AdditionalData)
-$i.update()
-$count++
-#書き込みが多い場合には、一旦 100 アイテムで反映
-  if($count % 100 -eq 0){
-    $ctx.ExecuteQuery()}
+    $lic = New-Object Microsoft.SharePoint.Client.ListItemCreationInformation
+    $i = $list.AddItem($lic)
+    $i.set_item("Title", $item.LogId)
+    $i.set_item("User", $item.User)
+    $i.set_item("Guest", $item.Guest)
+    $i.set_item("Time", $item.Time)
+    $i.set_item("Operation", $item.Operation)
+    $i.set_item("SharedItem", $item.SharedItem)
+    $i.set_item("AdditionalData", $item.AdditionalData)
+    $i.update()
+    $count++
+#If there are many writes, reflect them per 100 items
+    if($count % 100 -eq 0){
+        $ctx.ExecuteQuery()}
 }
 $ctx.ExecuteQuery()
 "File sharing activities were synched with the list."
