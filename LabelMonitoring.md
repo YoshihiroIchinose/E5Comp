@@ -119,10 +119,8 @@ Function FormatLabelActitivyLog {
     #ラベルのアップグレードは除外
     if($Operation -eq "LabelUpgraded"){continue}
     
-    #M365 Apps / AIP のいずれかで現在暗号化されているか
-    $isEncrypted=$AuditData.IrmContentId -ne $null -or $AuditData.ProtectionEventData.IsProtected
-    #Office for the web の場合はラベルの設定から暗号化を判断
-    $isEncrypted=$isEncrypted -or ($AuditData.UserAgent -eq "MSWAC" -and (IsEncryptionLabel($AuditData.SensitivityLabelEventData.SensitivityLabelId)))
+    #現在暗号化されているか
+    $isEncrypted=$AuditData.ProtectionEventData.IsProtected -or (IsEncryptionLabel($AuditData.SensitivityLabelEventData.SensitivityLabelId))
     #以前暗号化されていたか判定。AIP の場合、暗号化フラグを参照
     $wasEncrypted=$AuditData.Workload -eq "AIP" -and $AuditData.ProtectionEventData.IsProtectedBefore
     #AIP 以外の場合、以前のラベルの秘密度ラベル設定から暗号化有無を判断
