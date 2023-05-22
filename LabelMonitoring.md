@@ -112,8 +112,8 @@ Function FormatLabelActitivyLog {
     $AuditData=$i.AuditData|ConvertFrom-Json
     $Operation=switch($AuditData.SensitivityLabelEventData.LabelEventType){
         1 {"LabelUpgraded"}
-	2 {"LavelDowngraded"}
-	3 {"LavelRemoved"}
+	2 {"LabelDowngraded"}
+	3 {"LabelRemoved"}
 	4 {"LabelChangedSameOrder"}
     }
     #ラベルのアップグレードは除外
