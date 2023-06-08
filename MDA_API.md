@@ -5,6 +5,19 @@
 Defender for Cloud Apps の[API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens)のページにアクセスし、64 文字の英数字で構成されるトークンを事前に取得しておきます。取得後は再表示されず、以前のトークンが分からなくなった場合には、トークンの再発行が必要となる点に注意します。
 ### 検索条件を示したフィルタ設定の取得
 ファイルを取得する上では、絞り込みに利用するフィルタ条件を設定する必要があります。Microsoft 365 Defender の[ファイル ページ](https://security.microsoft.com/cloudapps/files)で、フィルタを行うと、URL に、フィルタ条件が組み込まれるため条件によって、どういった属性が、どういった値でフィルタされるか確認しながら、スクリプトに記載の例も参考にしながら、JSON 形式で定義します。Microsoft 365 Defender の[ファイル ページ](https://security.microsoft.com/cloudapps/files)でブラウザの開発者ツールを用いて、https://security.microsoft.com/apiproxy/mcas/cas/api/v1/files/count/ への POST 要求の中身を見ることで、JSON 形式のフィルタ文字列を直接確認することもできます。スクリプトの例にある service が 20892 であるという条件は、SharePoint Online 上のファイルに絞る条件となっています。その他、汎用的な Defender for Cloud Apps に対する PowerShell のコマンドレットおよび、サンプル コードは、[こちらのページ](https://github.com/microsoft/MCAS)で確認できます。
+### フィルタ例
+秘密度ラベルを用いずに暗号化された SharePoint Online 上のファイル   
+`$filter='{"fileScanLabels":{"eq":["^Azure RMS encrypted file"]},"service":{"eq":[20892]}}'`   
+
+特定のドメインのユーザーに共有されたファイル   
+`$filter='{"service":{"eq":[20892]},"collaborators.withDomain":{"eq":["hotmail.com","gmail.com","icloud.com"]}}'`   
+
+個別の秘密度ラベルが付与された SharePoint Online 上のファイル   
+`$filter='{"service":{"eq":[20892]},"fileLabels":{"eq":["個別保護","社外秘"]}}'`   
+
+社外に共有されたファイル   
+`$filter='{"sharing":{"eq":["i:4","i:3","i:2"]}'`   
+
 ## スクリプト本体
 ````
 #Parameters
