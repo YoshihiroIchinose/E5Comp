@@ -52,7 +52,7 @@ For($i=0;$i -lt $loopcount; $i++){
   $output+=$res.data
 }
  
-#Fields Adjustment
+#Fields Adjustments as script blocks to remove actions, convert createDate/modifiedData into LocalDateTime, and expand recursive Json text
 $FieldName= $output[0] |get-member -MemberType NoteProperty|foreach-object{$_.Name.ToString()}
 $FieldName={$FieldName}.Invoke()
 $FieldName.Remove("actions")
