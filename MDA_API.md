@@ -68,22 +68,22 @@ For($i=0;$i -lt $loopcount; $i++){
 			$res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
 			}
 		catch {
-			if ($_ -like 'The remote server returned an error: (429) TOO MANY REQUESTS.') {
+			if ($_ -like 'The remote server returned an error: (429) TOO MANY REQUESTS.'){
 				$retryCall = $true
 				Start-Sleep -Seconds 5
 			}
-			ElseIf ($_ -match 'throttled') {
+			ElseIf ($_ -match 'throttled'){
 				$retryCall = $true
 				Start-Sleep -Seconds 60
 			}
-			ElseIf ($_ -like '504' -or $_ -like '502') {
+			ElseIf ($_ -like '504' -or $_ -like '502'){
 				$retryCall = $true
 				Start-Sleep -Seconds 5
 				}
-				else {
-					throw $_
-					}
+			else {
+				throw $_
 			}
+		}
 	}
 	while ($retryCall)
 	$output+=$res.data
