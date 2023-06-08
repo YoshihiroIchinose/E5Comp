@@ -2,7 +2,7 @@
 本サンプル スクリプトは、Microsoft 365 Defender の[ファイル ページ](https://security.microsoft.com/cloudapps/files)の情報を、PowerShell を使った API アクセスで取得するものです。[ファイル ページ](https://security.microsoft.com/cloudapps/files)においても、さまざまなフィルタ条件を設定し、SPO/OD4B や接続したクラウド ストレージの中から条件に合致したファイル情報を一覧で見ることができます。また Export の機能で UI 上からも CSV 形式でデータを取得することが可能ですが、最大 5,000 件までの制限があります。API を通じたアクセスを行った場合、最大 100 件のデータ取得を繰り返すことで、条件に合致したファイルの情報を 5,000 件を超えて取得することも可能です。
 ## 事前準備
 ### API トークン
-Defender for Cloud Apps の[API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens)のページにアクセスし、64 文字の英数字で構成されるトークンを事前に取得しておきます。取得後は再表示されず、以前のトークンが分からなくなった場合には、トークンの再発行が必要となる点に注意します。
+Defender for Cloud Apps の [API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens)のページにアクセスし、64 文字の英数字で構成されるトークンを事前に取得しておきます。取得後は再表示されず、以前のトークンが分からなくなった場合には、トークンの再発行が必要となる点に注意します。
 ### 検索条件を示したフィルタ設定の取得
 ファイルを取得する上では、絞り込みに利用するフィルタ条件を設定する必要があります。Microsoft 365 Defender の[ファイル ページ](https://security.microsoft.com/cloudapps/files)で、フィルタを行うと、URL に、フィルタ条件が組み込まれるため条件によって、どういった属性が、どういった値でフィルタされるか確認しながら、スクリプトに記載の例も参考にしながら、JSON 形式で定義します。Microsoft 365 Defender の[ファイル ページ](https://security.microsoft.com/cloudapps/files)でブラウザの開発者ツールを用いて、https://security.microsoft.com/apiproxy/mcas/cas/api/v1/files/count/ への POST 要求の中身を見ることで、JSON 形式のフィルタ文字列を直接確認することもできます。スクリプトの例にある service が 20892 であるという条件は、SharePoint Online 上のファイルに絞る条件となっています。その他、汎用的な Defender for Cloud Apps に対する PowerShell のコマンドレットおよび、サンプル コードは、[こちらのページ](https://github.com/microsoft/MCAS)で確認できます。
 ### フィルタ例
