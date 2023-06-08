@@ -51,19 +51,43 @@ $loopcount = [int][Math]::Ceiling($ResultSetSize / $batchSize)
 $headers=@{"Authorization" = "Token "+$Token}
 $output=@()
 For($i=0;$i -lt $loopcount; $i++){
-  $limit=$batchSize
-  if($loopcount -1 -eq $i){$limit=$ResultSetSize % $batchSize}
-  if($limit -eq 0){$limit=$batchSize}
-  $Body=@{
-	  "skip"=0 + $i*$batchSize
-	  "limit"=$limit
-	  "filters"=$filter
-	  "sortField"="modifiedDate"
-	  "sortDirection"="desc"
-  }
-  $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
-  $output+=$res.data
-  if($res.data.Count -lt $batchsize){break}
+	$limit=$batchSize
+	if($loopcount -1 -eq $i){$limit=$ResultSetSize % $batchSize}
+	if($limit -eq 0){$limit=$batchSize}
+	$Body=@{
+		"skip"=0 + $i*$batchSize
+		"limit"=$limit
+		"filters"=$filter
+		"sortField"="modifiedDate"
+		"sortDirection"="desc"
+		}
+	do {
+		$retryCall = $false
+		try {
+			"Loop: $loopcount, From " +$i*$batchSize
+			$res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
+			}
+		catch {
+			if ($_ -like 'The remote server returned an error: (429) TOO MANY REQUESTS.') {
+				$retryCall = $true
+				Start-Sleep -Seconds 5
+			}
+			ElseIf ($_ -match 'throttled') {
+				$retryCall = $true
+				Start-Sleep -Seconds 60
+			}
+			ElseIf ($_ -like '504' -or $_ -like '502') {
+				$retryCall = $true
+				Start-Sleep -Seconds 5
+				}
+				else {
+					throw $_
+					}
+			}
+	}
+	while ($retryCall)
+	$output+=$res.data
+	if($res.data.Count -lt $batchsize){break}
 }
  
 #Fields Adjustments as script blocks to remove actions, convert createDate/modifiedData into LocalDateTime, and expand recursive Json text
