@@ -64,7 +64,7 @@ For($i=0;$i -lt $loopcount; $i++){
 	do {
 		$retryCall = $false
 		try {
-			"Loop: $loopcount, From " +$i*$batchSize
+			"Loop: $i, From " +$i*$batchSize
 			$res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
 			}
 		catch {
