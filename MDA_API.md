@@ -62,8 +62,8 @@ For($i=0;$i -lt $loopcount; $i++){
 	  "sortDirection"="desc"
   }
   $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
-  if($res.data.Count -lt $batchsize){break}
   $output+=$res.data
+  if($res.data.Count -lt $batchsize){break}
 }
  
 #Fields Adjustments as script blocks to remove actions, convert createDate/modifiedData into LocalDateTime, and expand recursive Json text
