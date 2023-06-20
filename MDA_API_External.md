@@ -1,14 +1,26 @@
+# SharePoint Online および OneDrive for Business の各サイトに設定された外部ユーザーをリストする
+本スクリプトは、Azure Automation 上に作成したスクリプトから、Defender for Cloud Apps の REST API をコールし、SharePoint Online および　OneDrive for Business にて、外部に共有されたファイルを取得し、その権限設定から、各サイトの外部ユーザー一覧を取得するものです。なお取得した外部ユーザー一覧の情報は、CSV ファイルとして、特定の SharePoint Online サイトのドキュメント ライブラリに格納します。なおクエリの仕組み上、Teams での外部招待を含みSharePoint グループに外部ユーザーが登録されている場合や、直接外部ユーザーに権限が付与されている場合を検知できますが、セキュリティ グループを介した間接的な外部ユーザーへの権限付与は取得されません。外部ユーザーが参加しているグループは、Azure AD 上の外部ユーザーの memberof 属性で確認できます。
+
 ## 準備
 1. Azure 環境にて Azure Automation アカウントを作成
 2. Azure Automation アカウントにて、"モジュール" -> "ギャラリーを参照"から、以下のモジュールを追加する。   
 (ランタイム バージョンは 5.1)   
   SharePointOnline.CSOM    
 3. Azure Automation アカウントの"資格情報"->"資格情報の追加"で、指定の SharePoint Online サイトに投稿権限があるアカウントの ID とパスワードを "Office 365" という名称で登録しておく。
-4. Azure Automation アカウントの"Runbook"->"Runbook の作成"で PowerShell、ランタイム バージョンの 5.1 の Runbook を作成する
-5. 作成した Runbook に以下のスクリプトをコピー & ペーストする
-6. 適宜スクリプト内の SharePoint Site の URL および、ファイル保存先の相対 URL (FQDN を除いたもの) を書き変え、保存し、公開する
-7. 作成した Runbook を"開始"し、動作を確認する
+4. Defender for Cloud Apps の [API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens)のページにアクセスし、64 文字の英数字で構成されるトークンを事前に取得し、Azure Automation アカウントの"変数"として、"MDAToken"という名称で、64文字のトークンを保存しておく。なお"変数"の暗号化は有効化しておく。
+5. Azure Automation アカウントの"Runbook"->"Runbook の作成"で PowerShell、ランタイム バージョンの 5.1 の Runbook を作成する
+6. 作成した Runbook に以下のスクリプトをコピー & ペーストする
+7. 適宜スクリプト内の Defender for Cloud Apps の URL、SharePoint Site の URL および、ファイル保存先の相対 URL (FQDN を除いたもの) 、社内扱いとなるドメインのリスト適宜書き変え、保存し、公開する
+8. 作成した Runbook を"開始"し、動作を確認する
 
+## Azure Automation 実行時の出力
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDAExt1.png">   
+
+## 出力される CSV ファイル
+Item には、共有された対象に応じて、ファイルの URL、フォルダの URL、SharePoint グループ名などが記録される。
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDAExt2.png">   
+
+## スクリプト本体
 ````
 #MDA URL
 $Base="https://xxxx.portal.cloudappsecurity.com/"
