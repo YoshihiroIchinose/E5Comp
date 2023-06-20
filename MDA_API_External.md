@@ -36,7 +36,9 @@ $ResultSetSize=3000
 $Credential = Get-AutomationPSCredential -Name "Office 365"
 $Token=Get-AutomationVariable -Name "MDAToken"
 #a filter condition for getting externally shared files from SPO and OD4B
-$filter='{"service":{"eq":[20892,15600]},"sharing":{"eq":[2,3,4]}}'
+$filter='{"service":{"eq":[15600,20892]},"sharing":{"eq":[2,3,4]}}'
+#This filter will return files directly shared with external users with specific domains but won't include files shared via site permissions.
+#$filter='{"service":{"eq":[15600,20892]},"collaborators.withDomain":{"eq":["hotmail.com","gmail.com","icloud.com"]}}'
 #Temporal output location
 $OutputFile=[System.Environment]::GetFolderPath("Desktop")+"\ExternalUsers.csv"
 #Maximum files to retrieve at a sigle query
@@ -70,28 +72,28 @@ For($i=0;$i -lt $loopcount; $i++){
 	    "filters"=$filter
 	    "sortField"="modifiedDate"
 	    "sortDirection"="desc"
-    }
+	}
     $Uri=($base+"/api/v1/files/").Replace("//api/","/api/")
-    do {
-            $retryCall = $false
+do {
+        $retryCall = $false
 	    "Loop: $i, From " +$i*$batchSize
-   	 try {
+    try {
 		    $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
-    	}
-    	catch {
-        	    if ($_ -like '504' -or $_ -like '502' -or $_ -like '429') {
-	            $retryCall = $true
-                    Start-Sleep -Seconds 5
+    }
+    catch {
+            if ($_ -like '504' -or $_ -like '502' -or $_ -like '429') {
+	        $retryCall = $true
+            Start-Sleep -Seconds 5
             }
             ElseIf ($_ -match 'throttled') {
-                    $retryCall = $true
-                    Start-Sleep -Seconds 60
+                $retryCall = $true
+                Start-Sleep -Seconds 60
             }
             else {
-                    throw $_
+                throw $_
             }
         }
-    }
+   }
     while ($retryCall)
     $output+=$res.data
     if($res.data.Count -lt $batchsize){break}
@@ -100,26 +102,27 @@ For($i=0;$i -lt $loopcount; $i++){
 $userlist=@()
 $GroupsWithExternalUsers=@{}
 foreach($row in $output){
-    $groupIds=@()
 	foreach($c in $row.collaborators){
 		If($c.type -eq 2 -and $c.accessLevel -eq 2){#Group with external users
 			 $group = New-Object -TypeName PSObject
 			 AddMember $group "Item" $c.name
 			 AddMember $group "Id" $c.id
-         	         $groupIds+=$group
+			 If($GroupsWithExternalUsers[$row.sitePath] -eq $null){$GroupsWithExternalUsers[$row.sitePath]=@()}
+			 $found=$false
+			 foreach($g in $GroupsWithExternalUsers[$row.sitePath]){
+				If($g.Id -eq $group.id){$found=$true}
+			 }
+            If(!$found){$GroupsWithExternalUsers[$row.sitePath]+=$group}
 		}
 		If($c.type -eq 1 -and $c.accessLevel -eq 2){#direct assignments of external users 
 			If($c.name -eq "NT Service\SPTimerV4"){continue}
-			$line = New-Object -TypeName PSObject
-			AddMember $line "Site" $row.siteCollection
-		     	AddMember $line "Item" $row.filePath
-			AddMember $line "User" $c.name
-			AddMember $line "Email" $c.email
-			$userList+=$line
+			 $line = New-Object -TypeName PSObject
+			 AddMember $line "Site" $row.siteCollection
+		     AddMember $line "Item" $row.filePath
+			 AddMember $line "User" $c.name
+			 AddMember $line "Email" $c.email
+			 $userList+=$line
 		}
-	}
-	If($groupIds.count -gt 0){
-		$GroupsWithExternalUsers[$row.sitePath]=$groupIds
 	}
 }
 "Files with direct assignments of external users:"+$userList.count
@@ -131,25 +134,25 @@ foreach($Site in $GroupsWithExternalUsers.Keys){
 		$groupId= [System.Web.HttpUtility]::UrlEncode($groupId) 
 		$appId=20892
 		If($Site.StartsWith("/personal/")){$appId=15600}
-        	"Getting external users from $($g.Item) in $Site"
+        "Getting external users from $($g.Item) in $Site"
 		$Uri=($base+"/api/v1/get_group/?appId=$appId&groupId=$groupId&limit=100").Replace("//api/","/api/")
 		do {
 		        $retryCall = $false
 		    try {
-		 	       $res=Invoke-RestMethod -Uri $Uri -Method "GET" -Headers $headers
+			        $res=Invoke-RestMethod -Uri $Uri -Method "GET" -Headers $headers
 		    }
 		    catch{
-		               if ($_ -like '504' -or $_ -like '502' -or $_ -like '429') {
+		            if ($_ -like '504' -or $_ -like '502' -or $_ -like '429') {
 			            $retryCall = $true
-		            	    Start-Sleep -Seconds 5
-				}
-		            	ElseIf ($_ -match 'throttled') {
-                                    $retryCall = $true
-		                    Start-Sleep -Seconds 60
-		                }
-		                else {
-                                    throw $_
-		                }
+		                Start-Sleep -Seconds 5
+                    }
+		            ElseIf ($_ -match 'throttled') {
+		                $retryCall = $true
+		                Start-Sleep -Seconds 60
+		            }
+		            else {
+		                throw $_
+		            }
 		        }
 		}
 		while ($retryCall)
