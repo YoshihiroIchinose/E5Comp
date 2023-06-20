@@ -1,0 +1,103 @@
+````
+$Uri="https://xxxxx.portal.cloudappsecurity.com/api/v1/files/"
+$Token="xxxxx"
+$filter='{"service":{"eq":[20892]},"sharing":{"eq":[2,3,4]}}'
+
+$ResultSetSize=3000
+$OutputFile=[System.Environment]::GetFolderPath("Desktop")+"\MDAFiles.csv"
+
+$batchSize=100
+$loopcount = [int][Math]::Ceiling($ResultSetSize / $batchSize)
+$headers=@{"Authorization" = "Token "+$Token}
+$output=@()
+For($i=0;$i -lt $loopcount; $i++){
+  $limit=$batchSize
+  if($loopcount -1 -eq $i){$limit=$ResultSetSize % $batchSize}
+  if($limit -eq 0){$limit=$batchSize}
+  $Body=@{
+	  "skip"=0 + $i*$batchSize
+	  "limit"=$limit
+	  "filters"=$filter
+	  "sortField"="modifiedDate"
+	  "sortDirection"="desc"
+  }
+  do {
+        $retryCall = $false
+
+        try {
+             "Loop: $i, From " +$i*$batchSize
+             $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
+        }
+        catch {
+            if ($_ -like 'The remote server returned an error: (429) TOO MANY REQUESTS.') {
+	              $retryCall = $true
+                Start-Sleep -Seconds 5
+            }
+            ElseIf ($_ -match 'throttled') {
+                $retryCall = $true
+                Start-Sleep -Seconds 60
+            }
+            ElseIf ($_ -like '504' -or $_ -like '502') {
+                $retryCall = $true
+                Start-Sleep -Seconds 5
+	          }
+            else {
+                throw $_
+            }
+        }
+    }
+  while ($retryCall)
+  $output+=$res.data
+  if($res.data.Count -lt $batchsize){break}
+}
+ 
+$GroupsWithExternalUsers=@{}
+foreach($row in $output){
+	foreach($c in $row.collaborators){
+	  	$groupIds=@()
+		If($c.type -eq 2 -and $c.accessLevel -eq 2){
+  		$row.sitePath+"|"+$c.id
+  		$groupIds+=$c.id
+		}
+		If($groupIds.count -gt 0){
+			$GroupsWithExternalUsers[$row.sitePath]=$groupIds
+		}
+	}
+}
+
+Function AddMember{
+    Param($a,$b,$c)
+    add-member -InputObject $a -NotePropertyName $b  -NotePropertyValue $c
+}
+
+$InternalDomains=@("xxxx.onmicrosoft.com")
+Function IsExternalDomains{
+    Param($a)
+    $a=$a.ToLower()
+    foreach($i in $InternalDomains){
+        if($a.EndsWith($i)){return $false}
+    }
+    return $true
+}
+
+
+$userlist=@()
+foreach($Site in $GroupsWithExternalUsers.Keys){
+	foreach($g in $GroupsWithExternalUsers[$Site]){
+	  $groupId="$Site|$g"
+		$groupId= [System.Web.HttpUtility]::UrlEncode($groupId) 
+		$Uri="https://xxxx.portal.cloudappsecurity.com/api/v1/get_group/?appId=20892&groupId=$groupId&limit=100"
+		$res=Invoke-RestMethod -Uri $Uri -Method "GET" -Headers $headers
+		Foreach($u in $res.group.membersList){
+			 $line = New-Object -TypeName PSObject
+			 if($u.emailAddress -ne $null -and (IsExternalDomains($u.emailAddress))){
+			    AddMember $line "Site" $Site
+				  AddMember $line "User" $u.Name
+				  AddMember $line "eMail" $u.emailAddress
+				  $userList+=$line
+			  }
+		  }
+	  }
+}
+
+````
