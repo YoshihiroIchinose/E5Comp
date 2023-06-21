@@ -103,7 +103,7 @@ $userlist=@()
 $GroupsWithExternalUsers=@{}
 foreach($row in $output){
 	foreach($c in $row.collaborators){
-		If($c.type -eq 2 -and $c.accessLevel -eq 2){#Group with external users
+		If($c.type -eq 2 -and $c.accessLevel -ge 2){#Group with external users
 			 $group = New-Object -TypeName PSObject
 			 AddMember $group "Item" $c.name
 			 AddMember $group "Id" $c.id
@@ -114,7 +114,7 @@ foreach($row in $output){
 			 }
             If(!$found){$GroupsWithExternalUsers[$row.sitePath]+=$group}
 		}
-		If($c.type -eq 1 -and $c.accessLevel -eq 2){#direct assignments of external users 
+		If($c.type -eq 1 -and $c.accessLevel -ge 2){#direct assignments of external users 
 			If($c.name -eq "NT Service\SPTimerV4"){continue}
 			 $line = New-Object -TypeName PSObject
 			 AddMember $line "Site" $row.siteCollection
