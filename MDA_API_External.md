@@ -7,7 +7,7 @@
 (ランタイム バージョンは 5.1)   
   SharePointOnline.CSOM    
 3. Azure Automation アカウントの"資格情報"->"資格情報の追加"で、指定の SharePoint Online サイトに投稿権限があるアカウントの ID とパスワードを "Office 365" という名称で登録しておく。
-4. Defender for Cloud Apps の [API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens)のページにアクセスし、64 文字の英数字で構成されるトークンを事前に取得し、Azure Automation アカウントの"変数"として、"MDAToken"という名称で、64文字のトークンを保存しておく。なお"変数"の暗号化は有効化しておく。
+4. Defender for Cloud Apps の [API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens)のページにアクセスし、64 文字の英数字で構成されるトークンを事前に取得しておく。Azure Automation アカウントの"変数"として、64文字のトークンを "MDAToken" という名称で保存しておく。なおこの"変数"の暗号化は有効化しておく。
 5. Azure Automation アカウントの"Runbook"->"Runbook の作成"で PowerShell、ランタイム バージョンの 5.1 の Runbook を作成する
 6. 作成した Runbook に以下のスクリプトをコピー & ペーストする
 7. 適宜スクリプト内の Defender for Cloud Apps の URL、SharePoint Site の URL および、ファイル保存先の相対 URL (FQDN を除いたもの) 、社内扱いとなるドメインのリスト適宜書き変え、保存し、公開する
