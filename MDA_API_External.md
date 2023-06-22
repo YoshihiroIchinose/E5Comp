@@ -1,5 +1,5 @@
-# SharePoint Online および OneDrive for Business の各サイトに設定された外部ユーザーをリストする
-本スクリプトは、Azure Automation 上に作成したスクリプトから、Defender for Cloud Apps の REST API をコールし、SharePoint Online および　OneDrive for Business にて、外部に共有されたファイルを取得し、その権限設定から、各サイトの外部ユーザー一覧を取得するものです。なお取得した外部ユーザー一覧の情報は、CSV ファイルとして、特定の SharePoint Online サイトのドキュメント ライブラリに格納します。なおクエリの仕組み上、Teams での外部招待を含みSharePoint グループに外部ユーザーが登録されている場合や、直接外部ユーザーに権限が付与されている場合を検知できますが、セキュリティ グループを介した間接的な外部ユーザーへの権限付与は取得されません。外部ユーザーが参加しているグループは、Azure AD 上の外部ユーザーの memberof 属性で確認できます。
+# SharePoint Online および OneDrive for Business の各サイトに設定されたゲスト ユーザーをリストする(MDA)
+本スクリプトは、Azure Automation 上に作成したスクリプトから、Defender for Cloud Apps の REST API をコールし、SharePoint Online および　OneDrive for Business にて、外部に共有されたファイルを取得し、その権限設定から、各サイトのゲスト ユーザー一覧を取得するものです。なお取得した外部ユーザー一覧の情報は、CSV ファイルとして、特定の SharePoint Online サイトのドキュメント ライブラリに格納します。なおクエリの仕組み上、Teams での外部招待を含みSharePoint グループにゲスト ユーザーが登録されている場合や、直接外部ユーザーに権限が付与されている場合を検知できますが、セキュリティ グループを介した間接的な外部ユーザーへの権限付与は取得されません。外部ユーザーが参加しているグループは、Azure AD 上の外部ユーザーの memberof 属性で確認できます。
 
 ## 準備
 1. Azure 環境にて Azure Automation アカウントを作成
