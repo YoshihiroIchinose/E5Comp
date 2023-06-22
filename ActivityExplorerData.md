@@ -21,6 +21,9 @@ $date=get-date
 $e=$date.ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss")
 $s=$date.AddDays(-30).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss")
 $OutputFile=[System.Environment]::GetFolderPath("Desktop")+"\AEJ.csv"
+#$filter1=@("Activity", "DLPRuleMatch")
+#$filter2=@("Location", "Exchange")
+#$filter3=@("Policy", "DLPPolicyName")
 
 #Credentialの生成
 $SecPass=ConvertTo-SecureString -String $Password -AsPlainText -Force
@@ -33,6 +36,7 @@ $output=@();
 $watermark="";
 for($i = 0; $i -lt 10; $i++){
 	$d=Export-ActivityExplorerData -OutputFormat json -StartTime $s -EndTime $e -PageSize 5000 -PageCookie $watermark
+	#$d=Export-ActivityExplorerData -OutputFormat json -StartTime $s -EndTime $e -PageSize 5000 -PageCookie $watermark -filter1 $filter1 -filter2 $filter2 -$filter3 $filter3
 	$output+=convertfrom-json $d.ResultData
       "ループ $i :"+$output.count+"行"
 	if($d.LastPage){break;}
