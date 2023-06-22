@@ -48,7 +48,7 @@ Foreach($s in $sites){
 	         $line = New-Object -TypeName PSObject
 		 AddMember $line "Site" $s.Url
 		 AddMember $line "DisplayName" $u.DisplayName
-         AddMember $line "UniqueId" $u.UniqueId
+      　　　　　  AddMember $line "UniqueId" $u.UniqueId
 		 AddMember $line "Email" $u.Email
 		 AddMember $line "LoginName" $u.LoginName
 		$externalUsers+=$line
