@@ -22,7 +22,7 @@ $e=$date.ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss")
 $s=$date.AddDays(-30).ToUniversalTime().ToString("yyyy/MM/dd HH:mm:ss")
 $OutputFile=[System.Environment]::GetFolderPath("Desktop")+"\AEJ.csv"
 #$filter1=@("Activity", "DLPRuleMatch")
-#$filter2=@("Location", "Exchange")
+#$filter2=@("Workload", "Exchange")
 #$filter3=@("Policy", "DLPPolicyName")
 
 #Credentialの生成
