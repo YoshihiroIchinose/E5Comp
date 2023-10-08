@@ -202,5 +202,53 @@ $ctx.ExecuteQuery()
 Disconnect-PnPOnline
 ```
 ## 3. Power Automate によるメール通知の設定
-[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ExternalSharingMonitoring.md)を参考に、EndpointDLP のリストに対して、
-新規リスト アイテムが登録された際、起動する Power Automate のフローを作成し、カスタムのメール通知を設定する。
+1. EndpointDLP のリストのメニューの統合から Power Automate を選択し、フローの作成を選択
+1. "新しい SharePoint リスト アイテムが追加されたらカスタマイズされたメールを送信する"のフローを選択しフローを作成する
+1. 編集から"Get My profile (V2)" および "Send Email" のステップを削除する
+1. 新しいステップで "コントロール" の "条件" を追加する
+1. 条件の値で、動的なコンテンツの "User" を指定し、"次の値を含む"、"\" という条件を設定する   
+   (Azure AD に関係ないローカル ユーザーの場合は、通知対象外とするため)
+1. "いいえの場合" セクションに "上司の取得 (V2)"のアクションを追加する
+　 (社内ユーザーの操作の場合、To に共有を行った社内ユーザー、CC のその上司を入れてメール通知するため)
+1. "User (UPN)" に動的なコンテンツでリスト列の [User] を追加する
+1. 続いて "Outlook" の "メールの送信 (V2)" のアクションを追加する
+1. 宛先に動的なコンテンツでリスト列の [User] を指定する
+1. 件名に"[EDLP Notification] ファイル書き出し操作"と入力する
+1. "Show advanced options" をクリックして、"CC" に動的なコンテンツで上司となる [Mail] を追加する
+1. 本文におおよそ以下の内容を記載する([] は動的なコンテンツでリスト列を参照する)   
+```
+ファイルの外部書き出しが行われました。    
+業務上必要な操作であることを確認してください。  
+ユーザー: [User]
+時間(UTC): [Time]
+書き出されたファイル: [Item]
+行われた操作: [Operation]
+操作可否: [EnforcementMode]
+DLPの一致
+DLP ポリシー: [PolicyName]
+DLP ルール: [RuleName]
+検出された機密情報:
+[SensitiveInfoTypeData]
+
+USB 書き出しの場合
+外部メディアの情報:
+[RemovableMediaDeviceAttributes]
+
+クラウドへのアップロードの場合
+アップロード先: [TargetDomain]
+```
+1. 後ろに新しいステップを追加し、"項目の更新" のアクションを追加する
+1. サイトのアドレスで、"Customnotification" のサイトを指定し、リスト名で "EndpointDLP" を指定する
+1. ID を動的なコンテンツでリスト列の [ID] を指定する
+1. タイトルを動的なコンテンツでリスト列の [タイトル] を指定する
+1. "RMSEncrypted", "JitTriggered","Notified" の値を空欄にする
+1. "Notified" を "はい" に指定する
+1. フローを保存する
+
+### 設定後の Power Automte フローの全体
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/EDLPNotif03.png"/>    
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/EDLPNotif04.png"/>
+
+### 送信されるメール通知例
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/EDLPNotif05.png"/>
+その他、Power Automate では、共有メールボックスを作成し、代理人として送信の権限を付与することで、共有メールボックスのアカウントを送信元としたメール通知も可能。
