@@ -69,7 +69,9 @@ For($i=0;$i -lt $loopcount; $i++){
 }
 
 Foreach($d in $res.data){
-  #Skip protected files
+	#Skip which is not supporsed to be retried
+	If($d.status.shouldRetry -eq $false){continue}
+	#Skip protected files
 	If($d.status.statusMessage.Contains("already protected")){continue}
 	#Skip actions which is over 8 hours before
 	If($d.created.ToDateTime($null) -le (Get-Date).AddHours(-8)){continue}
