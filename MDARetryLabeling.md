@@ -70,20 +70,19 @@ For($i=0;$i -lt $loopcount; $i++){
 
 Foreach($d in $res.data){
 	$RetryUri=$Uri+$d._id+"/retry/"
-	$skipmessage=@()
+    	$skipmessage=@()
 	#Skip which is not supporsed to be retried
 	If($d.status.shouldRetry -eq $false){$skipmessage+="ShouldNotRtry"}
 	#Skip protected files
 	If($d.status.statusMessage.Contains("already protected")){$skipmessage+="Already Protected"}
-	#Skip actions which is over 8 hours before
+	#Skip files which was created over 8 hours before
 	If($d.created.ToDateTime($null) -le (Get-Date).AddHours(-8)){$skipmessage+="Older than 8 hours"}
-	#Skip actions which is within last 1 hour
+	#Skip files which was created within last 1 hour
 	If($d.created.ToDateTime($null) -ge (Get-Date).AddHours(-1)){$skipmessage+="Within last 1 hours"}
     	if($skipmessage.count -gt 1){
         	$d._id + ": skipped, due to " + ($skipmessage -join ", ")
         	continue
-        	}
+        }
 	$RetryUri +": Retry"
 	$res2=Invoke-RestMethod -Uri $RetryUri -Method "Get" -Headers $headers
-	}
 ````
