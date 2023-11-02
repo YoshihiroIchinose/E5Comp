@@ -85,4 +85,5 @@ Foreach($d in $res.data){
         }
 	$RetryUri +": Retry"
 	$res2=Invoke-RestMethod -Uri $RetryUri -Method "Get" -Headers $headers
+}
 ````
