@@ -1,6 +1,14 @@
 # Defender for Cloud Apps でのラベル適用のガバナンス アクションをリトライする
 本サンプル スクリプトは、Microsoft 365 Defender の[ガバナンス ログ](https://security.microsoft.com/cloudapps/governance-log)の情報を、
-PowerShell を使った API アクセスで取得し、失敗した秘密度ラベル適用をリトライするものです。バッチ実行に当たっては、本スクリプトを、
+PowerShell を使った API アクセスで取得し、失敗したままになっている秘密度ラベル適用をリトライするものです。
+具体的には、ガバナンス ログの中から成功・失敗含めてラベル付けのアクションを最新 300 件取得し、そのうち以下のものを除いてリトライを実施します。
+- 新しいログで既にラベル付けに成功しているファイルに関する操作
+- リトライすべきではないというステータスのもの
+- 既にラベルが付けらていて失敗しているもの
+- 8 時間以上経過しているもの
+- 1 時間以内に失敗しているもの
+
+バッチ実行に当たっては、本スクリプトを、
 Azure Automation 上に配置し、スケージュール実行します。
 
 ## 事前準備
@@ -18,7 +26,7 @@ $Uri="https://xxxxx.portal.cloudappsecurity.com/api/v1/files/"
 $Token="xxxxxxxxx"
 
 #Filter for finding protected files in SPO withoug sensitivity labels
-$filter='{"status":{"eq":[false]},"taskName":[RmsProtectTask]}'
+$filter='{"status":{"eq":[true, false]},"taskName":[RmsProtectTask]}'
 
 #Amount of governance actions to retrieve
 $ResultSetSize=300
@@ -68,22 +76,34 @@ For($i=0;$i -lt $loopcount; $i++){
 	if($res.data.Count -lt $batchsize){break}
 }
 
+$completed=@()
 Foreach($d in $res.data){
-	$RetryUri=$Uri+$d._id+"/retry/"
-    	$skipmessage=@()
+        $skipmessage=@()
+	#Skip labeled file
+	if($completed.IndexOf($d.targetObjectId) -ne -1){
+		$skipmessage+="Labeld file"
+	}
+	#Skip success
+	if($d.status.isSuccess){
+		$completed+=$d.targetObjectId
+		$skipmessage+="Successful task"
+	}
 	#Skip which is not supporsed to be retried
-	If($d.status.shouldRetry -eq $false){$skipmessage+="ShouldNotRtry"}
+	if($d.status.shouldRetry -eq $false){$skipmessage+="ShouldNotRetry"}
 	#Skip protected files
-	If($d.status.statusMessage.Contains("already protected")){$skipmessage+="Already Protected"}
+	if($d.status.statusMessage.Contains("already protected")){$skipmessage+="Already Protected"}
 	#Skip files which was created over 8 hours before
-	If($d.created.ToDateTime($null) -le (Get-Date).AddHours(-8)){$skipmessage+="Older than 8 hours"}
+	if($d.created.ToDateTime($null) -le (Get-Date).AddHours(-8)){$skipmessage+="Older than 8 hours"}
 	#Skip files which was created within last 1 hour
-	If($d.created.ToDateTime($null) -ge (Get-Date).AddHours(-1)){$skipmessage+="Within last 1 hours"}
-    	if($skipmessage.count -gt 1){
-        	$d._id + ": skipped, due to " + ($skipmessage -join ", ")
+	if($d.created.ToDateTime($null) -ge (Get-Date).AddHours(-1)){$skipmessage+="Within last 1 hours"}
+	if($skipmessage.count -gt 1){
+        	$d.targetObject+","+$d.targetObjectId+",skipped, due to " + ($skipmessage -join ", ")
         	continue
         }
-	$RetryUri +": Retry"
+	$d.targetObject+","+$d.targetObjectId+",Retry"
+	#Retry should be called with governance log id
+	$RetryUri=$Uri+$d._id+"/retry/"
 	$res2=Invoke-RestMethod -Uri $RetryUri -Method "Get" -Headers $headers
 }
+
 ````
