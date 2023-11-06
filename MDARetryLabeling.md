@@ -20,7 +20,7 @@ Defender for Cloud Apps の [API トークン](https://security.microsoft.com/cl
 ````
 #Parameters
 #should be replaced by the tenant domain
-$Uri="https://xxxxx.portal.cloudappsecurity.com/api/v1/files/"
+$Uri="https://xxxxx.portal.cloudappsecurity.com/api/v1/governance/"
 
 #64 chacters, should be obtained via MDA API Token page
 $Token="xxxxxxxxx"
