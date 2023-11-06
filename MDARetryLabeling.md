@@ -96,7 +96,7 @@ Foreach($d in $res.data){
 	if($d.created.ToDateTime($null) -le (Get-Date).AddHours(-8)){$skipmessage+="Older than 8 hours"}
 	#Skip files which was created within last 1 hour
 	if($d.created.ToDateTime($null) -ge (Get-Date).AddHours(-1)){$skipmessage+="Within last 1 hours"}
-	if($skipmessage.count -gt 1){
+	if($skipmessage.count -ge 1){
         	$d.targetObject+","+$d.targetObjectId+",skipped, due to " + ($skipmessage -join ", ")
         	continue
         }
