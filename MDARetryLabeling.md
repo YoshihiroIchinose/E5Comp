@@ -25,7 +25,7 @@ $Uri="https://xxxxx.portal.cloudappsecurity.com/api/v1/governance/"
 #64 chacters, should be obtained via MDA API Token page
 $Token="xxxxxxxxx"
 
-#Filter for finding protected files in SPO withoug sensitivity labels
+#Filter for finding governance actions related to labeling
 $filter='{"status":{"eq":[true, false]},"taskName":[RmsProtectTask]}'
 
 #Amount of governance actions to retrieve
