@@ -1,14 +1,25 @@
 # Defender for Cloud Apps でのラベル適用のガバナンス アクションをリトライする
 本サンプル スクリプトは、Microsoft 365 Defender の[ガバナンス ログ](https://security.microsoft.com/cloudapps/governance-log)の情報を、
 PowerShell を使った API アクセスで取得し、失敗したままになっている秘密度ラベル適用をリトライするものです。
-具体的には、ガバナンス ログの中から成功・失敗含めてラベル付けのアクションを直近 8 時間の範囲で、最大 300 件取得し、そのうち以下のものを除いてリトライを実施します。
+具体的には、ガバナンス ログの中から成功・失敗含めてラベル付けのアクションを直近 8 時間の範囲で、最大 300 件取得し、そのうち以下のものを除いてリトライを実施します。適宜バッチの実行頻度に応じて、ガバナンス ログの取得件数や、対象外とするログの範囲を調整下さい。
 - 新しいログで既にラベル付けに成功しているファイルに関する操作
 - リトライすべきではないというステータスのもの
-- 既にラベルが付けらていて失敗しているもの
+- 既にラベルが付与されていることにより失敗しているもの
 - 1 時間以内に失敗しているもの
+- 24 時間以上前に作成されたファイル
 
-バッチ実行に当たっては、本スクリプトを、
-Azure Automation 上に配置し、スケージュール実行します。
+バッチ実行に当たっては、本スクリプトを、Azure Automation 上に配置するか、インターネットに接続可能で、PowerShell が動作する常時稼働の Windows マシンで、スケジュール実行します。(特に特殊なモジュールのインストールなどは不要。)
+
+## Defender for Cloud Apps のラベル付け動作
+Defender for Cloud Apps のラベル付けはでは以下の動作が行われています。
+1. アクティビティとして新しいファイルの作成・アップロードがログに確認される
+1. ファイル ページで新しいファイルが認識される
+1. ファイル ポリシーに合致していた場合、同ファイルに対するガバナンス ログが記録され、ガバナンス アクションとしてラベル付けが試行される
+1. ファイルが編集中の場合など初回の試行が失敗した場合、ガバナンス アクションは保留状態となる
+1. 初回の施行後、15 分間隔で 3 回リトライし、おおよそ 45 分間で 4 回の試行がすべて失敗した場合、ガバナンス アクションは失敗状態となる   
+   (ファイルがずっと編集中であった場合、"保護されたファイルをアップロードできませんでした"というエラーで失敗状態となる)
+1. 一度ガバナンス アクションが失敗状態となった場合、以後同ファイルの更新があっても、ラベル付けはリトライされない
+1. ガバナス ログからの手動のリトライもしくは本スクリプトのリトライにより、ラベル付けが失敗したままになっているファイルのラベル付けを再度試行することが可能
 
 ## 事前準備
 ### API トークン
@@ -25,8 +36,8 @@ $Uri="https://xxxxx.portal.cloudappsecurity.com/api/v1/governance/"
 $Token="xxxxxxxxx"
 
 #Filter for finding governance actions related to labeling within last 8 hours
-$d=[datetimeoffset]::Now.AddHours(-8).ToUnixTimeMilliseconds()
-$filter='{"status":{"eq":[true, false]},"timestamp":{"gte":'+$d+'},"type":{"eq":["RmsProtectTask"]}}'
+$t=[datetimeoffset]::Now.AddHours(-8).ToUnixTimeMilliseconds()
+$filter='{"status":{"eq":[true, false]},"timestamp":{"gte":'+$t+'},"type":{"eq":["RmsProtectTask"]}}'
 
 #Amount of governance actions to retrieve
 $ResultSetSize=300
@@ -50,8 +61,8 @@ For($i=0;$i -lt $loopcount; $i++){
 	do {
 		$retryCall = $false
 		try {
-			"Loop: $i, From " +$i*$batchSize
 			$res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
+			"Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" items"
 			}
 		catch {
 			if ($_ -like 'The remote server returned an error: (429) TOO MANY REQUESTS.'){
@@ -75,11 +86,10 @@ For($i=0;$i -lt $loopcount; $i++){
 	$output+=$res.data
 	if($res.data.Count -lt $batchsize){break}
 }
-
-"Retrieved " +$res.data.count+" actions"
+"Retrieved " +$output.count+" actions"
 
 $completed=@()
-Foreach($d in $res.data){
+Foreach($d in $output){
         $skipmessage=@()
 	#Skip labeled file
 	if($completed.IndexOf($d.targetObjectId) -ne -1){
@@ -101,6 +111,9 @@ Foreach($d in $res.data){
 	$initiated=([datetimeoffset]::FromUnixTimeMilliseconds($d.timestamp)).UtcDateTime
 	If($initiated -ge (Get-Date).ToUniversalTime().AddHours(-1)){$skipmessage+="Within last 1 hours"}
 
+	#Skip files created over 24 hours before
+    	If($d.created.ToDateTime($null) -le (Get-Date).AddHours(-24)){$skipmessage+="Old file"}
+
 	if($skipmessage.count -ge 1){
         	$d.targetObject+","+$d.targetObjectId+",skipped, due to " + ($skipmessage -join ", ")
         	continue
@@ -110,6 +123,7 @@ Foreach($d in $res.data){
 	#Retry should be called with governance log id
 	$RetryUri=$Uri+$d._id+"/retry/"
 	$res2=Invoke-RestMethod -Uri $RetryUri -Method "Get" -Headers $headers
+	Start-Sleep -Seconds 1
 }
 
 ````
