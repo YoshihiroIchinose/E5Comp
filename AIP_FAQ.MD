@@ -37,13 +37,13 @@ ProxyAddresses に設定がなければ、UserPrincipalName の値で、指定�
 ## 外部ユーザーの指定方法まとめ
 | 環境 | 個別のユーザー指定<br>(メール アドレスが有効な AAD のグループ指定含む) | ドメイン指定<br>(Azure AD ではそのドメインを持つテナント全体) | 認証されたユーザーは誰でも |
 |:---:|:---:|:---:|:---:|
-|Office 365 Apps for Business | 〇 | △ <br> (特殊な AllStaff-7184AB3F-CCD1-46F3-8233-3E09E9CF0E66@ドメイン名という指定方法であれば可) | × |
+|Office 365 Apps for Business | 〇 | 〇 <br> (Microsoft 365 Apps の 2303 でネイティブに対応) | × |
 |Azure Information Clienet をインストールした上で、ファイルを右クリックして権限設定する場合 | 〇 | 〇 | × |
 |テナント管理者が秘密度ラベルの保護設定を定義する場合| 〇 | 〇 | 〇 |
 
-## Microsoft 365 Apps -> ドメインの設定ができない
+## Microsoft 365 Apps -> ドメインの設定も Microsoft 365 Apps の 2303 でネイティブに対応
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_PIC01.png">  
-(特殊な AllStaff-7184AB3F-CCD1-46F3-8233-3E09E9CF0E66@ドメイン名という指定方法でドメインのすべてのユーザーを指定することは可能。)  
+(以前のバージョンでも、特殊な AllStaff-7184AB3F-CCD1-46F3-8233-3E09E9CF0E66@ドメイン名という指定方法でドメインのすべてのユーザーを指定することは可能。)  
   
 ## Azure Information Clienet をインストールした上で、ファイルを右クリックして権限設定する場合 -> ドメインの設定ができる  
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/AIP_PIC02.png">
