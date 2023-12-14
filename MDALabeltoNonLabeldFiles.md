@@ -4,24 +4,32 @@
 手動でラベル付けを行う操作を代替するものです。
 
 ### 環境ごとに必要な設定
-1. 64 文字の MDA のトークン
-2. MDA API の URL
-3. 対象とするアプリのインスタンス番号
-4. 対象とするフォルダのファイル ID
+1. 64 文字の MDA のトークン<br/>
+[API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens) のページから取得したトークンの値
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel4.png">  
+2. MDA API の URL<br/>
+[API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens) のページでトークン取得の際に表示される URL
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel3.png">  
+3. 対象とするアプリのインスタンス番号<br/>
+ファイル ページなどからアプリをクリックした際に表示されるアプリのページの URL で /service-app/ の後に続く数字
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel1.png">  
+4. 対象とするフォルダのファイル ID<br/>
+ファイル ページで、対象としたいファルダを表示し、詳細情報の中にある "ファイル ID" の値
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel2.png">  
 5. 付与する秘密度ラベルの表示名
 
 ### 必要に応じて調整する項目
 1. 一度のクエリで取得するアイテム数 (本スクリプトでは、更新日時の降順で 100 )
 2. ラベル付けの対象とするファイルの更新日時の範囲 (本スクリプトでは、直近 1-24 時間前の間に更新されたファイルを対象)
    
-### MDA の API を利用して、以下の処理をスクリプトで実施します。
+## 本スクリプトの処理内容
 1. 秘密度ラベル一覧を取得し、秘密度ラベルの ID を取得する
 2. 指定されたフォルダ内のサブ フォルダを再帰的にクエリし、対象となるサブ フォルダを特定する
 3. 対象となるフォルダの直下にある更新日時が対象の範囲で、秘密度ラベルが付与されていないファイルをすべて取得する
 4. 対象となるファイルに対して、ラベル付け操作をキックする
 
 ### スクリプト本体
-```
+~~~PowerShell
 #Parameters
 #should be replaced by the tenant domain and URL, which can be found when you get a MDA API Token
 $baseUrl="xxxxxx.us3.portal.cloudappsecurity.com"
@@ -52,7 +60,7 @@ $headers=@{"Authorization" = "Token "+$Token}
 Function GetLabel($labelName){#For getting the label ID by a label name
 	$Uri="https://"+$global:baseUrl+"/api/v1/get_rms_encryption_labels/"
 	$res=Invoke-RestMethod -Uri $Uri -Method "Get" -Headers $global:headers
-    Start-Sleep -Seconds 1
+	Start-Sleep -Seconds 1
 	foreach($l in $res.data){
 		If($l.name.equals($labelName)){
 			return $l.id
@@ -82,7 +90,7 @@ Function GetFoldersRecursive($parent){#Get folders recursively under a spcified 
 		    }
 	    $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $global:headers -Body $Body
    	    "Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" folders"
-        Start-Sleep -Seconds 1
+	    Start-Sleep -Seconds 1
 	    $output+=$res.data
 	    if($res.data.Count -lt $batchsize){break}
     }
@@ -92,13 +100,13 @@ Function GetFoldersRecursive($parent){#Get folders recursively under a spcified 
             $global:targetFolders+=$item._id
             GetFoldersRecursive($item._id)
         }
-	}
+     }
 }
 
 Function GetFolderItems($parent){#Get recent files directly under a spcified folder
 	"Get files from " + $parent
 	$filter='{"modifiedDate":{"range":[{"start":'+$global:s+',"end":'+$global:e+'}]},"fileType":{"neq":[6]},"fileLabels":{"isnotset":true},'
-    $filter+='"parentFolder":{"eq":["'+$parent+'"]},"instance":{"eq":['+$global:instance+']}}'
+   	$filter+='"parentFolder":{"eq":["'+$parent+'"]},"instance":{"eq":['+$global:instance+']}}'
 	$batchSize=100 
 	$Uri="https://"+$global:baseUrl+"/api/v1/files/"
 	
@@ -118,7 +126,7 @@ Function GetFolderItems($parent){#Get recent files directly under a spcified fol
 		    }
 	    $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $global:headers -Body $Body
 	    "Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" items"
-        Start-Sleep -Seconds 1
+　　　　　　　Start-Sleep -Seconds 1
 	    $output+=$res.data
 	    if($res.data.Count -lt $batchsize){break}
     }
@@ -129,7 +137,7 @@ Function GetFolderItems($parent){#Get recent files directly under a spcified fol
 		    	"Found non-labeled file " + $item.Name
 			    $global:targetFiles+=$item 
 			    break
-    	    }
+    	   		 }
 		}
 	}
 }
@@ -169,6 +177,6 @@ foreach($f in $targetFiles){
     Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
     Start-Sleep -Seconds 1
 }
-```
+~~~
 ## Azure Automation 上での実行結果のアウトプット
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_AutoLabel.png">  
