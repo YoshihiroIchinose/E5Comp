@@ -4,19 +4,19 @@
 手動でラベル付けを行う操作を代替するものです。
 
 ### 環境ごとに必要な設定
-1. 64 文字の MDA のトークン<br/>
-[API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens) のページから取得したトークンの値
-<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel4.png">  
-2. MDA API の URL<br/>
-[API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens) のページでトークン取得の際に表示される URL
-<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel3.png">  
-3. 対象とするアプリのインスタンス番号<br/>
-ファイル ページなどからアプリをクリックした際に表示されるアプリのページの URL で /service-app/ の後に続く数字
-<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel1.png">  
-4. 対象とするフォルダのファイル ID<br/>
-ファイル ページで、対象としたいファルダを表示し、詳細情報の中にある "ファイル ID" の値
-<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel2.png">  
-5. 付与する秘密度ラベルの表示名
+#### 1. 64 文字の MDA のトークン
+[API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens) のページから取得したトークンの値<br/>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel4.png" width="50%">  
+#### 2. MDA API の URL
+トークン取得の際に表示される URL<br/>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel3.png" width="50%">  
+#### 3. 対象とするアプリのインスタンス番号
+ファイル ページなどからアプリをクリックした際に表示されるアプリのページの URL で /service-app/ の後に続く数字<br/>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel1.png" width="50%">  
+#### 4. 対象とするフォルダのファイル ID
+ファイル ページで、対象としたいファルダを表示し、詳細情報の中にある "ファイル ID" の値<br/>
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel2.png" width="50%">
+#### 5. 付与する秘密度ラベルの表示名
 
 ### 必要に応じて調整する項目
 1. 一度のクエリで取得するアイテム数 (本スクリプトでは、更新日時の降順で 100 )
