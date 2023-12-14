@@ -181,4 +181,14 @@ foreach($f in $targetFiles){
 }
 ~~~
 ## Azure Automation 上での実行結果のアウトプット
-<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_AutoLabel.png">  
+### Box 上のファイル
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_AutoLabel.png" width="50%"> 
+
+### SPO 上のファイル
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel5.png" width="50%"> 
+
+### ラベル付けの履歴
+ラベル付け操作の結果および履歴はガバナンス ログで確認可能
+### SPO 上のファイル
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel6.png" width="50%"> 
+
