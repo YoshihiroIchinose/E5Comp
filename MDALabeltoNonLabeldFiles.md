@@ -1,13 +1,13 @@
-# MDA API を利用して特定フォルダ内のラベルがつけられていないファイルに、秘密度ラベルを付与する
-本スクリプトでは、MDA の API を利用して、特定フォルダ内のラベルがつけられていないファイルに、秘密度ラベルを付与するサンプル スクリプトです。
+# Defender for Cloud Apps の API を利用して特定フォルダ内のファイルに秘密度ラベルを付与する
+本スクリプトでは、Defender for Cloud Apps の API を利用して、特定フォルダ内のラベルがつけられていないファイルに、秘密度ラベルを付与するサンプル スクリプトです。
 ファイル ポリシーでのガバナンス アクションでも同等のことができますが、障害等で、ガバナンス アクションが実行されてない場合の補完として、
 手動でラベル付けを行う操作を代替するものです。
 
 ### 環境ごとに必要な設定
-#### 1. 64 文字の MDA のトークン
+#### 1. 64 文字の Defender for Cloud Apps のトークン
 [API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens) のページから取得したトークンの値<br/>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel4.png" width="50%">  
-#### 2. MDA API の URL
+#### 2. Defender for Cloud Apps API の URL
 トークン取得の際に表示される URL<br/>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel3.png" width="50%">  
 #### 3. 対象とするアプリのインスタンス番号
@@ -30,7 +30,7 @@
 
 ### スクリプト本体
 ~~~PowerShell
-#Parameters
+#<--Parameters
 #should be replaced by the tenant domain and URL, which can be found when you get a MDA API Token
 $baseUrl="xxxxxx.us3.portal.cloudappsecurity.com"
 
@@ -46,6 +46,7 @@ $instance="20892"
 #Folder in SPO/OD4B is like "736e3abc-13d1-44fe-9aed-3b56f9878ead|d286c00e-de8e-4eb1-9881-61bd97a69abc"
 #Folder in Box is like "239616417475"
 $folders=@("736e3762-13d1-44fe-9aed-3b56f9878ead|d286c00e-de8e-4eb1-9881-61bd97a608e3")
+#Parameters-->
 
 #scope of target files specified by the number of files and tame range
 $s=[datetimeoffset]::Now.AddHours(-24).ToUnixTimeMilliseconds()
