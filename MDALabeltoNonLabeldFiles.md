@@ -183,7 +183,6 @@ foreach($f in $targetFiles){
     $Body+='"entities":[{"id":"'+$f._id+'","appId":'+$f.appId+'}],'
     $Body+='"params":{"labelId":"'+$label+'"}}'
     "Apply the label to: " + $f.Name
-    $Body
     Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
     Start-Sleep -Seconds 1
 }
