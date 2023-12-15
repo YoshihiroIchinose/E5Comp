@@ -1,4 +1,4 @@
-![image](https://github.com/YoshihiroIchinose/E5Comp/assets/66407692/8221efe3-6fab-452f-964c-53093685c567)# Defender for Cloud Apps の API を利用して特定フォルダ内のファイルに秘密度ラベルを付与する
+# Defender for Cloud Apps の API を利用して特定フォルダ内のファイルに秘密度ラベルを付与する
 本スクリプトでは、Defender for Cloud Apps の API を利用して、特定フォルダ内のラベルがつけられていないファイルに、秘密度ラベルを付与するサンプル スクリプトです。
 ファイル ポリシーでのガバナンス アクションでも同等のことができますが、障害等で、ガバナンス アクションが実行されてない場合の補完として、
 手動でラベル付けを行う操作を代替するものです。
@@ -8,7 +8,7 @@
 [API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens) のページから取得したトークンの値<br/>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel4.png" width="50%">  
 #### 2. Defender for Cloud Apps API の URL
-トークン取得の際に表示される URL<br/>
+トークン取得の際に表示される URL (ラベル付けの API の利用のためには、.us3 などの地域のドメインも含める必要あり)<br/>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel3.png" width="50%">  
 #### 3. 対象とするアプリのインスタンス番号
 ファイル ページなどからアプリをクリックした際に表示されるアプリのページの URL で /service-app/ の後に続く数字<br/>
