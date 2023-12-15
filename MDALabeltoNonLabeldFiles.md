@@ -1,4 +1,4 @@
-# Defender for Cloud Apps の API を利用して特定フォルダ内のファイルに秘密度ラベルを付与する
+![image](https://github.com/YoshihiroIchinose/E5Comp/assets/66407692/8221efe3-6fab-452f-964c-53093685c567)# Defender for Cloud Apps の API を利用して特定フォルダ内のファイルに秘密度ラベルを付与する
 本スクリプトでは、Defender for Cloud Apps の API を利用して、特定フォルダ内のラベルがつけられていないファイルに、秘密度ラベルを付与するサンプル スクリプトです。
 ファイル ポリシーでのガバナンス アクションでも同等のことができますが、障害等で、ガバナンス アクションが実行されてない場合の補完として、
 手動でラベル付けを行う操作を代替するものです。
@@ -49,7 +49,7 @@ $instance="20892"
 $folders=@("736e3762-13d1-44fe-9aed-3b56f9878ead|d286c00e-de8e-4eb1-9881-61bd97a608e3")
 #Parameters-->
 
-#scope of target files specified by the number of files and tame range
+#scope of target files specified by time range of modified data and the number of files
 $s=[datetimeoffset]::Now.AddHours(-24).ToUnixTimeMilliseconds()
 $e=[datetimeoffset]::Now.AddHours(-1).ToUnixTimeMilliseconds()
 $ResultSetSize=100
