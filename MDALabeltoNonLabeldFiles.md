@@ -1,9 +1,13 @@
 # Defender for Cloud Apps の API を利用して特定フォルダ内のファイルに秘密度ラベルを付与する
 本スクリプトでは、Defender for Cloud Apps の API を利用して、特定フォルダ内のラベルがつけられていないファイルに、秘密度ラベルを付与するサンプル スクリプトです。
 ファイル ポリシーでのガバナンス アクションでも同等のことができますが、障害等で、ガバナンス アクションが実行されてない場合の補完として、
-手動でラベル付けを行う操作を代替するものです。
+手動でラベル付けを行う操作を代替するものです。<br/>
+<br/>
+前提として、Defender for Cloud Apps 側で、対象のフォルダ・ファイルが見えていること、ファイルが秘密度ラベル付けに対応しているファイル種別であり、ラベルがまだ付与されていないという状態である必要があります。<br/>
+<br/>
+原理上同じ仕組みで、アクション部分を置き換えれば、ラベルの削除や共有の解除などのアクションも実行できます。
 
-### 環境ごとに必要な設定
+### 環境ごとに必要な設定 (環境固有の以下の値で、スクリプト内の変数を指定のこと。)
 #### 1. 64 文字の Defender for Cloud Apps のトークン
 [API トークン](https://security.microsoft.com/cloudapps/settings?tabid=apiTokens) のページから取得したトークンの値<br/>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel4.png" width="50%">  
