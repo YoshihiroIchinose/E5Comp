@@ -11,10 +11,14 @@
 トークン取得の際に表示される URL (ラベル付けの API の利用のためには、.us3 などの地域のドメインも含める必要あり)<br/>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel3.png" width="50%">  
 #### 3. 対象とするアプリのインスタンス番号
-ファイル ページなどからアプリをクリックした際に表示されるアプリのページの URL で /service-app/ の後に続く数字<br/>
+ファイル ページなどからアプリをクリックした際に表示されるアプリのページの URL で /service-app/ の後に続く 5-7 桁ほどの数字<br/>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel1.png" width="50%">  
 #### 4. 対象とするフォルダのファイル ID
-ファイル ページで、対象としたいファルダを表示し、詳細情報の中にある "ファイル ID" の値<br/>
+ファイル ページで、対象としたいファルダの詳細情報の中にある "ファイル ID" の値<br/>
+対象としたいファイルの詳細情報から "階層を表示" を選択して、フォルダの詳細情報を表示することでも、<br/>
+フォルダの　"ファイル ID" の値を確認可能<br/>
+SPO/OD4B の場合、"736e3abc-13d1-44fe-9aed-3b56f9878ead|d286c00e-de8e-4eb1-9881-61bd97a69abc" のような表記<br/>
+Box の場合、"239616417475" のような表記<br/>
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel2.png" width="50%">
 #### 5. 付与する秘密度ラベルの表示名
 
