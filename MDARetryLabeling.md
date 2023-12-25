@@ -1,16 +1,16 @@
 # Defender for Cloud Apps でのラベル適用のガバナンス アクションをリトライする
 本サンプル スクリプトは、Microsoft 365 Defender の[ガバナンス ログ](https://security.microsoft.com/cloudapps/governance-log)の情報を、
 PowerShell を使った API アクセスで取得し、失敗したままになっている秘密度ラベル適用をリトライするものです。
-具体的には、ガバナンス ログの中から成功・失敗含めてラベル付けのアクションを直近 8 時間の範囲で、最大 300 件取得し、そのうち以下のものを除いてリトライを実施します。適宜バッチの実行頻度に応じて、ガバナンス ログの取得件数や、対象外とするログの範囲を調整下さい。
+具体的には、ガバナンス ログの中から成功・失敗含めてラベル付けのアクションを直近 8 時間の範囲で、最大 300 件取得し、そのうち以下のものを除いてリトライを実施します。適宜バッチの実行頻度に応じて、ガバナンス ログの取得件数や、対象外とするログの範囲を調整下さい。   
 - 新しいログで既にラベル付けに成功しているファイルに関する操作
-- リトライすべきではないというステータスのもの
 - 既にラベルが付与されていることにより失敗しているもの
 - 1 時間以内に失敗しているもの
 - 24 時間以上前に作成されたファイル
-- 同じファイルに対する重複したリトライ
+- 同じファイルに対する重複したリトライ (2023/12/25 更新)
 
-バッチ実行に当たっては、本スクリプトを、Azure Automation 上に配置するか、インターネットに接続可能で、PowerShell が動作する常時稼働の Windows マシンで、スケジュール実行します。(特に特殊なモジュールのインストールなどは不要。)
-
+バッチ実行に当たっては、本スクリプトを、Azure Automation 上に配置するか、インターネットに接続可能で、PowerShell が動作する常時稼働の Windows マシンで、スケジュール実行します。(特に特殊なモジュールのインストールなどは不要。)    
+---(2023/12/25 更新)---   
+なお、失敗・内部エラーとなる場合、ShouldNotRetry = false となっているがこれらもリトライするように更新。また同じファイルで複数の失敗のログがある場合に、1 回のスクリプト実行で、重複てリトライをしないように修正。
 ## Defender for Cloud Apps のラベル付け動作
 Defender for Cloud Apps のラベル付けはでは以下の動作が行われています。
 1. アクティビティとして新しいファイルの作成・アップロードがログに確認される
@@ -106,8 +106,8 @@ Foreach($d in $output){
 		$completed+=$d.targetObjectId
 		$skipmessage+="Successful task"
 	}
-	#Skip which is not supporsed to be retried
-	if($d.status.shouldRetry -eq $false){$skipmessage+="ShouldNotRetry"}
+	#Skip which is not supporsed to be retried #removed this condition
+	#if($d.status.shouldRetry -eq $false){$skipmessage+="ShouldNotRetry"}
 
 	#Skip files protected by any solution outside of MDA
 	if($d.status.statusMessage.Contains("already protected")){$skipmessage+="Already Protected"}
