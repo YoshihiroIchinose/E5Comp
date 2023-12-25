@@ -97,14 +97,14 @@ Foreach($d in $output){
 	if($completed.IndexOf($d.targetObjectId) -ne -1){
 		$skipmessage+="Labeld file"
 	}
+	#Skip retried file
+	if($retried.IndexOf($d.targetObjectId) -ne -1){
+		$skipmessage+="Retried file"
+	}
 	#Skip success
 	if($d.status.isSuccess){
 		$completed+=$d.targetObjectId
 		$skipmessage+="Successful task"
-	}
-	#Skip retried file
-	if($retried.IndexOf($d.targetObjectId) -ne -1){
-		$skipmessage+="Retried file"
 	}
 	#Skip which is not supporsed to be retried
 	if($d.status.shouldRetry -eq $false){$skipmessage+="ShouldNotRetry"}
