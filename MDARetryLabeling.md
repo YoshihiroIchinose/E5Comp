@@ -110,7 +110,10 @@ Foreach($d in $output){
 	#if($d.status.shouldRetry -eq $false){$skipmessage+="ShouldNotRetry"}
 
 	#Skip files protected by any solution outside of MDA
-	if($d.status.statusMessage.Contains("already protected")){$skipmessage+="Already Protected"}
+	if($d.status.statusMessage.Contains("already protected")){
+		$completed+=$d.targetObjectId
+		$skipmessage+="Already Protected"
+	}
 
 	#Skip actions which was taken within last 1 hour
 	$initiated=([datetimeoffset]::FromUnixTimeMilliseconds($d.timestamp)).UtcDateTime
