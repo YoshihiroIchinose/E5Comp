@@ -7,6 +7,7 @@ PowerShell を使った API アクセスで取得し、失敗したままにな�
 - 既にラベルが付与されていることにより失敗しているもの
 - 1 時間以内に失敗しているもの
 - 24 時間以上前に作成されたファイル
+- 同じファイルに対する重複したリトライ
 
 バッチ実行に当たっては、本スクリプトを、Azure Automation 上に配置するか、インターネットに接続可能で、PowerShell が動作する常時稼働の Windows マシンで、スケジュール実行します。(特に特殊なモジュールのインストールなどは不要。)
 
@@ -89,6 +90,7 @@ For($i=0;$i -lt $loopcount; $i++){
 "Retrieved " +$output.count+" actions"
 
 $completed=@()
+$retried=@()
 Foreach($d in $output){
         $skipmessage=@()
 	#Skip labeled file
@@ -100,7 +102,10 @@ Foreach($d in $output){
 		$completed+=$d.targetObjectId
 		$skipmessage+="Successful task"
 	}
-
+	#Skip retried file
+	if($retried.IndexOf($d.targetObjectId) -ne -1){
+		$skipmessage+="Retried file"
+	}
 	#Skip which is not supporsed to be retried
 	if($d.status.shouldRetry -eq $false){$skipmessage+="ShouldNotRetry"}
 
@@ -123,6 +128,7 @@ Foreach($d in $output){
 	#Retry should be called with governance log id
 	$RetryUri=$Uri+$d._id+"/retry/"
 	$res2=Invoke-RestMethod -Uri $RetryUri -Method "Get" -Headers $headers
+    	$retried+=$d.targetObjectId
 	Start-Sleep -Seconds 1
 }
 
