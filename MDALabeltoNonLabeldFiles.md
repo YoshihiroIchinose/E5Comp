@@ -70,7 +70,7 @@ $headers=@{"Authorization" = "Token "+$Token}
 Function GetLabel($labelName){#For getting the label ID by a label name
 	$Uri="https://"+$global:baseUrl+"/api/v1/get_rms_encryption_labels/"
 	$res=Invoke-RestMethod -Uri $Uri -Method "Get" -Headers $global:headers
-	Start-Sleep -Seconds 1
+	Start-Sleep -Seconds 2
 	foreach($l in $res.data){
 		If($l.name.equals($labelName)){
 			return $l.id
@@ -100,7 +100,7 @@ Function GetFoldersRecursive($parent){#Get folders recursively under a spcified 
 		    }
 	    $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $global:headers -Body $Body
    	    "Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" folders"
-	    Start-Sleep -Seconds 1
+	    Start-Sleep -Seconds 2
 	    $output+=$res.data
 	    if($res.data.Count -lt $batchsize){break}
     }
@@ -136,7 +136,7 @@ Function GetFolderItems($parent){#Get recent files directly under a spcified fol
 		    }
 	    $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $global:headers -Body $Body
 	    "Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" items"
-　　　　　　　Start-Sleep -Seconds 1
+　　　　　　　Start-Sleep -Seconds 2
 	    $output+=$res.data
 	    if($res.data.Count -lt $batchsize){break}
     }
@@ -184,7 +184,7 @@ foreach($f in $targetFiles){
     $Body+='"params":{"labelId":"'+$label+'"}}'
     "Apply the label to: " + $f.Name
     Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
-    Start-Sleep -Seconds 1
+    Start-Sleep -Seconds 2
 }
 ~~~
 ## Azure Automation 上での実行結果のアウトプット
