@@ -37,7 +37,7 @@ Box の場合、"239616417475" のような表記<br/>
 4. 対象となるファイルに対して、ラベル付け操作をキックする
 
 ### スクリプト本体
-~~~PowerShell
+````
 #<--Parameters
 #should be replaced by the tenant domain and URL, which can be found when you get a MDA API Token
 $baseUrl="xxxxxx.us3.portal.cloudappsecurity.com"
@@ -55,22 +55,62 @@ $instance="20892"
 #Folder in SPO/OD4B is like "736e3abc-13d1-44fe-9aed-3b56f9878ead|d286c00e-de8e-4eb1-9881-61bd97a69abc"
 #Folder in Box is like "239616417475"
 $folders=@("736e3762-13d1-44fe-9aed-3b56f9878ead|d286c00e-de8e-4eb1-9881-61bd97a608e3")
-#Parameters-->
 
 #scope of target files specified by time range of modified data and the number of files
 $s=[datetimeoffset]::Now.AddHours(-24).ToUnixTimeMilliseconds()
 $e=[datetimeoffset]::Now.AddHours(-1).ToUnixTimeMilliseconds()
+#Parameters-->
+
 $ResultSetSize=100
 
 #Global variables
 $targetFiles=@() 
 $targetFolders=@()
+$pathInfo=@{}
 $headers=@{"Authorization" = "Token "+$Token}
 
-Function GetLabel($labelName){#For getting the label ID by a label name
+Function RestCall ($u, $m, $h, $b=$null){#Foo all GET/POST REST call
+$maxRetry=5
+$retryCount=0
+do{
+    $retryCall = $false
+    $retryCount++
+    try{
+        $res=Invoke-RestMethod -Uri $u -Method $m -Headers $h -Body $b
+        }
+    catch{
+        if($_ -like 'The remote server returned an error: (429) TOO MANY REQUESTS.'){
+            $retryCall = $true
+            "429"
+            Start-Sleep -Seconds 5
+        }
+        ElseIf ($_ -like '504' -or $_ -like '502'){
+           	$retryCall = $true
+           	"504 or 502"
+            Start-Sleep -Seconds 5
+	    }
+        ElseIf ($_ -match 'throttled'){
+    		$retryCall = $true
+	    	"Throttled"
+	        Start-Sleep -Seconds 60
+	    }
+        else {
+            throw $_
+        }
+       }#end of Catch
+ }#end of do loop
+    while ($retryCall -and $retryCount -le $MaxRetry)
+ 
+    if($retryCount -ge $MaxRetry){
+    	$u+": Retry count exceeded limit."
+    	exit
+    }
+   return $res
+}
+
+Function GetLabel($labelName){#Get the label ID by a label name
 	$Uri="https://"+$global:baseUrl+"/api/v1/get_rms_encryption_labels/"
-	$res=Invoke-RestMethod -Uri $Uri -Method "Get" -Headers $global:headers
-	Start-Sleep -Seconds 2
+	$res=RestCall $Uri "Get" $global:headers
 	foreach($l in $res.data){
 		If($l.name.equals($labelName)){
 			return $l.id
@@ -98,9 +138,8 @@ Function GetFoldersRecursive($parent){#Get folders recursively under a spcified 
 		        "sortField"="modifiedDate"
 		        "sortDirection"="desc"
 		    }
-	    $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $global:headers -Body $Body
-   	    "Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" folders"
-	    Start-Sleep -Seconds 2
+	    $res=RestCall $Uri "Post" $global:headers $Body
+	    "Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" folders"
 	    $output+=$res.data
 	    if($res.data.Count -lt $batchsize){break}
     }
@@ -111,6 +150,16 @@ Function GetFoldersRecursive($parent){#Get folders recursively under a spcified 
             GetFoldersRecursive($item._id)
         }
      }
+}
+
+Function GetFolderPath($_id){#Get a file path for the file and store it to the associative array
+	$Uri="https://"+$global:baseUrl+"/api/v1/files/"+$_id+"/effective_parents/"
+	$res=RestCall $Uri "Get" $global:headers
+	$path=@()
+	foreach($p in $res.data){
+		$path+=$p.name
+	}
+	Return "/"+[string]::Join("/", $path)
 }
 
 Function GetFolderItems($parent){#Get recent files directly under a spcified folder
@@ -134,9 +183,9 @@ Function GetFolderItems($parent){#Get recent files directly under a spcified fol
 		    "sortField"="modifiedDate"
 		    "sortDirection"="desc"
 		    }
-	    $res=Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $global:headers -Body $Body
+
+	    $res=RestCall $Uri "Post" $global:headers $Body
 	    "Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" items"
-　　　　　　　Start-Sleep -Seconds 2
 	    $output+=$res.data
 	    if($res.data.Count -lt $batchsize){break}
     }
@@ -144,7 +193,8 @@ Function GetFolderItems($parent){#Get recent files directly under a spcified fol
     foreach($item in $output){
 		Foreach($act in $item.actions){
 		    If($act.task_name -eq "RmsProtectTask"){#Find files which have a RmsProtectTask action
-		    	"Found non-labeled file " + $item.Name
+			   $global:pathInfo[$item._id]=(GetFolderPath $item._id)
+		    	"Found non-labeled file " + $global:pathInfo[$item._id]
 			    $global:targetFiles+=$item 
 			    break
     	   		 }
@@ -182,11 +232,11 @@ foreach($f in $targetFiles){
     $Body='{"task_name":"RmsProtectTask",'
     $Body+='"entities":[{"id":"'+$f._id+'","appId":'+$f.appId+'}],'
     $Body+='"params":{"labelId":"'+$label+'"}}'
-    "Apply the label to: " + $f.Name
-    Invoke-RestMethod -Uri $Uri -Method "Post" -Headers $headers -Body $Body
-    Start-Sleep -Seconds 2
+    "Apply the label to: " + $global:pathInfo[$f._id]
+    RestCall $Uri "Post" $global:headers $Body
 }
-~~~
+
+````
 ## Azure Automation 上での実行結果のアウトプット
 ### Box 上のファイル
 <img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_AutoLabel.png" width="50%"> 
