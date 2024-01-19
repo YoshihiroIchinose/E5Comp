@@ -23,8 +23,14 @@
 フォルダの　"ファイル ID" の値を確認可能<br/>
 SPO/OD4B の場合、"736e3abc-13d1-44fe-9aed-3b56f9878ead|d286c00e-de8e-4eb1-9881-61bd97a69abc" のような表記<br/>
 Box の場合、"239616417475" のような表記<br/>
-<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel2.png" width="50%">
-#### 5. 付与する秘密度ラベルの表示名
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/MDA_Autolabel2.png" width="50%"> <br/>
+スクリプト内では、$folders=@("xxxx") の部分で、$folders=@("A","B","C") のようにカンマ区切りで複数のフォルダを指定可能
+#### 5. ラベル付け対象外とするサブフォルダのファイル ID (オプション)
+4 で指定するフォルダに含まれるサブ フォルダの中で、ラベル付け対象外とするサブ フォルダを指定可能 <br/>
+対象外としたいサブ フォルダの "ファイル ID" の値を 4 と同じ方法で確認して指定する <br/>
+なおここで除外したサブフォルダ配下のサブフォルダも除外する<br/>
+スクリプト内では、$excludedSubfolders=@("") の部分で、$excludedSubfolders=@("A","B","C") のようにカンマ区切りで複数のフォルダを指定可能
+#### 6. 付与する秘密度ラベルの表示名
 
 ### 必要に応じて調整する項目
 1. 一度のクエリで取得するアイテム数 (本スクリプトでは、更新日時の降順で 100 )
@@ -55,6 +61,9 @@ $instance="20892"
 #Folder in SPO/OD4B is like "736e3abc-13d1-44fe-9aed-3b56f9878ead|d286c00e-de8e-4eb1-9881-61bd97a69abc"
 #Folder in Box is like "239616417475"
 $folders=@("736e3762-13d1-44fe-9aed-3b56f9878ead|d286c00e-de8e-4eb1-9881-61bd97a608e3")
+
+#Subfolders which should be excluded for labeling (Same ID format as that of a target folder)
+$excludedSubfolders=@("")
 
 #scope of target files specified by time range of modified data and the number of files
 $s=[datetimeoffset]::Now.AddHours(-24).ToUnixTimeMilliseconds()
@@ -145,6 +154,10 @@ Function GetFoldersRecursive($parent){#Get folders recursively under a spcified 
     }
     "Retrieved " +$output.count+" folders"
     foreach($item in $output){
+        if($global:excludedSubFolders.Contains($item.id)){
+	  "Subfolder: " + $item.name +" was excluded."
+           continue
+	}
         if($item.isFolder){
             $global:targetFolders+=$item._id
             GetFoldersRecursive($item._id)
