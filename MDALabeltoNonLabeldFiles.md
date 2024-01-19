@@ -88,26 +88,17 @@ do{
         $res=Invoke-RestMethod -Uri $u -Method $m -Headers $h -Body $b
         }
     catch{
-        if($_ -like 'The remote server returned an error: (429) TOO MANY REQUESTS.'){
-            $retryCall = $true
-            "429"
-            Start-Sleep -Seconds 5
-        }
-        ElseIf ($_ -like '504' -or $_ -like '502'){
-           	$retryCall = $true
-           	"504 or 502"
-            Start-Sleep -Seconds 5
-	    }
-        ElseIf ($_ -match 'throttled'){
-    		$retryCall = $true
-	    	"Throttled"
-	        Start-Sleep -Seconds 60
+        if($_ -match 'throttled'){
+　　	　$retryCall = $true
+	  "Throttled"
+	   Start-Sleep -Seconds 60
 	    }
         else {
-            throw $_
+            "Error url: " +$u
+             throw $_
         }
        }#end of Catch
- }#end of do loop
+    }#end of do loop
     while ($retryCall -and $retryCount -le $MaxRetry)
  
     if($retryCount -ge $MaxRetry){
@@ -148,6 +139,10 @@ Function GetFoldersRecursive($parent){#Get folders recursively under a spcified 
 		        "sortDirection"="desc"
 		    }
 	    $res=RestCall $Uri "Post" $global:headers $Body
+            if($res -eq $null){
+		"Error, No data returned"
+                return
+  	    }
 	    "Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" folders"
 	    $output+=$res.data
 	    if($res.data.Count -lt $batchsize){break}
@@ -198,6 +193,10 @@ Function GetFolderItems($parent){#Get recent files directly under a spcified fol
 		    }
 
 	    $res=RestCall $Uri "Post" $global:headers $Body
+            if($res -eq $null){
+		"Error, No data returned"
+                return
+  	    }
 	    "Loop: $i, From " +$i*$batchSize +", " + $res.data.Count +" items"
 	    $output+=$res.data
 	    if($res.data.Count -lt $batchsize){break}
