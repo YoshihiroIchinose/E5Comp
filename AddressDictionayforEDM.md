@@ -26,6 +26,7 @@ EDM の住所の検知においては、このように SIT としてキーワ�
 [郵便番号データダウンロード](https://www.post.japanpost.jp/zipcode/download.html)
 
 ## キーワード辞書のための処理
+EDM の前段となる SIT 用のキーワード辞書のために、日本郵便の郵便番号の住所データを以下の観点で加工します。
 1. CSV データの 7-9 列目に当たる、都道府県、市区町村名、町域名を連結してキーワード辞書に登録する住所とする
 1. 全角英数記号は、半角英数記号に変換する
 1. 同じ住所の範囲でも、() がついて、西側と東側などで、郵便番号が異なるケースがあるが、() 以降は無視する
@@ -37,7 +38,7 @@ EDM の住所の検知においては、このように SIT としてキーワ�
 1. 上の処理や、そもそもの住所データにより、部分住所がデータ上包含関係がある行の存在を許容する
 
 ## 生成されたキーワード辞書
-日本郵便の 2024 年 2 月 29 日のデータを用いて生成されたキーワード辞書のデータが[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/WB/JPAddressDic.txt)となる。ただし、このデータだけでは、後に続く文字列に依存したワードブレークのブレには対応しないため、[こちら](https://github.com/YoshihiroIchinose/E5Comp/edit/main/AddressDictionayforEDM2.md)のページも併せて参照のこと。
+日本郵便の 2024 年 2 月 29 日のデータを用いて生成されたキーワード辞書のデータが[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/WB/JPAddressDic.txt)となります。ただし、このデータだけでは、後に続く文字列に依存したワードブレークのブレには対応しないため、[こちら](https://github.com/YoshihiroIchinose/E5Comp/edit/main/AddressDictionayforEDM2.md)のページも併せて参照して下さい。
 
 ## スクリプト本体
 ```
