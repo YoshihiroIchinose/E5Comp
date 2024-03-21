@@ -38,7 +38,7 @@ EDM の前段となる SIT 用のキーワード辞書のために、日本郵�
 1. 上の処理や、そもそもの住所データにより、部分住所がデータ上包含関係がある行の存在を許容する
 
 ## 生成されたキーワード辞書
-日本郵便の 2024 年 2 月 29 日のデータを用いて生成されたキーワード辞書のデータが[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/WB/JPAddressDic.txt)となります。ただし、このデータだけでは、後に続く文字列に依存したワードブレークのブレには対応しないため、[こちら](https://github.com/YoshihiroIchinose/E5Comp/main/AddressDictionayforEDM2.md)のページも併せて参照して下さい。
+日本郵便の 2024 年 2 月 29 日のデータを用いて生成されたキーワード辞書のデータが[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/WB/JPAddressDic.txt)となります。ただし、このデータだけでは、後に続く文字列に依存したワードブレークのブレには対応しないため、[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AddressDictionayforEDM2.md)のページも併せて参照して下さい。
 
 ## スクリプト本体
 ```
