@@ -69,7 +69,7 @@ Function IgnoreZiwari($original){
 }
 
 #数字が含まれる部分住所では、漢数字に置き換えたパターンも用意する
-#1 桁の数位が 2 回出てくるパターンも考慮
+#1 桁の数字が区や条と共に 2 回出てくるパターンも考慮
 Function variations($original){
 	$normalized=""
 	If($original -match '(\d{2})'+$suffix){
