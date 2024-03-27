@@ -39,11 +39,13 @@ $dictionaryFile = "C:\Data\JPAddressDicwithVariations.txt"
 Function GetMaximumMatched($text){
 	$prev=""
 	Foreach($d in $dic){
-		If($text.CompareTo($d) -lt 0){
-			Return $prev
+		Switch($text.CompareTo($d)){
+			1 {If($text.StartsWith($d)){$prev=$d}}
+			0 {return $text}
+			-1{return $prev}
 		}
-		$prev=$d
 	}
+	return $prev
 }
 
 $dic=Get-Content $dictionaryFile
