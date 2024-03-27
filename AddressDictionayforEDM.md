@@ -126,7 +126,8 @@ while (($line = $source.ReadLine()) -ne $null){
 	$address=$address.Replace("`"","")
 	
 	If($data[8].IndexOf("の次に") -ne -1){
-		If($data[8].StartsWith("琴平町の次に")){continue}
+		If($data[8].Contains("番地がくる場合")){continue}
+		If($data[8].Contains("番地以降がくる場合")){continue}
 		$address=$data[6]+$data[7]
 	}
 	$s=$address.LastIndexOf("(")
