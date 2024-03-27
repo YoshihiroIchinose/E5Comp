@@ -38,4 +38,5 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 | [Defender for Cloud Apps の API を利用して特定フォルダ内のファイルに秘密度ラベルを付与する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/MDALabeltoNonLabeldFiles.md) | Defender for Cloud Apps の API を利用して、特定フォルダ内のラベルがつけられていないファイルに、秘密度ラベルを付与するサンプル スクリプトです。 ファイル ポリシーでのガバナンス アクションでも同等のことができますが、障害等で、ガバナンス アクションが実行されてない場合の補完として、 手動でラベル付けを行う操作を代替するものです。 |
 | [EDM での日本語住所検知用にキーワード辞書を作成する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AddressDictionayforEDM.md) | PowerShell を用いて日本郵便の提供する住所データをキーワード辞書用に整備する方法についてです。 |
 | [キーワード辞書でワード マッチにおけるワードブレークのずれに対処する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AddressDictionayforEDM2.md) | キーワード辞書での検知を行う際、本文側で丁番号が入る入らないでワードブレーク位置が異なってしまう問題の分析と、解決方法についてです。 | 
+| [キーワード辞書に合わせて EDM で取り込む住所をトリミングする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AddressDictionayforEDM3.md) | 事前作成済みの住所のキーワード辞書を元に、 EDM のデータの下処理として、住所のデータをキーワード辞書に含まれる都道府県市区町村町域名までにトリミングするスクリプトを紹介しています。 |
 
