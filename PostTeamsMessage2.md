@@ -1,7 +1,8 @@
 # Graph API を利用して Teams のチャネル チャットに投稿する
 CC / DLP のテストなどに利用するため、Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。このサンプルでは、チーム(グループ)全体を参照するのではなく、
 利用するアカウントが所属するチーム(グループ)から、チームの ID を取得するため、管理者による同意を不要としたバージョンです。管理者による同意を前提としたバージョンは[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage.md)
-。
+。   
+なお Graph API を GET/POST のロー レベルで利用するのではなく、Microsoft Graph PowerShell SDK を通じて、より簡便に Teams のチャネル チャットに投稿するサンプルは[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage3.md)です。
 ## 事前準備
 1. Azure AD (https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
 2. 作成したアプリケーションの API のアクセス許可で、委任されたアクセス許可として Team.ReadBasic.All、Channel.ReadBasic.All、ChannelMessage.Send の権限を与える    
