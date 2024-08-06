@@ -53,6 +53,7 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 | --- | ---- |
 | [Communication Compalince 用語サンプル](https://github.com/YoshihiroIchinose/E5Comp/blob/main/CC.md) | コミュニケーション コンプライアンスのテスト用に定義したサンプルの要注意ワードです。 |
 |[Communication Complinance のポリシーで合致した内容を一括ダウンロードする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/CCExport.md)|Communication Compliance の特定のポリシーに合致したメッセージを抽出する操作を自動化するサンプル スクリプトをご紹介します。|
+|[Communication Compalince 用語サンプル2](https://github.com/YoshihiroIchinose/E5Comp/blob/main/CC2.md) | コミュニケーション コンプライアンスのテスト用に定義した相場操縦・株価操作に関するワードのサンプルです。 |
 
 # EDM 関連記事
 | ページ | 内容 |
