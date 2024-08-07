@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<RulePackage xmlns="http://schemas.microsoft.com/office/2011/mce">
+<RulePack id="3828F195-31CE-4717-896D-C6B39072BF44">
+ <Version build="0" major="1" minor="12" revision="0"/>
+ <Publisher id="1752c840-c0eb-4d35-b1ce-447fc71a575d"/>
+ <Details defaultLangCode="ja-jp">
+  <LocalizedDetails langcode="ja-jp">
+   <PublisherName>Yoshihiro Ichinose in MSKK</PublisherName>
+   <Name>日本での個人情報</Name>
+   <Description>日本での個人情報の定義</Description>
+  </LocalizedDetails>
+ </Details>
+</RulePack>
+<Rules>
+
+ <!--SIT1.住所-->
+<Entity id="03748E71-8BDA-42C8-B78C-BA572E16DEFB" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="80">
+   <IdMatch idRef="Regex_Address"/>
+ </Pattern>
+</Entity>
+
+<!--SIT2.電話番号-->
+<Entity id="C40C4B11-41EC-48EA-BC38-496AD2DD9E05" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Regex_Phone"/>
+ </Pattern>
+</Entity>
+
+<!--SIT3.メールリンク-->
+<Entity id="EC8946E8-F20D-46DC-9B75-1C680C8B25EE" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Regex_Mailto"/>
+ </Pattern>
+</Entity>
+
+<!--SIT4.和暦-->
+<Entity id="B780A1D4-3662-41B2-A2DD-B600A36A4EAC" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Regex_JDateTime"/>
+ </Pattern>
+</Entity>
+
+<Regex id="Regex_Address">(北海道|東京都|(大阪|京都)府|(神奈川|和歌山|鹿児島)県|[^\x00-\x7F]{2}県)\s*[^\x00-\x7F]{1,6}[市郡区町村]</Regex>
+<Regex id="Regex_Phone"><![CDATA[(?<!\w|[\－ー―-])0(\d([\－ー―-]| - )\d{3}|\d{2}([\－ー―-]| - )\d{2}|\d{3}([\－ー―-]| - )\d|\d{4}([\－ー―-]| - )|[5789]0([\－ー―-]| - )\d{3})\d([\－ー―-]| - )\d{4}(?!\w|[\－ー―-])]]></Regex>
+<Regex id="Regex_Mailto"><![CDATA[mailto:[\w\-.!#$%&'*+\/=?^_`{|}~]+@[\w\-_]+\.[\w\-_.]+]]></Regex>
+<Regex id="Regex_JDateTime"><![CDATA[(明治|大正|昭和|平成|令和|西暦)\s*([\d{1,4}|[元一二三四五六七八九十壱弐参拾〇○零]{1,4})\s*年\s*([\d{1,2}|[一二三四五六七八九十壱弐参拾〇○]{1,2})\s*月\s*([\d{1,2}|[元一二三四五六七八九十壱弐参拾〇○吉]{1,2})\s*日]]></Regex>
+
+<LocalizedStrings>
+ <Resource idRef="03748E71-8BDA-42C8-B78C-BA572E16DEFB">
+  <Name default="true" langcode="ja-jp">SIT1.住所</Name>
+  <Description default="true" langcode="ja-jp">SIT1.住所</Description>
+ </Resource>
+ <Resource idRef="C40C4B11-41EC-48EA-BC38-496AD2DD9E05">
+  <Name default="true" langcode="ja-jp">SIT2.電話番号</Name>
+  <Description default="true" langcode="ja-jp">SIT2.電話番号</Description>
+ </Resource>
+ <Resource idRef="EC8946E8-F20D-46DC-9B75-1C680C8B25EE">
+  <Name default="true" langcode="ja-jp">SIT3.メールリンク</Name>
+  <Description default="true" langcode="ja-jp">SIT3.メールリンク</Description>
+ </Resource>
+ <Resource idRef="B780A1D4-3662-41B2-A2DD-B600A36A4EAC">
+  <Name default="true" langcode="ja-jp">SIT4.和暦</Name>
+  <Description default="true" langcode="ja-jp">SIT4.和暦</Description>
+ </Resource>
+ </LocalizedStrings>
+</Rules>
+</RulePackage>
