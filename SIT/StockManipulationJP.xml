@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<RulePackage xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/office/2011/mce">
+  <RulePack id="10b1e803-4fd1-4565-8835-d07be6444bb5">
+    <Version major="1" minor="0" build="0" revision="0" />
+    <Publisher id="a5f93cda-fb50-404c-94a3-e274ccc6c14e" />
+    <Details defaultLangCode="ja-jp">
+      <LocalizedDetails langcode="ja-jp">
+        <PublisherName>Microsoft Purview (E5 Compliance) 研究所</PublisherName>
+        <Name>Stock Price Manipulation JP</Name>
+        <Description>相場操縦・株価操作を示唆するメッセージを検知するサンプル含むRulePackです。</Description>
+      </LocalizedDetails>
+    </Details>
+  </RulePack>
+  <Rules>
+    <Entity id="4fa24340-015d-452a-bc35-310c0e665a1b" patternsProximity="300" recommendedConfidence="85" relaxProximity="false">
+      <Pattern confidenceLevel="85" proximity="300">
+        <IdMatch idRef="相場操縦単独NGワード" />
+      </Pattern>
+      <Pattern confidenceLevel="85" proximity="30">
+        <IdMatch idRef="相場操縦NG動作" />
+        <Match idRef="相場操縦NG動作補助要素" />
+      </Pattern>
+      <Pattern confidenceLevel="85" proximity="30">
+        <IdMatch idRef="相場操縦虚偽情報動作" />
+        <Match idRef="相場操縦虚偽情報動作補助要素" />
+      </Pattern>
+    </Entity>
+    <Keyword id="相場操縦単独NGワード">
+      <Group matchStyle="string">
+        <Term caseSensitive="false">仮装売買</Term>
+        <Term caseSensitive="false">馴合売買</Term>
+        <Term caseSensitive="false">高値形成</Term>
+        <Term caseSensitive="false">安値形成</Term>
+        <Term caseSensitive="false">価格操作</Term>
+        <Term caseSensitive="false">インサイダー情報</Term>
+        <Term caseSensitive="false">見せ玉</Term>
+        <Term caseSensitive="false">自己売買</Term>
+        <Term caseSensitive="false">相場を操作</Term>
+        <Term caseSensitive="false">株価を操作</Term>
+        <Term caseSensitive="false">株価を動か</Term>
+        <Term caseSensitive="false">価格を操作</Term>
+        <Term caseSensitive="false">価格を動か</Term>
+        <Term caseSensitive="false">売り崩し</Term>
+        <Term caseSensitive="false">見せ板</Term>
+      </Group>
+    </Keyword>
+    <Keyword id="相場操縦NG動作">
+      <Group matchStyle="string">
+        <Term caseSensitive="false">大量に買</Term>
+        <Term caseSensitive="false">大量に売</Term>
+        <Term caseSensitive="false">大量に取引</Term>
+        <Term caseSensitive="false">少しずつ売</Term>
+        <Term caseSensitive="false">少しずつ売</Term>
+        <Term caseSensitive="false">少しずつ取引</Term>
+        <Term caseSensitive="false">集中的に買</Term>
+        <Term caseSensitive="false">集中的に売</Term>
+        <Term caseSensitive="false">集中的に取引</Term>
+        <Term caseSensitive="false">集中して買</Term>
+        <Term caseSensitive="false">集中して売</Term>
+        <Term caseSensitive="false">集中して取引</Term>
+        <Term caseSensitive="false">注文を集中</Term>
+        <Term caseSensitive="false">集中的に取引</Term>
+        <Term caseSensitive="false">集中して取引</Term>
+        <Term caseSensitive="false">惑わせ</Term>
+        <Term caseSensitive="false">連続して買</Term>
+        <Term caseSensitive="false">連続して売</Term>
+        <Term caseSensitive="false">注文を取り消</Term>
+        <Term caseSensitive="false">注文を取消</Term>
+        <Term caseSensitive="false">キャンセル</Term>
+        <Term caseSensitive="false">終値</Term>
+        <Term caseSensitive="false">始値</Term>
+        <Term caseSensitive="false">買い上が</Term>
+        <Term caseSensitive="false">誘導し</Term>
+        <Term caseSensitive="false">逆張</Term>
+        <Term caseSensitive="false">売買を繰</Term>
+        <Term caseSensitive="false">買い集</Term>
+        <Term caseSensitive="false">売り集</Term>
+        <Term caseSensitive="false">取引を集中</Term>
+        <Term caseSensitive="false">広めて</Term>
+        <Term caseSensitive="false">悪い噂を</Term>
+      </Group>
+    </Keyword>
+    <Keyword id="相場操縦NG動作補助要素">
+      <Group matchStyle="string">
+        <Term caseSensitive="false">上げる</Term>
+        <Term caseSensitive="false">下げる</Term>
+        <Term caseSensitive="false">上げよ</Term>
+        <Term caseSensitive="false">下げよ</Term>
+        <Term caseSensitive="false">減らす</Term>
+        <Term caseSensitive="false">増やす</Term>
+        <Term caseSensitive="false">高値形成</Term>
+        <Term caseSensitive="false">安値形成</Term>
+        <Term caseSensitive="false">低下させる</Term>
+        <Term caseSensitive="false">固定</Term>
+        <Term caseSensitive="false">安定</Term>
+        <Term caseSensitive="false">相場を動か</Term>
+        <Term caseSensitive="false">相場を上げ</Term>
+        <Term caseSensitive="false">相場を下げ</Term>
+        <Term caseSensitive="false">株価を上げ</Term>
+        <Term caseSensitive="false">株価を下げ</Term>
+        <Term caseSensitive="false">価格を上げ</Term>
+        <Term caseSensitive="false">価格を下げ</Term>
+        <Term caseSensitive="false">取引を有利に</Term>
+        <Term caseSensitive="false">取引が不利に</Term>
+        <Term caseSensitive="false">高くする</Term>
+        <Term caseSensitive="false">安くする</Term>
+        <Term caseSensitive="false">高くし</Term>
+        <Term caseSensitive="false">安くし</Term>
+        <Term caseSensitive="false">特定の時間</Term>
+        <Term caseSensitive="false">特定の価格</Term>
+        <Term caseSensitive="false">注目を集め</Term>
+        <Term caseSensitive="false">見て</Term>
+        <Term caseSensitive="false">先回</Term>
+        <Term caseSensitive="false">引き込</Term>
+        <Term caseSensitive="false">思わせ</Term>
+      </Group>
+    </Keyword>
+    <Keyword id="相場操縦虚偽情報動作">
+      <Group matchStyle="string">
+        <Term caseSensitive="false">誘導し</Term>
+        <Term caseSensitive="false">誤解を与え</Term>
+        <Term caseSensitive="false">混乱さ</Term>
+        <Term caseSensitive="false">抑圧し</Term>
+        <Term caseSensitive="false">圧力を</Term>
+        <Term caseSensitive="false">流し</Term>
+        <Term caseSensitive="false">取引を行</Term>
+        <Term caseSensitive="false">情報を使</Term>
+        <Term caseSensitive="false">タイミングを調整</Term>
+        <Term caseSensitive="false">取引量を増</Term>
+        <Term caseSensitive="false">取引量を減</Term>
+        <Term caseSensitive="false">に活用し</Term>
+        <Term caseSensitive="false">実際の取引</Term>
+        <Term caseSensitive="false">実際の売買</Term>
+        <Term caseSensitive="false">契約を取</Term>
+        <Term caseSensitive="false">利益相反に</Term>
+        <Term caseSensitive="false">取引を成立</Term>
+        <Term caseSensitive="false">株を買って</Term>
+        <Term caseSensitive="false">株を売って</Term>
+      </Group>
+    </Keyword>
+    <Keyword id="相場操縦虚偽情報動作補助要素">
+      <Group matchStyle="string">
+        <Term caseSensitive="false">偽の</Term>
+        <Term caseSensitive="false">異なる</Term>
+        <Term caseSensitive="false">インサイダー</Term>
+        <Term caseSensitive="false">内部告発</Term>
+        <Term caseSensitive="false">極秘</Term>
+        <Term caseSensitive="false">秘密</Term>
+        <Term caseSensitive="false">内密</Term>
+        <Term caseSensitive="false">内緒</Term>
+        <Term caseSensitive="false">非公開</Term>
+        <Term caseSensitive="false">未公開</Term>
+        <Term caseSensitive="false">告発</Term>
+        <Term caseSensitive="false">虚偽</Term>
+        <Term caseSensitive="false">競合他社</Term>
+        <Term caseSensitive="false">ニュースを</Term>
+        <Term caseSensitive="false">SNSで</Term>
+        <Term caseSensitive="false">決算発表前</Term>
+        <Term caseSensitive="false">気づかない</Term>
+        <Term caseSensitive="false">気付かない</Term>
+        <Term caseSensitive="false">市場に</Term>
+        <Term caseSensitive="false">賄賂を</Term>
+        <Term caseSensitive="false">関与し</Term>
+        <Term caseSensitive="false">改ざん</Term>
+        <Term caseSensitive="false">改竄</Term>
+        <Term caseSensitive="false">確実だ</Term>
+        <Term caseSensitive="false">る前に</Term>
+        <Term caseSensitive="false">見込みだ</Term>
+        <Term caseSensitive="false">予定だ</Term>
+      </Group>
+    </Keyword>
+    <LocalizedStrings>
+      <Resource idRef="4fa24340-015d-452a-bc35-310c0e665a1b">
+        <Name default="true" langcode="ja-jp">M1.相場操縦</Name>
+        <Description default="true" langcode="ja-jp">相場操縦・株価操作を示唆するメッセージを検知するSITのサンプルです。</Description>
+      </Resource>
+    </LocalizedStrings>
+  </Rules>
+</RulePackage>
