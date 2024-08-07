@@ -1,0 +1,520 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<RulePackage xmlns="http://schemas.microsoft.com/office/2011/mce">
+<RulePack id="3490e580-f35a-4031-9ca0-3683959b87ca">
+ <Version build="0" major="1" minor="6" revision="0"/>
+ <Publisher id="1752c840-c0eb-4d35-b1ce-447fc71a575d"/>
+ <Details defaultLangCode="ja-jp">
+  <LocalizedDetails langcode="ja-jp">
+   <PublisherName>Yoshihiro Ichinose in MSKK</PublisherName>
+   <Name>日本での要注意ビジネス コミュニケーション</Name>
+   <Description>日本での要注意ビジネス コミュニケーション</Description>
+  </LocalizedDetails>
+ </Details>
+</RulePack>
+<Rules>
+ <!--W1.働き方要注意ワード-->
+<Entity id="126d89c2-2f1d-403a-a433-d0fda875f5a7" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_Workerholic"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_Workerholic"/>
+  <Match idRef="Keyword_Workerholic_Sub"/>
+ </Pattern>  
+</Entity>
+<!--S1.顧客満足関連-->
+<Entity id="1fa33e82-8dcd-40a3-a621-50a709b55d50" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_CustomerSat"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_CustomerSat"/>
+  <Match idRef="Keyword_CustomerSat_Sub"/>
+ </Pattern>  
+</Entity>
+<!--S2.クレーム関連-->
+<Entity id="6dcdaf6d-6d77-4df0-92ec-3cfa28d1a07d" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_CustomerClaim"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_CustomerClaim"/>
+  <Match idRef="Keyword_CustomerClaim_Sub"/>
+ </Pattern>  
+</Entity>
+<!--P1.業務外の連絡-->
+<Entity id="e30e4c9d-eed8-4676-a9d2-5c534c2d9b7a" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_PrivateAnnoucement"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_PrivateAnnoucement"/>
+  <Match idRef="Keyword_PrivateAnnoucement_Sub"/>
+ </Pattern>  
+</Entity>
+<!--P2.食事の誘い-->
+<Entity id="09f8e576-4585-49a8-9cef-7b26442bb8fe" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_PrivateMeals"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_PrivateMeals"/>
+  <Match idRef="Keyword_PrivateMeals_Sub1"/>
+ </Pattern>
+ <Pattern confidenceLevel="90">
+  <IdMatch idRef="Keyword_PrivateMeals"/>
+  <Match idRef="Keyword_PrivateMeals_Sub2"/>
+ </Pattern>    
+</Entity>
+<!--H1.パワハラ-->
+<Entity id="d684a266-17d6-4e42-95d1-735579e8144b" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_Powerharassment"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_Powerharassment"/>
+  <Match idRef="Keyword_Powerharassment_Sub"/>
+ </Pattern>  
+</Entity>
+<!--H2.性急な要求-->
+<Entity id="6ebaefab-3180-44a4-ab6a-72865cb3078a" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_Urgency"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_Urgency"/>
+  <Match idRef="Keyword_Urgency_Sub"/>
+ </Pattern>  
+</Entity>
+<!--L1.違法-->
+<Entity id="329b6cd4-7f51-4cc2-8e91-77b377599952" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_ilLeagal"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_ilLeagal"/>
+  <Match idRef="Keyword_ilLeagal_Sub"/>
+ </Pattern>  
+</Entity>
+<!--L2.カルテル-->
+<Entity id="72024dda-b44d-43e7-b910-1772813aec4f" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_Cartel"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_Cartel"/>
+  <Match idRef="Keyword_Cartel_Sub"/>
+ </Pattern>  
+</Entity>
+<!--Q1.検査偽装-->
+<Entity id="a46aee77-51f0-4ca3-a6e7-5fb8919c6f8a" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_ImproperInspections"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_ImproperInspections"/>
+  <Match idRef="Keyword_ImproperInspections_Sub"/>
+ </Pattern>  
+</Entity>
+<!--Q2.外為法-->
+<Entity id="93b5c5d4-0132-4028-bc40-ce651b35bec3" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_ForeignExchangeAct"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_ForeignExchangeAct"/>
+  <Match idRef="Keyword_ForeignExchangeAct_Sub"/>
+ </Pattern>  
+</Entity>
+
+<!--C1.内緒話-->
+<Entity id="55bbb9c7-3eb4-46fd-b7d0-11d1170532d6" patternsProximity="300" recommendedConfidence="70">
+ <Pattern confidenceLevel="60">
+  <IdMatch idRef="Keyword_SecretTalk"/>
+ </Pattern>
+ <Pattern confidenceLevel="80">
+  <IdMatch idRef="Keyword_SecretTalk"/>
+  <Match idRef="Keyword_SecretTalk_Sub"/>
+ </Pattern>  
+</Entity>
+
+<Keyword id="Keyword_Workerholic">
+ <Group matchStyle="string">
+  <Term>サービス残業</Term>
+  <Term>サビ残</Term>
+  <Term>無休</Term>
+  <Term>無給</Term>
+  <Term>無償</Term>
+  <Term>早朝出勤</Term>
+  <Term>休日出勤</Term>
+  <Term>労基</Term>
+  <Term>労働基準</Term>
+  <Term>奴隷</Term>
+  <Term>ただ働き</Term>
+  <Term>徹夜</Term>
+  <Term>強制</Term>
+  <Term>週末</Term>
+  <Term>土日</Term>
+  <Term>祝日</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_Workerholic_Sub">
+ <Group matchStyle="string">
+  <Term>仕事</Term>
+  <Term>業務</Term>
+  <Term>残業</Term>
+  <Term>ボランティア</Term>
+  <Term>勤務</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_CustomerSat">
+ <Group matchStyle="string">
+  <Term>感謝</Term>
+  <Term>いいね</Term>
+  <Term>感動</Term>
+  <Term>ありがとう</Term>
+  <Term>良かった</Term>
+  <Term>喜ばれて</Term>
+  <Term>お礼</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_CustomerSat_Sub">
+ <Group matchStyle="string">
+  <Term>お伝え</Term>
+  <Term>お客様</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_CustomerClaim">
+ <Group matchStyle="string">
+  <Term>怒って</Term>
+  <Term>激怒</Term>
+  <Term>憤慨</Term>
+  <Term>クレーム</Term>
+  <Term>苦情</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_CustomerClaim_Sub">
+ <Group matchStyle="string">
+  <Term>返品</Term>
+  <Term>キャンセル</Term>
+  <Term>退室</Term>
+  <Term>退席</Term>
+  <Term>手違い</Term>
+  <Term>間違い</Term>
+  <Term>不満</Term>
+  <Term>不信</Term>
+  <Term>品質</Term>
+  <Term>落ち度</Term>
+  <Term>障害</Term>
+  <Term>不具合</Term>
+  <Term>再発</Term>
+  <Term>予期せぬ</Term>
+  <Term>土下座</Term>
+  <Term>温度感</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_PrivateAnnoucement">
+ <Group matchStyle="string">
+  <Term>業務外</Term>
+  <Term>仕事とは関係ない</Term>
+  <Term>業務中</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_PrivateAnnoucement_Sub">
+ <Group matchStyle="string">
+ <Term>広範囲</Term>
+ <Term>失礼</Term>
+ <Term>恐れ入</Term>
+ <Term>恐縮</Term>
+ <Term>破棄</Term>
+ <Term>無視</Term>
+ <Term>個人的</Term>
+ <Term>すいません</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_PrivateMeals">
+ <Group matchStyle="string">
+  <Term>飲み</Term>
+  <Term>夕食</Term>
+  <Term>ディナー</Term>
+  <Term>食事</Term>
+  <Term>いい店</Term>
+  <Term>晩飯</Term>
+  <Term>晩御飯</Term>
+  <Term>一杯</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_PrivateMeals_Sub1">
+ <Group matchStyle="string">
+  <Term>誘</Term>
+  <Term>行かない</Term>
+  <Term>どう</Term>
+  <Term>行く</Term>
+  <Term>行きませんか</Term>
+  <Term>いく</Term>
+  <Term>いきませんか</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_PrivateMeals_Sub2">
+ <Group matchStyle="string">
+  <Term>何度も</Term>
+  <Term>しつこ</Term>
+  <Term>やめて</Term>
+  <Term>止めて</Term>
+  <Term>断り</Term>
+  <Term>いや</Term>
+  <Term>嫌</Term>
+  <Term>イヤ</Term>
+  <Term>二人</Term>
+  <Term>無視</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_Powerharassment">
+ <Group matchStyle="string">
+  <Term>クズ</Term>
+  <Term>バカ</Term>
+  <Term>馬鹿</Term>
+  <Term>あほ</Term>
+  <Term>アホ</Term>
+  <Term>役立たず</Term>
+  <Term>無能</Term>
+  <Term>頭がおかしい</Term>
+  <Term>使えない</Term>
+  <Term>死ね</Term>
+  <Term>死んでくれ</Term>
+  <Term>目障り</Term>
+  <Term>目ざわり</Term>
+  <Term>給料泥棒</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_Powerharassment_Sub">
+ <Group matchStyle="string">
+  <Term>無駄</Term>
+  <Term>むだ</Term>
+  <Term>ムダ</Term>
+  <Term>クビ</Term>
+  <Term>くび</Term>
+  <Term>失格</Term>
+  <Term>左遷</Term>
+  <Term>常識</Term>
+  <Term>当たり前</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_Urgency">
+ <Group matchStyle="string">
+  <Term>緊急</Term>
+  <Term>直ちに</Term>
+  <Term>速やかに</Term>
+  <Term>早急に</Term>
+  <Term>すぐさま</Term>
+  <Term>至急</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_Urgency_Sub">
+ <Group matchStyle="string">
+  <Term>連絡</Term>
+  <Term>対応</Term>
+  <Term>処置</Term>
+  <Term>回答</Term>
+  <Term>応答</Term>
+  <Term>返信</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_ilLeagal">
+ <Group matchStyle="string">
+  <Term>犯罪</Term>
+  <Term>法律違反</Term>
+  <Term>違法</Term>
+  <Term>違憲</Term>
+  <Term>イリーガル</Term>
+  <Term>違反</Term>
+  <Term>殺人</Term>
+  <Term>横領</Term>
+  <Term>背任</Term>
+  <Term>裏切り</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_ilLeagal_Sub">
+ <Group matchStyle="string">
+  <Term>すれすれ</Term>
+  <Term>スレスレ</Term>
+  <Term>ぎり</Term>
+  <Term>ギリ</Term>
+  <Term>グレー</Term>
+  <Term>アウト</Term>
+  <Term>セーフ</Term>
+  <Term>行為</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_Cartel">
+ <Group matchStyle="string">
+  <Term>卸値</Term>
+  <Term>単価</Term>
+  <Term>価格</Term>
+  <Term>数量</Term>
+  <Term>カルテル</Term>
+  <Term>談合</Term>
+  <Term>見返り</Term>
+  <Term>口利き</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_Cartel_Sub">
+ <Group matchStyle="string">
+  <Term>調整</Term>
+  <Term>方針</Term>
+  <Term>合意</Term>
+  <Term>協議</Term>
+  <Term>利益</Term>
+  <Term>利ざや</Term>
+  <Term>入札</Term>
+  <Term>応札</Term>
+  <Term>同等品</Term>
+  <Term>情報交換</Term>
+  <Term>面談</Term>
+  <Term>販売</Term>
+  <Term>卸</Term>
+  <Term>取引</Term>
+  <Term>協力金</Term>
+  <Term>賛同金</Term>
+  <Term>相応の</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_ImproperInspections">
+ <Group matchStyle="string">
+  <Term>偽装</Term>
+  <Term>不正</Term>
+  <Term>改竄</Term>
+  <Term>改ざん</Term>
+  <Term>捏造</Term>
+  <Term>リコール</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_ImproperInspections_Sub">
+ <Group matchStyle="string">
+  <Term>不適合</Term>
+  <Term>無資格者</Term>
+  <Term>監査</Term>
+  <Term>品質</Term>
+  <Term>検査結果</Term>
+  <Term>故意</Term>
+  <Term>意図的</Term>
+  <Term>書き換え</Term>
+  <Term>指示</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_ForeignExchangeAct">
+ <Group matchStyle="string">
+  <Term>武器</Term>
+  <Term>兵器</Term>
+  <Term>大量破壊</Term>
+  <Term>核</Term>
+  <Term>超電導</Term>
+  <Term>セラミック</Term>
+  <Term>工作機械</Term>
+  <Term>ロボット</Term>
+  <Term>集積回路</Term>
+  <Term>半導体</Term>
+  <Term>暗号装置</Term>
+  <Term>センサー</Term>
+  <Term>ソナー</Term>
+  <Term>レーダー</Term>
+  <Term>レーザー</Term>
+  <Term>航法装置</Term>
+  <Term>ジャイロスコープ</Term>
+  <Term>潜水艇</Term>
+  <Term>無人</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_ForeignExchangeAct_Sub">
+ <Group matchStyle="string">
+  <Term>キャッチオール</Term>
+  <Term>ワッセナー</Term>
+  <Term>規制</Term>
+  <Term>化学</Term>
+  <Term>生物</Term>
+  <Term>ミサイル</Term>
+  <Term>ロケット</Term>
+  <Term>原子力</Term>
+  <Term>外為</Term>
+  <Term>転用</Term>
+  <Term>海外</Term>
+  <Term>外国</Term>
+  <Term>輸出</Term>
+  <Term>為替</Term>
+ </Group>
+</Keyword>
+
+<Keyword id="Keyword_SecretTalk">
+ <Group matchStyle="string">
+  <Term>ここだけの話</Term>
+  <Term>大きな声では言えないが</Term>
+  <Term>内緒にしておいて</Term>
+  <Term>まだ秘密</Term>
+  <Term>内密に</Term>
+  <Term>口外</Term>
+  <Term>裏から</Term>
+ </Group>
+</Keyword>
+<Keyword id="Keyword_SecretTalk_Sub">
+ <Group matchStyle="string">
+  <Term>絶対に</Term>
+  <Term>何があっても</Term>
+  <Term>必ず</Term>
+  <Term>くれぐれも</Term>
+  <Term>配慮</Term>
+  <Term>注意</Term>
+ </Group>
+</Keyword>
+
+<LocalizedStrings>
+ <Resource idRef="126d89c2-2f1d-403a-a433-d0fda875f5a7">
+  <Name default="true" langcode="ja-jp">W1.働き方要注意ワード</Name>
+  <Description default="true" langcode="ja-jp">W1.働き方要注意ワード</Description>
+ </Resource>
+ <Resource idRef="1fa33e82-8dcd-40a3-a621-50a709b55d50">
+  <Name default="true" langcode="ja-jp">S1.顧客満足関連</Name>
+  <Description default="true" langcode="ja-jp">S1.顧客満足関連</Description>
+ </Resource>
+ <Resource idRef="6dcdaf6d-6d77-4df0-92ec-3cfa28d1a07d">
+  <Name default="true" langcode="ja-jp">S2.クレーム関連</Name>
+  <Description default="true" langcode="ja-jp">S2.クレーム関連</Description>
+ </Resource>
+ <Resource idRef="e30e4c9d-eed8-4676-a9d2-5c534c2d9b7a">
+  <Name default="true" langcode="ja-jp">P1.業務外の連絡</Name>
+  <Description default="true" langcode="ja-jp">P1.業務外の連絡</Description>
+ </Resource>
+ <Resource idRef="09f8e576-4585-49a8-9cef-7b26442bb8fe">
+  <Name default="true" langcode="ja-jp">P2.食事の誘い</Name>
+  <Description default="true" langcode="ja-jp">P2.食事の誘い</Description>
+ </Resource>
+ <Resource idRef="d684a266-17d6-4e42-95d1-735579e8144b">
+  <Name default="true" langcode="ja-jp">H1.パワハラ</Name>
+  <Description default="true" langcode="ja-jp">H1.パワハラ</Description>
+ </Resource>
+ <Resource idRef="6ebaefab-3180-44a4-ab6a-72865cb3078a">
+  <Name default="true" langcode="ja-jp">H2.性急な要求</Name>
+  <Description default="true" langcode="ja-jp">H2.性急な要求</Description>
+ </Resource>
+ <Resource idRef="329b6cd4-7f51-4cc2-8e91-77b377599952">
+  <Name default="true" langcode="ja-jp">L1.違法</Name>
+  <Description default="true" langcode="ja-jp">L1.違法</Description>
+ </Resource>
+ <Resource idRef="72024dda-b44d-43e7-b910-1772813aec4f">
+  <Name default="true" langcode="ja-jp">L2.カルテル</Name>
+  <Description default="true" langcode="ja-jp">L2.カルテル</Description>
+ </Resource>
+ <Resource idRef="a46aee77-51f0-4ca3-a6e7-5fb8919c6f8a">
+  <Name default="true" langcode="ja-jp">Q1.検査偽装</Name>
+  <Description default="true" langcode="ja-jp">Q1.検査偽装</Description>
+ </Resource>
+ <Resource idRef="93b5c5d4-0132-4028-bc40-ce651b35bec3">
+  <Name default="true" langcode="ja-jp">Q2.外為法</Name>
+  <Description default="true" langcode="ja-jp">Q2.外為法</Description>
+ </Resource>
+ <Resource idRef="55bbb9c7-3eb4-46fd-b7d0-11d1170532d6">
+  <Name default="true" langcode="ja-jp">C1.内緒話</Name>
+  <Description default="true" langcode="ja-jp">C1.内緒話</Description>
+ </Resource>
+ </LocalizedStrings>
+</Rules>
+</RulePackage>
