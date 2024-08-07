@@ -1,5 +1,5 @@
 # 日本向け個人情報の定義
-Office 365 DLP 向けに日本での個人情報に該当するパターンを定義するものです。現時点で住所と電話番号を定義しています。用語は、カスタムの機密情報の定義として [XML](https://github.com/YoshihiroIchinose/E5Comp/blob/main/JPN_SIT.xml) ファイルで用意していますので、ダウンロードの上、PowerShell で Office 365 に取り込んで利用ください。他にも日本向けの Communication Compliance 用の用語集の定義はこちらの [ページ](https://github.com/YoshihiroIchinose/JPN-CC/blob/master/README.md) で紹介しています。
+Office 365 DLP 向けに日本での個人情報に該当するパターンを定義するものです。現時点で住所と電話番号を定義しています。用語は、カスタムの機密情報の定義として [XML](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT/JPN_SIT.xml) ファイルで用意していますので、ダウンロードの上、PowerShell で Office 365 に取り込んで利用ください。他にも日本向けの Communication Compliance 用の用語集の定義はこちらの [ページ](https://github.com/YoshihiroIchinose/JPN-CC/blob/master/README.md) で紹介しています。
 
 # 事前に一度実施
 ## PowerShell を管理権限で立ち上げて以下を実行
