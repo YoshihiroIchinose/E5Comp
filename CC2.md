@@ -1,6 +1,6 @@
 # Microsoft Purview Communication Compliance 用、要注意サンプル用語集 2
 こちらのプロジェクトでは、Microsoft Purview の Communication Compliance を利用・検証するに当たって、不正なコミュニケーションを検出するためのサンプルの用語集を提供します。
-用語は、カスタムの機密情報の定義として [XML](https://github.com/YoshihiroIchinose/E5Comp/blob/main/StockManipulationJP.xml) ファイルで用意していますので、
+用語は、カスタムの機密情報の定義として [XML](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT/StockManipulationJP.xml) ファイルで用意していますので、
 ダウンロードの上、PowerShell で Office 365 に取り込んで利用ください。用語集の 1 は、こちらの[ページ](https://github.com/YoshihiroIchinose/E5Comp/blob/main/CC.md) を参照ください。
 
 ## キーワード作成手法
