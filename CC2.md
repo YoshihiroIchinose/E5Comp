@@ -18,6 +18,7 @@ CC では、職場にふさわしくないコミュニケーションや画像�
 ```PowerShell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
 Install-Module -Name ExchangeOnlineManagement
+```
 
 # カスタムの機密情報として要注意ワードを XML で取り込み
 ## PowerShell より Exchange Online に接続
