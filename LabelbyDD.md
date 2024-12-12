@@ -1,8 +1,7 @@
 # 秘密度ラベルの操作をデスクトップ上のドラッグ アンド ドロップの操作で行う
 本スクリプトは、Purview Information Protection Client に含まれる
 ラベル付けおよびラベル削除のPowerShell コマンドレットを用いて、
-ドラッグ アンド ドロップの操作で、複数のファイルに対して秘密度ラベル付けや、ラベルの削除を行うサンプルとなっています。
-
+ドラッグ アンド ドロップの操作で、複数のファイルに対して秘密度ラベル付けや、ラベルの削除を行うサンプルです。
 ## 概要
 PowerShell のスクリプトそのものは、ドラッグ アンド ドロップの操作を受け付けないので、
 PowerShell のスクリプトを呼び出すショートカットを作成しておき、ドラッグ アンド ドロップの操作は、
@@ -77,5 +76,6 @@ powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -noexit -File RemovingLa
 ## その他考慮事項
 本スクリプトの範囲では、ユーザーの権限を用いているため、ユーザーがフルコントロール権限を有していない場合、既に保護されているファイルのラベル変更は行えません。
 管理者などがファイルの復旧に利用する場合には、[SuperUser](https://learn.microsoft.com/ja-jp/azure/information-protection/configure-super-users) の設定をして、
-そのユーザー アカウントを利用して操作する必要があります。PowerShell のスクリプトを展開して他のデバイスなどでも利用できるようにするためには、
+そのユーザー アカウントを利用して操作する必要があります。   
+PowerShell のスクリプトを展開して他のデバイスなどでも利用できるようにするためには、各ユーザー側で、スクリプトを右クリックしてプロパティを表示し、許可するか、
 スクリプトを信頼された認証局の証明書で[署名](https://learn.microsoft.com/ja-jp/powershell/module/microsoft.powershell.core/about/about_signing?view=powershell-7.4)して、改ざんを検知できるようにしておく必要があります。
