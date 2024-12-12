@@ -7,13 +7,17 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 | [日本向け個人情報の定義](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT.md) | 住所、電話番号など、M365 での利用を想定した日本向けの正規表現のパターンの例についてです。 |
 | [カスタムの機密情報の正規表現のエラーの対処](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT_RegEx.md) | カスタムの機密情報定義の正規表現で、エラーになった場合の対処方法についてです。 |
 | [各サービスにおける端末上でのファイル操作ログの出方の違い](https://github.com/YoshihiroIchinose/E5Comp/blob/main/MDE_DLP_IRM.MD) | Defender for Endpoint, Endpoint DLP, Insider Risk Managment のそれぞれでどういった観点のログが記録されるかについて。 |
-|[Azure Information Protection で保護されたファイルを外部ユーザーと共有する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AIP_FAQ.MD)| AIP 保護されたファイルを社外の外部ユーザーと共有する際の要件や注意事項についてまとめています。|
 | [社外とのセキュアなファイル共有方法](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ExternalSharing.md) | PPAP に代わり社外のユーザーとセキュアにファイル共有する方法についてまとめました。 |
 |[SharePoint Online のライブラリ単位で DLP を適用・除外する方法](https://github.com/YoshihiroIchinose/E5Comp/blob/main/DLPforSPOLibrary.md)|ライブラリに対する既定の保持ラベルを DLP の条件とすることで、SharePoint Online のサイト内で、ライブラリ単位に DLP の適用や、DLP の適用除外を制御する方法について紹介します。|
-|[アラート ポリシーを利用して監査ログに記録された操作に応じてアラートを発令する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AlertPolicy.md)|アラート ポリシーを、PowerShell から設定することで、1 時間の中で 3 回以上、秘密度ラベルを変更するとアラートを生成する方法について紹介します。|
 |[Microsoft Sentinel (Log Analytics) の特定のログを削除する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelDataPurge.md)|Azure Automation を利用して、 Log Anlytics から AIPHeartBeat のログのみを削除するサンプル コードを共有します。|
-|[Sentinel で秘密度ラベルのダウングレード操作をアラートする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelKusto.md)|Microsoft Purview Information Protection のデータ コネクタで取り込んだ秘密度ラベルの操作のログを元に、 一定期間内に複数回秘密度ラベルのダウングレードがあった場合に、それらをアラートする仕組みを Kusto クエリで作成するサンプルです。|
 
+# 秘密度ラベル関連記事
+| ページ | 内容 |
+| --- | ---- |
+|[Azure Information Protection で保護されたファイルを外部ユーザーと共有する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AIP_FAQ.MD)| AIP 保護されたファイルを社外の外部ユーザーと共有する際の要件や注意事項についてまとめています。|
+|[Sentinel で秘密度ラベルのダウングレード操作をアラートする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelKusto.md)|Microsoft Purview Information Protection のデータ コネクタで取り込んだ秘密度ラベルの操作のログを元に、 一定期間内に複数回秘密度ラベルのダウングレードがあった場合に、それらをアラートする仕組みを Kusto クエリで作成するサンプルです。|
+|[アラート ポリシーを利用して監査ログに記録された操作に応じてアラートを発令する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AlertPolicy.md)|アラート ポリシーを、PowerShell から設定することで、1 時間の中で 3 回以上、秘密度ラベルを変更するとアラートを生成する方法について紹介します。|
+|[秘密度ラベルの操作をデスクトップ上のドラッグ アンド ドロップの操作で行う](https://github.com/YoshihiroIchinose/E5Comp/blob/main/LabelbyDD.md)|Purview Information Protection Client に含まれる ラベル付けおよびラベル削除のPowerShell コマンドレットを用いて、 ドラッグ アンド ドロップの操作で、複数のファイルに対して秘密度ラベル付けや、ラベルの削除を行うサンプルです。|
 
 # 監査ログ関連記事
 | ページ | 内容 |
