@@ -74,8 +74,12 @@ powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -noexit -File RemovingLa
 3. 上記ショートカットにラベル付けを行いたいファイルをドラッグ アンド ドロップすれば一括でラベル削除が可能
 
 ## その他考慮事項
+### 権限
 本スクリプトの範囲では、ユーザーの権限を用いているため、ユーザーがフルコントロール権限を有していない場合、既に保護されているファイルのラベル変更は行えません。
 管理者などがファイルの復旧に利用する場合には、[SuperUser](https://learn.microsoft.com/ja-jp/azure/information-protection/configure-super-users) の設定をして、
 そのユーザー アカウントを利用して操作する必要があります。   
+### 利用法
+企業での秘密度ラベルの利用にあたっては、ユーザーに各ファイルの秘密度を意識させるということが、営業秘密の秘密管理性の要件を充足するために重要視されることがあります。ラベルによる保護を形骸化させないために、こういったスクリプトでの一括の処理を採用するかしないかは、状況により慎重に検討下さい。
+### スクリプトの展開
 PowerShell のスクリプトを展開して他のデバイスなどでも利用できるようにするためには、各ユーザー側で、スクリプトを右クリックしてプロパティを表示し、許可するか、
 スクリプトを信頼された認証局の証明書で[署名](https://learn.microsoft.com/ja-jp/powershell/module/microsoft.powershell.core/about/about_signing?view=powershell-7.4)して、改ざんを検知できるようにしておく必要があります。
