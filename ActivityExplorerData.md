@@ -41,8 +41,11 @@ for($i = 0; $i -lt 10; $i++){
       $watermark=$d.WaterMark
 }
  
- # Excel ファイルに書き出す
+# Excel ファイルに書き出す
 $output|out-file ($OutputFile) -Encoding UTF8
+# 特定の列だけ書き出す場合
+# $output|ConvertFrom-Csv|Select-Object -Property "Activity", "Happened", "User","FilePath","TargetFilePath","Application","DeviceName","Manufacturer","SerialNumber","Model" |Export-Csv ($OutputFile) -Encoding UTF8 -NoTypeInformation
+
 ```
 
 ## (おまけ) Excel を通じて CSV ファイルをテーブル フォーマットありの Excel ファイルに変換
