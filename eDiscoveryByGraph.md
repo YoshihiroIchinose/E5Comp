@@ -15,38 +15,37 @@ Install-Module Microsoft.Graph.Security
 
 ## スクリプト
 ```
+# 変数
+$CaseName="ケース1 by Graph"
+$SearchName="検索1 by Graph"
+$ReviewsetName="レビュー セット1"
+$emails=@("alexw@xxxx.onmicrosoft.com","admin@xxxx.onmicrosoft.com")
+$query='(SensitiveType="50b8b56b-4ef8-44c2-a924-03374f5831ce|1..500|1..100") AND sent>=2025-01-01 AND sent<=2025-03-31'
+
+
 #1. 適切な権限で接続
 Connect-MgGraph -Scopes "eDiscovery.ReadWrite.All"
 
-#2. ケース作成
-$CaseName="ケース1 by Graph"
-$params = @{
-	displayName = $CaseName
-	description = "Graphで作成するケース"
-}
-New-MgSecurityCaseEdiscoveryCase -BodyParameter $params
+#2-1. ケース作成
+New-MgSecurityCaseEdiscoveryCase -DisplayName $CaseName
 
-#2. ケース取得
-$case=Get-MgSecurityCaseEdiscoveryCase|?{$_.DisplayName -eq $CaseName}
+#2-2. ケース取得
+$case=Get-MgSecurityCaseEdiscoveryCase -Filter "DisplayName eq '$CaseName'"
 
-#3. カストーディアン追加
-$emails=@("alexw@xxxx.onmicrosoft.com","admin@xxxx.onmicrosoft.com")
+#3-1. カストーディアン追加
 Foreach($email in $emails){
-	$params = @{email = $email}
-	New-MgSecurityCaseEdiscoveryCaseCustodian -EdiscoveryCaseId $case.id -BodyParameter $params
-}
+	New-MgSecurityCaseEdiscoveryCaseCustodian -EdiscoveryCaseId $case.id -Email $email
+	}
 
-#3. カストーディアン取得
+#3-2. カストーディアン取得
 $custodians=Get-MgSecurityCaseEdiscoveryCaseCustodian -EdiscoveryCaseId $case.id
 
-#4. メールボックス追加
+#4-1. メールボックス追加
 Foreach($cust in $custodians){
-	$params = @{email = $cust.Email
-	includedSources = "mailbox"}
-	New-MgSecurityCaseEdiscoveryCaseCustodianUserSource -EdiscoveryCaseId $case.id -EdiscoveryCustodianId $cust.Id -BodyParameter $params
+	New-MgSecurityCaseEdiscoveryCaseCustodianUserSource -EdiscoveryCaseId $case.id -EdiscoveryCustodianId $cust.Id -Email $cust.Email -IncludedSources "mailbox"
 }
 
-#4. 対象メールボックス取得
+#4-2. 対象メールボックス取得
 $mailboxes=@()
 Foreach($cust in $custodians){
 	$mb=get-MgSecurityCaseEdiscoveryCaseCustodianUserSource -EdiscoveryCaseId $case.id -EdiscoveryCustodianId $cust.Id
@@ -54,35 +53,30 @@ Foreach($cust in $custodians){
 	$mailboxes+=$baseURL+$cust.id+"/userSources/"+$mb.Id
 }
 
-#5. 検索の登録
-$searchname="Search by Graph"
+#5-1. 検索の登録
 $params = @{
-	displayName = $searchname
-	description = "Search by Graph"
-	contentQuery = '((SensitiveType="50b8b56b-4ef8-44c2-a924-03374f5831ce|1..500|1..100"))'
+	displayName = $SearchName
+	contentQuery = $query
 	"custodianSources@odata.bind"=$mailboxes
 }
-New-MgBetaSecurityCaseEdiscoveryCaseSearch -EdiscoveryCaseId $case.id -BodyParameter $params
+New-MgSecurityCaseEdiscoveryCaseSearch -EdiscoveryCaseId $case.id -BodyParameter $params
 
-#5. 検索の取得
-$search=Get-MgBetaSecurityCaseEdiscoveryCaseSearch -EdiscoveryCaseId $case.id|?{$_.DisplayName -eq $searchname}
+#5-2. 検索の取得
+$search=Get-MgSecurityCaseEdiscoveryCaseSearch -EdiscoveryCaseId $case.id|?{$_.DisplayName -eq $searchName}
 
-#6. レビューセット作成
-$ReviewsetName="Reviewset1"
-$params = @{
-	displayName = $ReviewsetName
-}
+#6-1. レビューセット作成
+New-MgSecurityCaseEdiscoveryCaseReviewSet -EdiscoveryCaseId $case.id -DisplayName $ReviewsetName
 
-#6. レビューセット取得
-New-MgSecurityCaseEdiscoveryCaseReviewSet -EdiscoveryCaseId $case.id -BodyParameter $params
-$reviewset=MgSecurityCaseEdiscoveryCaseReviewSet -EdiscoveryCaseId $case.id|?{$_.DisplayName -eq $ReviewsetName}
+#6-2. レビューセット取得
+$reviewset=MgSecurityCaseEdiscoveryCaseReviewSet -EdiscoveryCaseId $case.id -Filter "displayName eq '$ReviewsetName'"
 
-#7. レビューセットに検索結果を反映
+#7-1. レビューセットに検索結果を反映
 $params = @{
 	search = @{
 		id = $search.id
 	}
 	additionalDataOptions = "linkedFiles"
 }
-Add-MgSecurityCaseEdiscoveryCaseReviewSetToReviewSet -EdiscoveryCaseId $case.id -EdiscoveryReviewSetId $reviewset.id -BodyParameter $params
+#この部分だけBetaのGraph APIが必要かも
+Add-MgBetaSecurityCaseEdiscoveryCaseReviewSetToReviewSet -EdiscoveryCaseId $case.id -EdiscoveryReviewSetId $reviewset.id -BodyParameter $params
 ```
