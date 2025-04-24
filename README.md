@@ -43,7 +43,7 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 |[Graph API で Teams チャネルに投稿する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage2.md)|CC / DLP のテストなどに利用可能な Graph API を PowerShell から利用して実装する Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。|
 |[Microsoft Graph PowerShell SDK を通じて Teams チャネルに投稿する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/PostTeamsMessage3.md)|CC / DLP のテストなどに利用可能な Microsoft Graph PowerShell SDK を通じた Teams のチャネル チャットへの投稿を自動化するスクリプトのサンプルです。|
 |[アクティビティ エクスプローラのログの CSV への書き出しサンプル](https://github.com/YoshihiroIchinose/E5Comp/blob/main/ActivityExplorerData.md)|新たに追加された Export-ActivityExplorerData のコマンドを利用して、最大 30 日分、5 万行 (5,000 行x 10 回)のログを取得するサンプルです。|
-|[Graph API を用いて eDiscovery のメールボックス検索を行う](https://github.com/YoshihiroIchinose/E5Comp/blob/main/eDiscoveryByGraph.md)|Graph API を用いて eDiscvoery(Premium) のケース作成、カストーディアン(調査対象となるユーザー)の追加、 検索対象としてカストーディアンのメールボックスの指定、メールからクレジット カード番号の SIT を見つける検索キーワードの登録、 レビュー セットの作成、レビューセットへの検索結果の反映までを自動化する例を示します。|
+|[Graph API を用いて eDiscovery (Premium) のメールボックス検索を行う](https://github.com/YoshihiroIchinose/E5Comp/blob/main/eDiscoveryByGraph.md)|Graph API を用いて eDiscvoery(Premium) のケース作成、カストーディアン(調査対象となるユーザー)の追加、 検索対象としてカストーディアンのメールボックスの指定、メールからクレジット カード番号の SIT を見つける検索キーワードの登録、 レビュー セットの作成、レビューセットへの検索結果の反映までを自動化する例を示します。|
 
 # Defender for Cloud Apps 関連記事
 | ページ | 内容 |
