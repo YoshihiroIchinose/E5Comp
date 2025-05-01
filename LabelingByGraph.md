@@ -4,7 +4,6 @@ Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$
 
 
 ## 事前準備
-
 ### アプリケーションの登録
 1. Azure AD (https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
 2. 作成したアプリケーションの概要ページから、アプリケーション (クライアント) ID の値をコピーしておく。
@@ -14,3 +13,16 @@ Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$
 6. 管理の証明書とシークレットから Client Secret を新規作成して値をコピーしておく
 
 ### 従量課金の API の有効化
+1. Azure Portal にアクセスし、右上のメニューから Azure Cloud Shell を PowerShell のセッションで起動する
+2. 以下のコマンドを実行する
+```
+$app="先の手順 2 で取得したアプリケーション ID の値"
+$rgName="LabelingByGraph"
+$name="LabelingAccounts"
+az group create --name $rgName --location westus
+az resource create --resource-group $rgName --name $name --resource-type Microsoft.GraphServices/accounts --properties "{""appId"": ""$app""}" --location Global
+```
+
+### スクリプト環境の準備
+```
+```
