@@ -78,7 +78,7 @@ $params = @{
 #対象となるファイルを URI で指定
 $uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignSensitivityLabel" -f $site.Id, $drive.Id, $file.Id)
 
-#ラベル付けを実施 (ラベルが反映されるまで、数十分のラグがある)
+#ラベル付けを実施 (ラベルが反映されるまで、数分のラグがある)
 Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
 ```
 ## 参考 URL
