@@ -4,12 +4,12 @@ Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$
 
 ## 事前準備
 ### アプリケーションの登録
-1. Azure AD (https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
-2. 作成したアプリケーションの概要ページから、アプリケーション (クライアント) ID の値をコピーしておく。
-3. 管理の API のアクセス許可で、アプリケーションの許可として Sites.ReadWrite.All の権限を与える
-4. 付与した権限に対して管理者の同意を与える
-5. 作成したアプリケーションの Client ID を用いて以下の URL の後ろのパラーメーターを書き換え   
-6. 管理の証明書とシークレットから Client Secret を新規作成して値をコピーしておく
+1. Entra ID (https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
+3. 作成したアプリケーションの概要ページから、アプリケーション (クライアント) ID の値をコピーしておく。
+4. 管理の API のアクセス許可で、アプリケーションの許可として Sites.ReadWrite.All の権限を与える
+5. 付与した権限に対して管理者の同意を与える
+6. 作成したアプリケーションの Client ID を用いて以下の URL の後ろのパラーメーターを書き換え   
+7. 管理の証明書とシークレットから Client Secret を新規作成して値をコピーしておく
 
 ### 従量課金の API の有効化
 1. Azure Portal にアクセスし、右上のメニューから Azure Cloud Shell を PowerShell のセッションで起動する
