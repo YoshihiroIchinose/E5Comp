@@ -81,10 +81,10 @@ $params = @{
   "assignmentMethod"="standard"
   "justificationText"="Labeled by Graph"
 }
-$Uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drive/items/{1}/assignSensitivityLabel" -f $site.Id, $file.Id)
+$uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drive/items/{1}/assignSensitivityLabel" -f $site.Id, $file.Id)
 
 #ラベル付けを実施
-Invoke-MgGraphRequest -Method "POST" -Uri $Uri -Body $params
+Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
 ```
 ## 参考 URL
 [Practical Graph: Assign Sensitivity Labels to SharePoint Online Files](https://practical365.com/assignsensitivitylabel-api/)
