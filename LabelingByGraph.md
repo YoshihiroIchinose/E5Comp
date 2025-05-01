@@ -85,6 +85,9 @@ $uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drive/items/{1}/assignSensit
 
 #ラベル付けを実施
 Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
+
+#$drive=Get-MgSiteDrive -SiteId $site.id -Filter "Name eq 'ドキュメント'"
+#$uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignSensitivityLabel" -f $site.Id, $drive.Id, $file.Id)
 ```
 ## 参考 URL
 [Practical Graph: Assign Sensitivity Labels to SharePoint Online Files](https://practical365.com/assignsensitivitylabel-api/)
