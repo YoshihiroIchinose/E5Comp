@@ -2,7 +2,6 @@
 SharePoint Online のファイルに Graph API を利用して秘密度ラベルを付与するサンプルです。
 Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$0.0018 の従量課金](https://learn.microsoft.com/ja-jp/graph/metered-api-list)が発生するため、Azure のサブスクリプション環境が必要となります。
 
-
 ## 事前準備
 ### アプリケーションの登録
 1. Azure AD (https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
@@ -41,7 +40,49 @@ disconnect-ExchangeOnline
 
 ## Graph API によるラベル付け
 ```
+#環境変数
+$app="先の手順 2 で取得したアプリケーション ID の値"
+$sec="先の手順 6 で取得したアプリケーション ID の値"
+$tenant="Azure PortalのEntra ID の概要ページで確認できるテナント ID"
+$label="秘密度ラベルの GUID "
 
+#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、FQDN の後とサイトの URL の後に : を入れることに注意
+$sitePath="xxx.sharepoint.com:/sites/label:"
+#ラベル付けしたいファイルがあるドキュメント ライブラリの名称
+$listName="ドキュメント"
+#ラベル付けしたいファイルの名前
+$fileName="議事録1.docx"
+
+#Graph にクライアント シークレットで接続
+$sec2 = ConvertTo-SecureString -String $sec -AsPlainText -Force
+$sec3 = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $app, $sec2
+Connect-MgGraph -NoWelcome -ClientSecretCredential $sec3 -TenantId $tenant
+
+#サイトを取得
+$site=Get-MgSite -SiteId $sitePath
+
+#リストを取得
+$list=Get-MgSiteList -SiteId $site.Id -Filter "DisplayName eq '$listName'"
+
+#全リスト アイテムを取得
+$items=Get-MgSiteListItem -SiteId $site.Id -ListId $list.Id
+
+#対象のファイルを取得
+$enc=([System.Web.HttpUtility]::UrlEncode($fileName)).ToUpper()
+$item=$items|?{$_.WebUrl.ToUpper().EndsWith($enc)}
+
+#DriveItemとして取得しなおす
+$file=Get-MgSiteListItemDriveItem -SiteId $site.Id -ListId $list.Id -ListItemId $item.Id
+
+#パラメータを準備
+$params = @{
+  "sensitivityLabelId"=$label
+  "assignmentMethod"="standard"
+  "justificationText"="Labeled by Graph"
+}
+
+#ラベル付けを実施
+Invoke-MgGraphRequest -Method "POST" -Uri $Uri -Body $params
 ```
 
 
