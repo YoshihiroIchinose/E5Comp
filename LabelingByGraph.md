@@ -50,7 +50,7 @@ $label="先の手順 4 で取得した秘密度ラベルの GUID "
 #ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、FQDN の後とサイトの URL の後に : を入れることに注意
 $sitePath="xxx.sharepoint.com:/sites/label:"
 #ラベル付けしたいファイルがあるドキュメント ライブラリの名称
-$listName="ドキュメント"
+$libraryName="ドキュメント"
 #ラベル付けしたいファイルの名前
 $fileName="議事録1.docx"
 
@@ -62,18 +62,11 @@ Connect-MgGraph -NoWelcome -ClientSecretCredential $sec3 -TenantId $tenant
 #サイトを取得
 $site=Get-MgSite -SiteId $sitePath
 
-#リストを取得
-$list=Get-MgSiteList -SiteId $site.Id -Filter "DisplayName eq '$listName'"
+#Drive を取得
+$drive=Get-MgSiteDrive -SiteId $site.id -Filter "Name eq '$libraryName'"
 
-#全リスト アイテムを取得
-$items=Get-MgSiteListItem -SiteId $site.Id -ListId $list.Id
-
-#対象のファイルを取得
-$enc=([System.Web.HttpUtility]::UrlEncode($fileName)).ToUpper()
-$item=$items|?{$_.WebUrl.ToUpper().EndsWith($enc)}
-
-#DriveItem として取得しなおす
-$file=Get-MgSiteListItemDriveItem -SiteId $site.Id -ListId $list.Id -ListItemId $item.Id
+#Fileを取得
+$file=Get-MgDriveItemChild -DriveId $drive.Id -DriveItemId "root" -Filter "Name eq '$fileName'"
 
 #パラメータを準備
 $params = @{
@@ -81,13 +74,12 @@ $params = @{
   "assignmentMethod"="standard"
   "justificationText"="Labeled by Graph"
 }
-$uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drive/items/{1}/assignSensitivityLabel" -f $site.Id, $file.Id)
 
-#ラベル付けを実施
+#対象となるファイルを URI で指定
+$uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignSensitivityLabel" -f $site.Id, $drive.Id, $file.Id)
+
+#ラベル付けを実施 (ラベルが反映されるまで、数十分のラグがある)
 Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
-
-#$drive=Get-MgSiteDrive -SiteId $site.id -Filter "Name eq 'ドキュメント'"
-#$uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignSensitivityLabel" -f $site.Id, $drive.Id, $file.Id)
 ```
 ## 参考 URL
 [Practical Graph: Assign Sensitivity Labels to SharePoint Online Files](https://practical365.com/assignsensitivitylabel-api/)
