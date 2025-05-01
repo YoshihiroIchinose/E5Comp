@@ -24,5 +24,24 @@ az resource create --resource-group $rgName --name $name --resource-type Microso
 ```
 
 ### スクリプト環境の準備
+PowerShell を管理権限で立ち上げて事前に一度以下を実行
 ```
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+Install-Module -Name ExchangeOnlineManagement
+Install-Module Microsoft.Graph
 ```
+
+### 秘密度ラベルの GUID の把握
+```
+Connect-IPPSSession
+$labels=Get-Label|?{$_.ContentType.IndexOf("File") -ne -1}
+$labels|?{$_.DisplayName -eq "All Employees"}|select GUID
+disconnect-ExchangeOnline
+```
+
+## Graph API によるラベル付け
+```
+
+```
+
+
