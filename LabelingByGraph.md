@@ -72,7 +72,7 @@ $items=Get-MgSiteListItem -SiteId $site.Id -ListId $list.Id
 $enc=([System.Web.HttpUtility]::UrlEncode($fileName)).ToUpper()
 $item=$items|?{$_.WebUrl.ToUpper().EndsWith($enc)}
 
-#DriveItemとして取得しなおす
+#DriveItem として取得しなおす
 $file=Get-MgSiteListItemDriveItem -SiteId $site.Id -ListId $list.Id -ListItemId $item.Id
 
 #パラメータを準備
@@ -81,6 +81,7 @@ $params = @{
   "assignmentMethod"="standard"
   "justificationText"="Labeled by Graph"
 }
+$Uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drive/items/{1}/assignSensitivityLabel" -f $site.Id, $file.Id)
 
 #ラベル付けを実施
 Invoke-MgGraphRequest -Method "POST" -Uri $Uri -Body $params
