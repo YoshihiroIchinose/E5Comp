@@ -7,11 +7,10 @@ Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$
 
 ### アプリケーションの登録
 1. Azure AD (https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
-2. 作成したアプリケーションの API のアクセス許可で、委任されたアクセス許可として Team.ReadBasic.All、Channel.ReadBasic.All、ChannelMessage.Send の権限を与える    
-(ChannelMessage.Send はアプリケーションとしては実行できず、必ずユーザーの委任としての操作が必要。）
-3. 作成したアプリケーションの Client ID を用いて以下の URL の後ろのパラーメーターを書き換え   
-   https://login.microsoftonline.com/common/oauth2/authorize?response_type=code&client_id=XXXXX   
-その URL に InPrivate モードなどの状態のブラウザでアクセスし、利用するアカウントで認証を通し権限の同意を実施する   
-認証が通り権限に同意できていれば「AADSTS500113: No reply address is registered for the application.」というエラーになるがこの状態になれば OK 
-4. 事前準備したアプリケーションの Client Secret を新規作成する
-5. 以下のスクリプトで、作成したアプリケーションの ClientID、Client Secret、ユーザーの ID/パスワード、および投稿先のチーム名、チャネル名、投稿内容を書き換える
+2. 作成したアプリケーションの概要ページから、アプリケーション (クライアント) ID の値をコピーしておく。
+3. 管理の API のアクセス許可で、アプリケーションの許可として Sites.ReadWrite.All の権限を与える
+4. 付与した権限に対して管理者の同意を与える
+5. 作成したアプリケーションの Client ID を用いて以下の URL の後ろのパラーメーターを書き換え   
+6. 管理の証明書とシークレットから Client Secret を新規作成して値をコピーしておく
+
+### 従量課金の API の有効化
