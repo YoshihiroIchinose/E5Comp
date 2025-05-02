@@ -39,7 +39,7 @@ $labels|?{$_.DisplayName -eq $labelName}|select GUID
 disconnect-ExchangeOnline
 ```
 
-## Graph API によるラベル付け
+# Graph API による単一のファイルへのラベル付け
 ```
 #環境変数
 $tenant="先の手順 1-1 で取得したテナント ID"
@@ -76,10 +76,68 @@ $params = @{
 }
 
 #対象となるファイルを URI で指定
-$uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignSensitivityLabel" -f $site.Id, $drive.Id, $file.Id)
+$uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignSensitivityLabel" -f $site.Id,$drive.Id,$file.Id)
 
 #ラベル付けを実施 (ラベルが反映されるまで、数分のラグがある)
 Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
+```
+# Graph API による特定フォルダ内の複数ファイルへのラベル付け
+```
+#環境変数
+$tenant="先の手順 1-1 で取得したテナント ID"
+$app="先の手順 1-2 で取得したアプリケーション ID の値"
+$sec="先の手順 1-6 で取得したアプリケーション ID の値"
+$label="先の手順 4 で取得した秘密度ラベルの GUID "
+
+#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、FQDN の後とサイトの URL の後に : を入れることに注意
+$sitePath="xxx.sharepoint.com:/sites/label:"
+#ラベル付けしたいファイルがあるドキュメント ライブラリの名称
+$libraryName="ドキュメント"
+#ラベル付けしたいフォルダのパス
+$folder="社外秘保護"
+#階層の場合
+#$folder="社外秘保護/暗号化"
+
+#Graph にクライアント シークレットで接続
+$sec2 = ConvertTo-SecureString -String $sec -AsPlainText -Force
+$sec3 = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $app, $sec2
+Connect-MgGraph -NoWelcome -ClientSecretCredential $sec3 -TenantId $tenant
+
+#サイトを取得
+$site=Get-MgSite -SiteId $sitePath
+
+#Drive を取得
+$drive=Get-MgSiteDrive -SiteId $site.id -Filter "Name eq '$libraryName'"
+
+#特定のフォルダ内のファイルを取得
+$files=Get-MgDriveItemChild -DriveId $drive.Id -DriveItemId ("root:/"+$folder+":")
+
+#パラメータを準備
+$params = @{
+  "sensitivityLabelId"=$label
+  "assignmentMethod"="standard"
+  "justificationText"="Labeled by Graph"
+}
+
+#対応ファイルに限定
+$supported=@("docx","pptx","xlsx","pdf")
+
+Foreach($file in $files){
+	If(!$supported.contains($file.Name.split(".")[-1])){
+		continue
+  }
+	$base ="https://graph.microsoft.com/v1.0/sites/$($site.Id)/drives//$($drive.Id)/items/"
+	$uri=$base+$file.Id+"/extractSensitivityLabels"
+	$l=Invoke-MgGraphRequest -Method "POST" -Uri $uri
+	If($l.labels.sensitivityLabelId -eq $label){
+      "ラベル付与済みのため'"+$file.Name +"'のラベル付けはスキップ"
+  }
+  else {
+      "'"+$file.Name +"'へのラベル付けを実施"
+      $uri=$base+$file.Id+"/assignSensitivityLabel"
+      Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
+	}
+}
 ```
 ## 参考 URL
 [Practical Graph: Assign Sensitivity Labels to SharePoint Online Files](https://practical365.com/assignsensitivitylabel-api/)
