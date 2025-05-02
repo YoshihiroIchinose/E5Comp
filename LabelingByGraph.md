@@ -216,6 +216,104 @@ $files=$files|?{$supported.contains($_.Name.split(".")[-1])}
 $base ="https://graph.microsoft.com/v1.0/sites/$($site.Id)/drives/$($drive.Id)/items/"
 Label-Files $files $base $sec2 $label $params
 ```
+### Graph API による特定フォルダ配下の複数ファイルを再帰的に検出してラベル付けを並列処理で行う
+優先度の高い低いに関わらず、既存ラベルも置き換える点に注意
+```PowerShell
+#環境変数
+$tenant="先の手順 1-1 で取得したテナント ID"
+$app="先の手順 1-2 で取得したアプリケーション ID の値"
+$sec="先の手順 1-6 で取得したアプリケーション ID の値"
+$label="先の手順 4 で取得した秘密度ラベルの GUID "
+
+#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、FQDN の後とサイトの URL の後に : を入れることに注意
+$sitePath="xxx.sharepoint.com:/sites/label:"
+#ラベル付けしたいファイルがあるドキュメント ライブラリの名称
+$libraryName="ドキュメント"
+#ラベル付けしたいライブラリ内のフォルダのパス
+$folder="テスト用フォルダ"
+
+#トークン取得用の Header
+$body = @{  
+    client_Id  = $app
+    client_secret = $sec
+    scope = 'https://graph.microsoft.com/.default'
+    grant_type = 'client_credentials'
+}
+
+#トークン取得
+$uri="https://login.microsoftonline.com/$tenant/oauth2/V2.0/token"
+$tokenRequest = Invoke-WebRequest -Method Post -Uri $uri -Body $body
+$token = ($tokenRequest.Content | ConvertFrom-Json).access_token
+
+#Graph にトークンで接続
+$sec2 = ConvertTo-SecureString -String $token -AsPlainText -Force
+Connect-MgGraph -AccessToken $sec2 -NoWelcome
+
+#サイトを取得
+$site=Get-MgSite -SiteId $sitePath
+
+#Drive を取得
+$drive=Get-MgSiteDrive -SiteId $site.id -Filter "Name eq '$libraryName'"
+
+#対応拡張子に限定
+$supported=@("docx","pptx","xlsx","pdf")
+
+#対象ファイルの連想配列
+$files=@{}
+
+#再帰的にフォルダを掘る関数
+Function Get-FolderItems (){
+	param($folder)
+	$current="root:/"+$folder+":"
+	"フォルダの参照:" + $current
+	#指定フォルダ内のアイテムを取得
+	$items=Get-MgDriveItemChild -DriveId $drive.Id -DriveItemId ($current)
+	Foreach($item in $items){
+		#アイテムがラベル付け対象のファイルの場合
+		If($item.Folder.ChildCount -eq $null -and $supported.contains($item.Name.split(".")[-1])){
+			$files[$item.Id]=$item.Name
+		}
+		#アイテムがフォルダの場合
+		ElseIf($item.Folder.ChildCount -ge 1){
+			Get-FolderItems ($folder+"/"+$item.Name)
+		}
+	}
+}
+
+#指定したフォルダ配下のファイルを再帰的に検出
+Get-FolderItems $folder
+
+#ラベル付けの設定
+$params = @{
+	"sensitivityLabelId"=$label
+  	"assignmentMethod"="standard"
+  	"justificationText"="Labeled by Graph"
+}
+
+#並列処理用のワークフローを定義 既存 AccessToken を再利用
+Workflow Label-Files(){
+	param($files,$base,$sec2,$label,$params)
+	Foreach -parallel ($key in $files.keys){
+			Connect-MgGraph -AccessToken $sec2  -NoWelcome
+			$uri=$base+$key+"/extractSensitivityLabels"
+			$l=Invoke-MgGraphRequest -Method "POST" -Uri $uri
+			If($l.labels.sensitivityLabelId -eq $label){
+			"ラベル付与済みのため'"+$files[$key] +"'のラベル付けはスキップ"
+		  }
+	  else {
+	              	"'"+$files[$key]+"'へのラベル付けを実施"
+	             	$uri=$base+$key+"/assignSensitivityLabel"
+	             	Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
+		}
+	}
+}
+
+
+#並列処理でラベル付けを実施
+$base ="https://graph.microsoft.com/v1.0/sites/$($site.Id)/drives/$($drive.Id)/items/"
+Label-Files $files $base $sec2 $label $params
+```
+
 ## 参考 URL
 [Practical Graph: Assign Sensitivity Labels to SharePoint Online Files](https://practical365.com/assignsensitivitylabel-api/)
 
