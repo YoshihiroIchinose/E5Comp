@@ -128,7 +128,7 @@ Foreach($file in $files){
 	If(!$supported.contains($file.Name.split(".")[-1])){
 		continue
   }
-	$base ="https://graph.microsoft.com/v1.0/sites/$($site.Id)/drives//$($drive.Id)/items/"
+	$base ="https://graph.microsoft.com/v1.0/sites/$($site.Id)/drives/$($drive.Id)/items/"
 	$uri=$base+$file.Id+"/extractSensitivityLabels"
 	$l=Invoke-MgGraphRequest -Method "POST" -Uri $uri
 	If($l.labels.sensitivityLabelId -eq $label){
