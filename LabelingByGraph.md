@@ -41,7 +41,7 @@ disconnect-ExchangeOnline
 
 ## スクリプト　サンプル
 ### Graph API による単一のファイルへのラベル付け
-```
+```PowerShell
 #環境変数
 $tenant="先の手順 1-1 で取得したテナント ID"
 $app="先の手順 1-2 で取得したアプリケーション ID の値"
@@ -83,7 +83,8 @@ $uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignS
 Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
 ```
 ### Graph API による特定フォルダ内の複数ファイルへのラベル付け
-```
+優先度の高い低いに関わらず、既存ラベルも置き換える点に注意
+```PowerShell
 #環境変数
 $tenant="先の手順 1-1 で取得したテナント ID"
 $app="先の手順 1-2 で取得したアプリケーション ID の値"
@@ -94,7 +95,7 @@ $label="先の手順 4 で取得した秘密度ラベルの GUID "
 $sitePath="xxx.sharepoint.com:/sites/label:"
 #ラベル付けしたいファイルがあるドキュメント ライブラリの名称
 $libraryName="ドキュメント"
-#ラベル付けしたいフォルダのパス
+#ラベル付けしたいライブラリ内のフォルダのパス
 $folder="社外秘保護"
 #階層の場合
 #$folder="社外秘保護/暗号化"
