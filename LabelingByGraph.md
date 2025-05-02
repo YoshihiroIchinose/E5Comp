@@ -82,7 +82,7 @@ $uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignS
 #ラベル付けを実施 (ラベルが反映されるまで、数分のラグがある)
 Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
 ```
-### Graph API による特定フォルダ内の複数ファイルへのラベル付け
+### Graph API による特定フォルダ直下の複数ファイルへのラベル付け
 優先度の高い低いに関わらず、既存ラベルも置き換える点に注意
 ```PowerShell
 #環境変数
