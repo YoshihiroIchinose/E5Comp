@@ -39,7 +39,8 @@ $labels|?{$_.DisplayName -eq $labelName}|select GUID
 disconnect-ExchangeOnline
 ```
 
-# Graph API による単一のファイルへのラベル付け
+## スクリプト　サンプル
+### Graph API による単一のファイルへのラベル付け
 ```
 #環境変数
 $tenant="先の手順 1-1 で取得したテナント ID"
@@ -81,7 +82,7 @@ $uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignS
 #ラベル付けを実施 (ラベルが反映されるまで、数分のラグがある)
 Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
 ```
-# Graph API による特定フォルダ内の複数ファイルへのラベル付け
+### Graph API による特定フォルダ内の複数ファイルへのラベル付け
 ```
 #環境変数
 $tenant="先の手順 1-1 で取得したテナント ID"
