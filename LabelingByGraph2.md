@@ -1,4 +1,4 @@
-# Graph API を利用してサイト管理者権限と全体管理者の同意で SharePoint Online のファイルに秘密度ラベルを付与する
+# <現状動作不可> Graph API を利用してサイト管理者権限と全体管理者の同意で SharePoint Online のファイルに秘密度ラベルを付与する
 SharePoint Online のファイルに Graph API を利用して秘密度ラベルを付与するサンプルです。権限付与時の組織の同意部分を除いて、サイト管理者の権限で動作するものです。
 Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$0.0018 の従量課金](https://learn.microsoft.com/ja-jp/graph/metered-api-list)が発生するため、Azure のサブスクリプション環境が必要となります。
 
@@ -77,7 +77,7 @@ Disconnect-MgGraph
 ```
 
 ## スクリプト　サンプル
-### Graph API による単一のファイルへのラベル付け
+### <現状動作不可> Graph API による単一のファイルへのラベル付け
 ```PowerShell
 #環境変数
 $tenant="先の手順 1-1 で取得したテナント ID"
@@ -115,7 +115,8 @@ $params = @{
 #対象となるファイルを URI で指定
 $uri = ("https://graph.microsoft.com/v1.0/sites/{0}/drives/{1}/items/{2}/assignSensitivityLabel" -f $site.Id,$drive.Id,$file.Id)
 
-#ラベル付けを実施 (ラベルが反映されるまで、数分のラグがある)
+# <現状動作不可> ラベル付けを実施 (ラベルが反映されるまで、数分のラグがある)
+#認証されたユーザーから委任された権限ではラベル付けは不可、アプリケーション固有の認証でないと従量課金の API は利用できない
 Invoke-MgGraphRequest -Method "POST" -Uri $uri -Body $params
 ```
 ## 参考 URL
