@@ -8,8 +8,8 @@ Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$
 2. Entra ID の[アプリの登録ページ](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
 3. 作成したアプリケーションの概要ページから、アプリケーション (クライアント) ID の値をコピーしておく
 4. 管理の API のアクセス許可で、アクセス許可の追加から Microsoft Graph の委任されたアクセス許可を選び、Sites.Selected の権限を与える
-5. 認証ページのプラットフォーム構成でプラットフォームを追加から「モバイル アプリケーションとデスクトップ アプリケーション」を選択し、「http://localhost」を入力し構成ボタンを押す
-
+5. 認証ページのプラットフォーム構成でプラットフォームを追加から「モバイル アプリケーションとデスクトップ アプリケーション」を選択し、"http://localhost" を入力し構成ボタンを押す   
+[参考 Microsoft Graph PowerShell でのカスタム アプリケーションとしての認証](https://learn.microsoft.com/ja-jp/powershell/microsoftgraph/authentication-commands?view=graph-powershell-1.0#use-delegated-access-with-a-custom-application-for-microsoft-graph-powershell)
 ### 2. 従量課金の API の有効化
 1. サブスクリプションを保有しているアカウントで Azure Portal にアクセスし、右上のメニューから Azure Cloud Shell を PowerShell のセッションで起動する
 2. 以下のコマンドを実行する
@@ -92,7 +92,8 @@ $libraryName="ドキュメント"
 #ラベル付けしたいファイルの名前
 $fileName="議事録1.docx"
 
-#Graph にクライアント シークレットで接続
+#Graph カスタム アプリケーションとして接続
+#ここでさらにサイト管理者としてユーザー認証する
 Connect-MgGraph -ClientId $app -TenantId $tenant -Scopes "Sites.Selected" -NoWelcome
 
 #サイトを取得
