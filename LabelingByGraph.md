@@ -11,6 +11,8 @@ Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$
 5. 付与した権限に対して管理者の同意を与える
 6. 管理の証明書とシークレットからクライアント シークレットを新規作成して値をコピーしておく
 
+アプリケーションに SPO サイト全体ではなく、特定サイトの権限だけを付与したい場合は、以下の[こちら](https://github.com/YoshihiroIchinose/E5Comp/blob/main/LabelingByGraph2.md)を参照のこと。
+
 ### 2. 従量課金の API の有効化
 1. Azure Portal にアクセスし、右上のメニューから Azure Cloud Shell を PowerShell のセッションで起動する
 2. 以下のコマンドを実行する
