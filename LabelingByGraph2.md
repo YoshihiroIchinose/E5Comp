@@ -1,5 +1,19 @@
-# <現状動作不可> Graph API を利用してサイト管理者権限と全体管理者の同意で SharePoint Online のファイルに秘密度ラベルを付与する
-SharePoint Online のファイルに Graph API を利用して秘密度ラベルを付与するサンプルです。権限付与時の組織の同意部分を除いて、サイト管理者の権限で動作するものです。
+# Graph API を利用してサイト管理者権限と全体管理者の同意で SharePoint Online のファイルに秘密度ラベルを付与する
+SharePoint Online のファイルに Graph API を利用して秘密度ラベルを付与するサンプルです。アプリケーションに SPO サイト全体の権限を付与するのではなく、特定のサイトのみの権限を付与する場合のサンプルです。以下の表の No.2 のパターンとなります。なお、No.3 の構成は現状、従量課金の API では利用できません。[参考: 従量制課金 API の既知の制限](https://learn.microsoft.com/ja-jp/graph/metered-api-overview#known-limitations)
+
+| No. | アクセス許可の種類 | アクセス許可 | 管理者の同意の必要性 | ラベル付け API での利用可否 | 
+| --- | ---------------------- | --- | --- | --- |  
+| 1 | アプリケーションの許可 | Sites.ReadWrite.All | 必要 | 可能 |
+| 2 | アプリケーションの許可 | Sites.Selected | 必要 | 可能 |
+| 3 | 委任されたアクセス許可 | Sites.Selected | 不要 | 不可 |
+
+#### アプリケーションの許可
+呼び出すユーザーの権限に関係なく、アプリケーションとして認証し、アプリケーション自身が直接付与された権限を持って、動作する形式   
+#### 委任されたアクセス許可
+各ユーザーで認証しつつ、アプリケーションがユーザーの代理として、ユーザーの同意もしくは管理者による組織全体の同意により、ユーザーが持つ権限の一部をアプリケーションが持って動作する形式   　
+
+上記以外にも、特定の SPO サイトに対してアプリケーションに権限を付与するために、Microsoft Graph Command Line Tools(14d82eec-204b-4c2f-b7e8-296a70dab67e)に、ユーザーの代理としてサイトを管理できる Sites.FullControll.All の委任されたアクセス許可を管理者によって付与する必要があります。
+
 Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$0.0018 の従量課金](https://learn.microsoft.com/ja-jp/graph/metered-api-list)が発生するため、Azure のサブスクリプション環境が必要となります。
 
 ## 事前準備
@@ -7,9 +21,10 @@ Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$
 1. Entra ID の[概要ページ](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/Overview) でテナントの ID をコピーしておく
 2. Entra ID の[アプリの登録ページ](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
 3. 作成したアプリケーションの概要ページから、アプリケーション (クライアント) ID の値をコピーしておく
-4. 管理の API のアクセス許可で、アクセス許可の追加から Microsoft Graph の委任されたアクセス許可を選び、Sites.Selected の権限を与える
-5. 認証ページのプラットフォーム構成でプラットフォームを追加から「モバイル アプリケーションとデスクトップ アプリケーション」を選択し、"http://localhost" を入力し構成ボタンを押す   
-[参考 Microsoft Graph PowerShell でのカスタム アプリケーションとしての認証](https://learn.microsoft.com/ja-jp/powershell/microsoftgraph/authentication-commands?view=graph-powershell-1.0#use-delegated-access-with-a-custom-application-for-microsoft-graph-powershell)
+4. 管理の API のアクセス許可で、アクセス許可の追加から Microsoft Graph のアプリケーションの許可を選び、Sites.Selected の権限を与える
+5. **付与した権限に対して管理者の同意を与えておく (管理者権限必要)** 
+6. 管理の証明書とシークレットから Client Secret を新規作成して値をコピーしておく
+
 ### 2. 従量課金の API の有効化
 1. サブスクリプションを保有しているアカウントで Azure Portal にアクセスし、右上のメニューから Azure Cloud Shell を PowerShell のセッションで起動する
 2. 以下のコマンドを実行する
@@ -30,6 +45,8 @@ Install-Module -Name Microsoft.Graph
 ```
 
 ### 4. 秘密度ラベルの GUID の把握
+**この方法は管理者権限必要**
+他には、MPIPクライアントをインストールして、Get-FileLabel でラベル付けしたファイルを確認する方法がある
 ```PowerShell
 $labelName="社外秘"
 Connect-IPPSSession
@@ -39,6 +56,7 @@ disconnect-ExchangeOnline
 ```
 
 ### 5. テナント管理者による MgGraph アプリでサイトの管理が行える権限を付与
+**管理者権限必要**
 PowerShell から以下を実行
 ```PowerShell
 # 以下を実行した際、テナント管理者でサインインして、「組織の代理として同意する」にチェックを入れて承諾する
@@ -77,12 +95,12 @@ Disconnect-MgGraph
 ```
 
 ## スクリプト　サンプル
-### <現状動作不可> Graph API による単一のファイルへのラベル付け
+### Graph API による単一のファイルへのラベル付け
 ```PowerShell
 #環境変数
 $tenant="先の手順 1-1 で取得したテナント ID"
-$app="先の手順 1-2 で取得したアプリケーション ID の値"
-$sec="先の手順 1-6 で取得したアプリケーション ID の値"
+$app="先の手順 1-3 で取得したアプリケーション ID の値"
+$sec="先の手順 1-6 で取得したアプリケーションのクライアント シークレットの値"
 $label="先の手順 4 で取得した秘密度ラベルの GUID "
 
 #ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、FQDN の後とサイトの URL の後に : を入れることに注意
@@ -93,8 +111,9 @@ $libraryName="ドキュメント"
 $fileName="議事録1.docx"
 
 #Graph カスタム アプリケーションとして接続
-#ここでさらにサイト管理者としてユーザー認証する
-Connect-MgGraph -ClientId $app -TenantId $tenant -Scopes "Sites.Selected" -NoWelcome
+$sec2 = ConvertTo-SecureString -String $sec -AsPlainText -Force
+$sec3 = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $app, $sec2
+Connect-MgGraph -NoWelcome -ClientSecretCredential $sec3 -TenantId $tenant
 
 #サイトを取得
 $site=Get-MgSite -SiteId $sitePath
