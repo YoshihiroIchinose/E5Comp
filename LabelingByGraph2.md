@@ -1,5 +1,5 @@
 # Graph API を利用してサイト管理者権限と全体管理者の同意で SharePoint Online のファイルに秘密度ラベルを付与する
-SharePoint Online のファイルに Graph API を利用して秘密度ラベルを付与するサンプルです。アプリケーションに SPO サイト全体の権限を付与するのではなく、特定のサイトのみの権限を付与する場合のサンプルです。以下の表の No.2 のパターンとなります。なお、No.3 の構成は現状、従量課金の API では利用できません。[参考: 従量制課金 API の既知の制限](https://learn.microsoft.com/ja-jp/graph/metered-api-overview#known-limitations)
+SharePoint Online のファイルに Graph API を利用して秘密度ラベルを付与するサンプルです。アプリケーションに SPO サイト全体の権限を付与するのではなく、特定のサイトのみの権限を付与する場合のものです。以下の表の No.2 のパターンとなります。なお、No.3 の構成は現状、従量課金の API では利用できません。[参考: 従量制課金 API の既知の制限](https://learn.microsoft.com/ja-jp/graph/metered-api-overview#known-limitations)
 
 | No. | アクセス許可の種類 | アクセス許可 | 同意の種類 | ラベル付け API での利用可否 | 
 | --- | ---------------------- | :---: | :---: | :---: |  
