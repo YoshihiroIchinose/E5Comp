@@ -8,7 +8,7 @@ SharePoint Online のファイルに Graph API を利用して秘密度ラベル
 | 3 | 委任されたアクセス許可 | Sites.Selected | 不要 | 不可 |
 
 #### アプリケーションの許可
-呼び出すユーザーの権限に関係なく、アプリケーションとして認証し、アプリケーション自身が直接付与された権限を持って、動作する形式   
+呼び出すユーザーの権限に関係なく、アプリケーションとして認証し、アプリケーションに直接付与された権限を持って、動作する形式   
 #### 委任されたアクセス許可
 各ユーザーで認証しつつ、アプリケーションがユーザーの代理として、ユーザーの同意もしくは管理者による組織全体の同意により、ユーザーが持つ権限の一部をアプリケーションが持って動作する形式   　
 
@@ -21,7 +21,7 @@ Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$
 1. Entra ID の[概要ページ](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/Overview) でテナントの ID をコピーしておく
 2. Entra ID の[アプリの登録ページ](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps) でアプリケーションを登録する
 3. 作成したアプリケーションの概要ページから、アプリケーション (クライアント) ID の値をコピーしておく
-4. 管理の API のアクセス許可で、アクセス許可の追加から Microsoft Graph のアプリケーションの許可を選び、Sites.Selected の権限を与える
+4. 管理の API のアクセス許可で、アクセス許可の追加から Microsoft Graph の**アプリケーションの許可**を選び、Sites.Selected の権限を与える
 5. **付与した権限に対して管理者の同意を与えておく (管理者権限必要)** 
 6. 管理の証明書とシークレットから Client Secret を新規作成して値をコピーしておく
 
@@ -45,7 +45,7 @@ Install-Module -Name Microsoft.Graph
 ```
 
 ### 4. 秘密度ラベルの GUID の把握
-**この方法は管理者権限必要**
+**この方法は管理者権限必要**   
 他には、MPIPクライアントをインストールして、Get-FileLabel でラベル付けしたファイルを確認する方法がある
 ```PowerShell
 $labelName="社外秘"
