@@ -13,7 +13,7 @@
 </RulePack>
 <Rules>
  <!--W1.働き方要注意ワード-->
-<Entity id="126d89c2-2f1d-403a-a433-d0fda875f5a7" patternsProximity="300" recommendedConfidence="70">
+<Entity id="126d89c2-2f1d-403a-a433-d0fda875f5a7" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_Workerholic"/>
  </Pattern>
@@ -23,7 +23,7 @@
  </Pattern>  
 </Entity>
 <!--S1.顧客満足関連-->
-<Entity id="1fa33e82-8dcd-40a3-a621-50a709b55d50" patternsProximity="300" recommendedConfidence="70">
+<Entity id="1fa33e82-8dcd-40a3-a621-50a709b55d50" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_CustomerSat"/>
  </Pattern>
@@ -33,7 +33,7 @@
  </Pattern>  
 </Entity>
 <!--S2.クレーム関連-->
-<Entity id="6dcdaf6d-6d77-4df0-92ec-3cfa28d1a07d" patternsProximity="300" recommendedConfidence="70">
+<Entity id="6dcdaf6d-6d77-4df0-92ec-3cfa28d1a07d" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_CustomerClaim"/>
  </Pattern>
@@ -43,7 +43,7 @@
  </Pattern>  
 </Entity>
 <!--P1.業務外の連絡-->
-<Entity id="e30e4c9d-eed8-4676-a9d2-5c534c2d9b7a" patternsProximity="300" recommendedConfidence="70">
+<Entity id="e30e4c9d-eed8-4676-a9d2-5c534c2d9b7a" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_PrivateAnnoucement"/>
  </Pattern>
@@ -53,7 +53,7 @@
  </Pattern>  
 </Entity>
 <!--P2.食事の誘い-->
-<Entity id="09f8e576-4585-49a8-9cef-7b26442bb8fe" patternsProximity="300" recommendedConfidence="70">
+<Entity id="09f8e576-4585-49a8-9cef-7b26442bb8fe" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_PrivateMeals"/>
  </Pattern>
@@ -67,7 +67,7 @@
  </Pattern>    
 </Entity>
 <!--H1.パワハラ-->
-<Entity id="d684a266-17d6-4e42-95d1-735579e8144b" patternsProximity="300" recommendedConfidence="70">
+<Entity id="d684a266-17d6-4e42-95d1-735579e8144b" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_Powerharassment"/>
  </Pattern>
@@ -77,7 +77,7 @@
  </Pattern>  
 </Entity>
 <!--H2.性急な要求-->
-<Entity id="6ebaefab-3180-44a4-ab6a-72865cb3078a" patternsProximity="300" recommendedConfidence="70">
+<Entity id="6ebaefab-3180-44a4-ab6a-72865cb3078a" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_Urgency"/>
  </Pattern>
@@ -87,7 +87,7 @@
  </Pattern>  
 </Entity>
 <!--L1.違法-->
-<Entity id="329b6cd4-7f51-4cc2-8e91-77b377599952" patternsProximity="300" recommendedConfidence="70">
+<Entity id="329b6cd4-7f51-4cc2-8e91-77b377599952" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_ilLeagal"/>
  </Pattern>
@@ -97,7 +97,7 @@
  </Pattern>  
 </Entity>
 <!--L2.カルテル-->
-<Entity id="72024dda-b44d-43e7-b910-1772813aec4f" patternsProximity="300" recommendedConfidence="70">
+<Entity id="72024dda-b44d-43e7-b910-1772813aec4f" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_Cartel"/>
  </Pattern>
@@ -107,7 +107,7 @@
  </Pattern>  
 </Entity>
 <!--Q1.検査偽装-->
-<Entity id="a46aee77-51f0-4ca3-a6e7-5fb8919c6f8a" patternsProximity="300" recommendedConfidence="70">
+<Entity id="a46aee77-51f0-4ca3-a6e7-5fb8919c6f8a" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_ImproperInspections"/>
  </Pattern>
@@ -117,7 +117,7 @@
  </Pattern>  
 </Entity>
 <!--Q2.外為法-->
-<Entity id="93b5c5d4-0132-4028-bc40-ce651b35bec3" patternsProximity="300" recommendedConfidence="70">
+<Entity id="93b5c5d4-0132-4028-bc40-ce651b35bec3" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_ForeignExchangeAct"/>
  </Pattern>
@@ -128,7 +128,7 @@
 </Entity>
 
 <!--C1.内緒話-->
-<Entity id="55bbb9c7-3eb4-46fd-b7d0-11d1170532d6" patternsProximity="300" recommendedConfidence="70">
+<Entity id="55bbb9c7-3eb4-46fd-b7d0-11d1170532d6" patternsProximity="10" recommendedConfidence="70">
  <Pattern confidenceLevel="60">
   <IdMatch idRef="Keyword_SecretTalk"/>
  </Pattern>
