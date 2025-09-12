@@ -1,5 +1,5 @@
 # Office 365 Communication Compliance 用、要注意サンプル用語集
-こちらのプロジェクトでは、Office 365のCommunication Complianceを利用・検証するに当たって、職場にふさわしくないコミュニケーションを検出するためのサンプルの用語集を提供します。用語は、カスタムの機密情報の定義として [XML](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT/CC_Reference.xml) ファイルで用意していますので、ダウンロードの上、PowerShell で Office 365 に取り込んで利用ください。なお 2020 年 6 月の時点では、Office 365 の Exchange/Teams/Skype for Busines/Yammer のうち、Exchange でのみ日本語でのキーワードの検出を確認しています。その他ソースの対応は、Office 365 での日本語ワードブレーカーのアップデートを待つ必要があります。他にも日本向けの住所や電話番号など個人情報の定義はこちらの[ページ](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT.md) で紹介しています。
+こちらのプロジェクトでは、Office 365のCommunication Complianceを利用・検証するに当たって、職場にふさわしくないコミュニケーションを検出するためのサンプルの用語集を提供します。用語は、カスタムの機密情報の定義として [XML](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT/CC_Reference.xml) ファイルで用意していますので、ダウンロードの上、PowerShell で Office 365 に取り込んで利用ください。(2020 年 6 月の時点では、Exchange でのみ日本語でのキーワード検出ができておりましたが、2025 年 9 月の時点では、特にサービスに依存することなく、全般的に問題なく日本語検知は動作します。)他にも日本向けの住所や電話番号など個人情報の定義はこちらの[ページ](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SIT.md) で紹介しています。
 
 # 事前に一度実施
 ## PowerShellを管理権限で立ち上げて以下を実行
