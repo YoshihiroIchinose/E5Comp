@@ -58,7 +58,7 @@ AIP 保護されたファイルを開く際には、AIP に対応した Office �
 [参考: 保護されたドキュメントを開く場合にサポートされるシナリオ](https://docs.microsoft.com/ja-jp/azure/information-protection/secure-collaboration-documents#supported-scenarios-for-opening-protected-documents)
 
 ## 保護された Office ファイルを開く場合
-| 環境 | Office 365 アカウントでの AIP 保護されたファイルの参照 | Microsoft Account での AIP 保護されたファイルの参照 | Azure AD B2B (ワンタイム パスコード含む)を利用した AIP 保護されたファイルの参照 |
+| 環境 | Entra ID での AIP 保護されたファイルの参照 | マイクロソフト アカウント (Outlook.jp や Hotmail.com など) での AIP 保護されたファイルの参照 | Entra ID B2B (ワンタイム パスコード含む) での AIP 保護されたファイルの参照 |
 |:---:|:---:|:---:|:---:|
 |Microsoft 365 Apps | 〇 | 〇 | 〇 |
 |Office 2019 | 〇 | 〇 | 〇 |
