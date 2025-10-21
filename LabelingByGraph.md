@@ -1,6 +1,6 @@
 # Graph API を利用して SharePoint Online のファイルに秘密度ラベルを付与する
 SharePoint Online のファイルに Graph API を利用して秘密度ラベルを付与するサンプルです。
-Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$0.0018 の従量課金](https://learn.microsoft.com/ja-jp/graph/metered-api-list)が発生するため、Azure のサブスクリプション環境が必要となります。
+Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$0.00185 の従量課金](https://learn.microsoft.com/ja-jp/graph/metered-api-list)が発生するため、Azure のサブスクリプション環境が必要となります。
 
 ## 事前準備
 ### 1. アプリケーションの登録
