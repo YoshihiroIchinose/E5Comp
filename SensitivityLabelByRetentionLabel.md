@@ -6,11 +6,15 @@
 2. 自動の秘密度ラベル付けの機能では、ComplianceTag のファイル プロパティを用いることで、保持ラベルを条件とした自動の秘密度ラベル付けが可能
 3. ライブラリ・フォルダ単位の既定の保持ラベル付けと、保持ラベルを用いた自動の秘密度ラベル付けを組み合わせることで、柔軟な秘密度ラベル付けが可能
 
+図.保持ラベルにより秘密度ラベルが付与されたファイル
+
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/RL_File01.png">
 -----
 ## 前提条件
 1. ライブラリ・フォルダ・ファイル単位の保持ラベル付けおよび、条件に応じた自動の秘密度ラベル付けはいずれも Information Protection & Governance 以上のライセンスが、ファイルの投稿者・編集者に必要
 2. SharePoint Online では、[秘密度ラベルの有効化](https://learn.microsoft.com/ja-jp/purview/sensitivity-labels-sharepoint-onedrive-files)が必要
 3. PDF ファイルに対しても秘密度ラベル付けを行いたい場合は、SharePoint Online の設定で [PDF の保護の有効化](https://learn.microsoft.com/ja-jp/purview/sensitivity-labels-sharepoint-onedrive-files#adding-support-for-pdf)が必要
+4. 利用したい秘密度ラベルが定義されていて、ユーザーに発行されていること
 
 ## 保持ラベルについて
 ### 保持ラベル概要
@@ -46,9 +50,9 @@ Purview ポータルのデータ ライフサイクル管理のページに行�
 
 |ラベル名|ラベル設定|期間|動作|
 |---|---|---|---|
-|1か月で削除|特定の期間の後にアクションを適用する|カスタム,1か月,アイテムのラベル付け日時|アイテムを自動的に削除する|
-|機密情報・1年|特定の期間の後にアクションを適用する|カスタム,1年,アイテムのラベル付け日時|ラベルを "1か月で削除" に変更する|
-|機密情報・3年|特定の期間の後にアクションを適用する|カスタム,3年,アイテムのラベル付け日時|ラベルを "1か月で削除" に変更する|
+|1か月で削除|特定の期間の後にアクションを適用する|ラベル付け日時を起点に 1 か月|アイテムを自動的に削除する|
+|機密情報・1年|特定の期間の後にアクションを適用する|ラベル付け日時を起点に 1 年|ラベルを "1か月で削除" に変更する|
+|機密情報・3年|特定の期間の後にアクションを適用する|アイテムのラベル付け日時を起点に 3 年|ラベルを "1か月で削除" に変更する|
 |機密情報・無期限|アイテムにラベルを付けるだけ|-|-|
 
 ### 保持ラベルのライブラリ・フォルダへの適用
@@ -57,9 +61,52 @@ Purview ポータルのデータ ライフサイクル管理のラベル ポリ�
 SharePoint Site 例　https://xxx.sharepoint.com/sites/SPOLabelTests/   
 OneDrive for Business 例 https://xxx-my.sharepoint.com/personal/user01_xxx_onmicrosoft_com   
 
-保持ラベルが各サイトに展開されるまで、[1 日ほど待ちます](https://learn.microsoft.com/ja-jp/purview/create-apply-retention-labels?tabs=manual-outlook%2Cdefault-label-for-sharepoint#when-retention-labels-become-available-to-apply)。保持ラベルがサイトで利用可能になると、ライブラリ・フォルダ・ファイルに保持ラベルが適用できるようになります。
+保持ラベルが各サイトに展開されるまで、[1 日ほど待ちます](https://learn.microsoft.com/ja-jp/purview/create-apply-retention-labels?tabs=manual-outlook%2Cdefault-label-for-sharepoint#when-retention-labels-become-available-to-apply)。保持ラベルがサイトで利用可能になると、ライブラリ・フォルダ・ファイルに保持ラベルが適用できるようになります。SharePoint Online の各ライブラリでは、「列の追加」、「列の表示と非表示を切り替える」から「保持ラベル」と「秘密度」を追加することで、各アイテムの保持ラベルおよび秘密度ラベルがファイル一覧のビューで確認できるようになります。
+
+ライブラリでの保持ラベルの設定は、ライブラリの設定の「このリストまたはライブラリ内のアイテムにラベルを適用する」のメニューから行う
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/RL_Library01.png">
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/RL_Library02.png">
+
+フォルダ・ファイルの保持ラベル設定は、アイテムの詳細メニューから確認・設定が可能
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/RL_Folder01.png">
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/RL_File01.png">
 
 ### 自動の秘密度ラベル付けポリシーの設定
 SharePoint Online・OneDrive for Business に保存されたファイルの保持ラベルは、ComplianceTag のプロパティとして参照が可能です。Purview ポータルの Microsoft Information Protection の自動ラベル付けポリシーに行き、以下の設定で、自動ラベル付けポリシーを設定します。
 
-### 動作
+1. 名前: "保持ラベルからの秘密度ラベル・機密情報"
+2. 自動適用するラベル: "Confidential/All Employees"
+3. 管理単位: "完全なディレクトリ"
+4. 場所　SharePoint サイト: "https://xxx.sharepoint.com/sites/SPOLabelTests/"
+5. 場所　OneDrive アカウント "admin@xxx.onmicrosoft.com" (注: 保持ラベルの発行とは違い、ユーザー アカウントで指定する)
+7. SharePoint サイトのルールの名前: "保持ラベル変換-SPO"
+8. 条件: Document プロパティは「"ComplianceTag:機密情報・1年,機密情報・3年,機密情報・無期限"」 (注: 複数の値を,で区切って指定する場合、""で括って入力する必要がある)
+9. OneDrive のファイルのルールの名前: "保持ラベル変換-ODB"
+10. 条件: Document プロパティは「"ComplianceTag:機密情報・1年,機密情報・3年,機密情報・無期限"」(注: 複数の値を,で区切って指定する場合、""で括って入力する必要がある)
+11. シミュレーション モードでポリシーを実行する
+
+なお、秘密度ラベルで指定するプロパティは、検索で利用できる管理プロパティを利用しています。実際に、該当の SharePoint Online サイトや、OneDriver for Business にて、「ComplianceTag:機密情報・1年」や「ComplianceTag:機密*」などで、検索を行って、該当の保持ラベルが付与されたファイルがヒットすることを確認すると、自動ラベル付けの条件指定に問題ないかが確認できます。なお検索の際に複数の値で検索したい場合、「ComplianceTag:機密情報・1年 ComplianceTag:機密情報・3年」のようにプロパティの指定を複数スペースで区切って並べます。   
+
+シミュレーション モードで、ヒットするファイルに問題がなさそうであれば、自動ラベル付けポリシーを有効化します。
+
+----
+
+### 動作例
+動作例.1
+- 「機密情報・1年」の保持ラベルが設定されたフォルダに新規 PowerPoint ファイルを作成すると、その PowerPoint ファイルにも、「機密情報・1年」の保持ラベルが適用されます
+- 「機密情報・1年」の保持ラベルと、自動の秘密度ラベル付けのポリシーにより、ファイル作成・更新後、数分でそのファイルに「Confidential/All Employees」の秘密度ラベルが適用されます
+- フォルダに付与された「機密情報・1年」の保持ラベルをクリアすると、フォルダ内の PowerPoint ファイルの保持ラベルもクリアされます
+- フォルダ内の PowerPoint に付与された秘密度ラベルは「Confidential/All Employees」のままになります
+
+動作例.2
+- 既に Word ファイルが格納されているフォルダに、「機密情報・3年」の保持ラベルを適用すると、その既存 Word ファイにも、「機密情報・3年」の保持ラベルが適用されます
+- 「機密情報・3年」の保持ラベルと、自動の秘密度ラベル付けのポリシーにより、そのファイルに「Confidential/All Employees」の秘密度ラベルが適用されます
+
+動作例.3
+- OneDrive に「機密情報・無期限」の保持ラベルを「Protected」フォルダに適用します
+- PC のデスクトップ上の OneDrive アプリから「Protected」フォルダに新規 PowerPoint ファイルを作成します
+- OneDrive for Business のクラウド側では、PowerPoint ファイルに「機密情報・無期限」の保持ラベルが適用されます
+- PowerPoint ファイルに「Confidential/All Employees」の秘密度ラベルが適用されます
+
+自動の秘密度ラベル付けポリシーで、ラベルが付与された場合、アクティビティ エクスプローラーに以下のようなログが記録されます。
+<img src="https://github.com/YoshihiroIchinose/E5Comp/blob/main/img/RL_AE01.png">
