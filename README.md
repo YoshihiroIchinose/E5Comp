@@ -18,8 +18,7 @@ Microsoft Purview (E5 Compliance) に関する技術検証結果などを共有�
 |[Sentinel で秘密度ラベルのダウングレード操作をアラートする](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SentinelKusto.md)|Microsoft Purview Information Protection のデータ コネクタで取り込んだ秘密度ラベルの操作のログを元に、 一定期間内に複数回秘密度ラベルのダウングレードがあった場合に、それらをアラートする仕組みを Kusto クエリで作成するサンプルです。|
 |[アラート ポリシーを利用して監査ログに記録された操作に応じてアラートを発令する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/AlertPolicy.md)|アラート ポリシーを、PowerShell から設定することで、1 時間の中で 3 回以上、秘密度ラベルを変更するとアラートを生成する方法について紹介します。|
 |[秘密度ラベルの操作をデスクトップ上のドラッグ アンド ドロップの操作で行う](https://github.com/YoshihiroIchinose/E5Comp/blob/main/LabelbyDD.md)|Purview Information Protection Client に含まれる ラベル付けおよびラベル削除のPowerShell コマンドレットを用いて、 ドラッグ アンド ドロップの操作で、複数のファイルに対して秘密度ラベル付けや、ラベルの削除を行うサンプルです。|
-|[Graph API を利用して SharePoint Online のファイルに秘密度ラベルを付与する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/LabelingByGraph.md)|SharePoint 
-Online のファイルに Graph API を利用して秘密度ラベルを付与するサンプルです。|
+|[Graph API を利用して SharePoint Online のファイルに秘密度ラベルを付与する](https://github.com/YoshihiroIchinose/E5Comp/blob/main/LabelingByGraph.md)|SharePoint Online のファイルに Graph API を利用して秘密度ラベルを付与するサンプルです。|
 |[保持ラベルを利用した秘密度ラベルの適用](https://github.com/YoshihiroIchinose/E5Comp/blob/main/SensitivityLabelByRetentionLabel.md)|SharePoint Online および OneDrive for Business において、ライブラリ・フォルダ・ファイル単位の保持ラベル付けを行いつつ、保持ラベルを条件とした自動の秘密度ラベル付けを行う方法を紹介します。|
 
 # 監査ログ関連記事
