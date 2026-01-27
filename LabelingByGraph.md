@@ -20,6 +20,7 @@ Graph API を用いた秘密度ラベルの付与では、1 操作につき、[$
 $app="先の手順 1-2 で取得したアプリケーション ID の値"
 $rgName="LabelingByGraph"
 $name="LabelingAccounts"
+Register-AzResourceProvider -ProviderNamespace Microsoft.GraphServices
 az group create --name $rgName --location westus
 az resource create --resource-group $rgName --name $name --resource-type Microsoft.GraphServices/accounts --properties "{""appId"": ""$app""}" --location Global
 ```
