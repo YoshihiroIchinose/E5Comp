@@ -51,8 +51,8 @@ $app="先の手順 1-2 で取得したアプリケーション ID の値"
 $sec="先の手順 1-6 で取得したアプリケーションのクライアント シークレットの値"
 $label="先の手順 4 で取得した秘密度ラベルの GUID "
 
-#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、FQDN の後とサイトの URL の後に : を入れることに注意
-$sitePath="xxx.sharepoint.com:/sites/label:"
+#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、"FQDN の後" と "サイトの URL" の後に : を入れることに注意
+$sitePath="xxx.sharepoint.com:/sites/testsite01:"
 #ラベル付けしたいファイルがあるドキュメント ライブラリの名称
 $libraryName="ドキュメント"
 #ラベル付けしたいファイルの名前
@@ -94,8 +94,8 @@ $app="先の手順 1-2 で取得したアプリケーション ID の値"
 $sec="先の手順 1-6 で取得したアプリケーションのクライアント シークレットの値"
 $label="先の手順 4 で取得した秘密度ラベルの GUID "
 
-#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、FQDN の後とサイトの URL の後に : を入れることに注意
-$sitePath="xxx.sharepoint.com:/sites/label:"
+#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、"FQDN の後" と" サイトの URL" の後に : を入れることに注意
+$sitePath="xxx.sharepoint.com:/sites/testsite01:"
 #ラベル付けしたいファイルがあるドキュメント ライブラリの名称
 $libraryName="ドキュメント"
 #ラベル付けしたいライブラリ内のフォルダのパス
@@ -153,8 +153,8 @@ $app="先の手順 1-2 で取得したアプリケーション ID の値"
 $sec="先の手順 1-6 で取得したアプリケーションのクライアント シークレットの値"
 $label="先の手順 4 で取得した秘密度ラベルの GUID "
 
-#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、FQDN の後とサイトの URL の後に : を入れることに注意
-$sitePath="xxx.sharepoint.com:/sites/label:"
+#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、"FQDN の後" と" サイトの URL" の後に : を入れることに注意
+$sitePath="xxx.sharepoint.com:/sites/testsite01:"
 #ラベル付けしたいファイルがあるドキュメント ライブラリの名称
 $libraryName="ドキュメント"
 #ラベル付けしたいライブラリ内のフォルダのパス
@@ -228,8 +228,8 @@ $app="先の手順 1-2 で取得したアプリケーション ID の値"
 $sec="先の手順 1-6 で取得したアプリケーションのクライアント シークレットの値"
 $label="先の手順 4 で取得した秘密度ラベルの GUID "
 
-#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、FQDN の後とサイトの URL の後に : を入れることに注意
-$sitePath="xxx.sharepoint.com:/sites/label:"
+#ラベル付けしたいファイルがある SPO のサイトの指定 https:// 入れずに、"FQDN の後" と "サイトの URL" の後に : を入れることに注意
+$sitePath="xxx.sharepoint.com:/sites/testsite01:"
 #ラベル付けしたいファイルがあるドキュメント ライブラリの名称
 $libraryName="ドキュメント"
 #ラベル付けしたいライブラリ内のフォルダのパス
